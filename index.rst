@@ -3,10 +3,12 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to Nerdy Nights's documentation!
-========================================
+Welcome to Nerdy Nights
+=======================
 
-Contents:
+This is a sphinx-translated version of the `Nerdy Nights
+<http://nintendoage.com/forum/messageview.cfm?catid=22&threadid=7155>`__ NES
+programming tutorial.
 
 .. toctree::
    :maxdepth: 2
