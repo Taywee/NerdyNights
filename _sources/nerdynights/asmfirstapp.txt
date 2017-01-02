@@ -105,7 +105,6 @@ RAM, PPU/Audio/Controller access, and game ROM.
 
 ========== ==================================
 $0000-0800 Internal RAM, 2KB chip in the NES
-========== ==================================
 $2000-2007 PPU access ports
 $4000-4017 Audio and controller access ports
 $6000-7FFF Optional WRAM inside the game cart
