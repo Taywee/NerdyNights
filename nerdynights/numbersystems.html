@@ -1,0 +1,480 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Number Systems &mdash; Nerdy Nights 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Nerdy Nights 1.0.0 documentation" href="../index.html" />
+    <link rel="up" title="Nerdy Nights" href="../nerdynights.html" />
+    <link rel="next" title="NES Architecture Overview" href="nesarchitecture.html" />
+    <link rel="prev" title="Intro" href="intro.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="nesarchitecture.html" title="NES Architecture Overview"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="intro.html" title="Intro"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &raquo;</li>
+          <li><a href="../nerdynights.html" accesskey="U">Nerdy Nights</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="number-systems">
+<h1>Number Systems<a class="headerlink" href="#number-systems" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="decimal">
+<h2>Decimal<a class="headerlink" href="#decimal" title="Permalink to this headline">¶</a></h2>
+<p>The decimal system is base 10. Every digit can be 0-9. Each digit place
+is a power of 10. Each digit place to the left is 10 times more than the
+previous digit place. If you take the number 10 and put a 0 to the
+right, it becomes 100 which is 10 times more. Remove the 0 from the
+right, it becomes 1 which is 10 times less.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="29%" />
+<col width="26%" />
+<col width="3%" />
+<col width="9%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">100&#8217;s place</th>
+<th class="head">10&#8217;s place</th>
+<th class="head">1&#8217;s place</th>
+<th class="head">&nbsp;</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>0</td>
+<td>1</td>
+<td>=</td>
+<td>001</td>
+</tr>
+<tr class="row-odd"><td>0</td>
+<td>1</td>
+<td>0</td>
+<td>=</td>
+<td>010</td>
+</tr>
+<tr class="row-even"><td>1</td>
+<td>0</td>
+<td>0</td>
+<td>=</td>
+<td>100</td>
+</tr>
+</tbody>
+</table>
+<p>To get the value of a number, you multiply each digit by it&#8217;s place
+value and add them all together.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="21%" />
+<col width="19%" />
+<col width="17%" />
+<col width="2%" />
+<col width="34%" />
+<col width="2%" />
+<col width="6%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">100&#8217;s place</th>
+<th class="head">10&#8217;s place</th>
+<th class="head">1&#8217;s place</th>
+<th class="head">&nbsp;</th>
+<th class="head">&nbsp;</th>
+<th class="head">&nbsp;</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>3</td>
+<td>8</td>
+<td>0</td>
+<td>=</td>
+<td>3*100 + 8*10 + 0*1</td>
+<td>=</td>
+<td>380</td>
+</tr>
+<tr class="row-odd"><td>0</td>
+<td>4</td>
+<td>1</td>
+<td>=</td>
+<td>0*100 + 4*10 + 1*1</td>
+<td>=</td>
+<td>41</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="binary">
+<h2>Binary<a class="headerlink" href="#binary" title="Permalink to this headline">¶</a></h2>
+<p>Everything in computers is done in base 2, binary. This is because the
+lowest level of computing is a switch; on/off, 1/0.</p>
+<p>Base 2 binary works the same way, except each digit can be 0-1 and the
+place values are powers of 2 instead of 10. Insert a 0 to the right of a
+number and it becomes 2 times bigger. Remove a 0 and it becomes 2 times
+smaller.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="15%" />
+<col width="15%" />
+<col width="15%" />
+<col width="15%" />
+<col width="2%" />
+<col width="34%" />
+<col width="2%" />
+<col width="3%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">8&#8217;s place</th>
+<th class="head">4&#8217;s place</th>
+<th class="head">2&#8217;s place</th>
+<th class="head">1&#8217;s place</th>
+<th class="head">&nbsp;</th>
+<th class="head">&nbsp;</th>
+<th class="head">&nbsp;</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>=</td>
+<td>0*8 + 1*4 + 0*2 + 0*1</td>
+<td>=</td>
+<td>4</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>=</td>
+<td>1*8 + 1*4 + 1*2 + 1*1</td>
+<td>=</td>
+<td>15</td>
+</tr>
+</tbody>
+</table>
+<p>The NES is an 8 bit system, which means the binary number it works with are 8
+binary digits long. 8 bits is one byte. Some examples are:</p>
+<p>Eventually you become fast at reading binary numbers, or at least
+recognizing patterns. You can see that one byte can only range from
+0-255. For numbers bigger than that you must use 2 or more bytes. There
+are also no negative numbers. More on that later.</p>
+</div>
+<div class="section" id="hexadecimal">
+<h2>Hexadecimal<a class="headerlink" href="#hexadecimal" title="Permalink to this headline">¶</a></h2>
+<p>Hexadecimal or Hex is base 16, so each digit is 0-15 and each digit
+place is a power of 16. The problem is anything 10 and above needs 2
+digits. To fix this letters are used instead of numbers starting with A:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="64%" />
+<col width="9%" />
+<col width="27%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Decimal</th>
+<th class="head">&nbsp;</th>
+<th class="head">Hex</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>0</td>
+<td>=</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td>=</td>
+<td>1</td>
+</tr>
+<tr class="row-even"><td>9</td>
+<td>=</td>
+<td>9</td>
+</tr>
+<tr class="row-odd"><td>10</td>
+<td>=</td>
+<td>A</td>
+</tr>
+<tr class="row-even"><td>11</td>
+<td>=</td>
+<td>B</td>
+</tr>
+<tr class="row-odd"><td>12</td>
+<td>=</td>
+<td>C</td>
+</tr>
+<tr class="row-even"><td>13</td>
+<td>=</td>
+<td>D</td>
+</tr>
+<tr class="row-odd"><td>14</td>
+<td>=</td>
+<td>E</td>
+</tr>
+<tr class="row-even"><td>15</td>
+<td>=</td>
+<td>F</td>
+</tr>
+</tbody>
+</table>
+<p>As with decimal and hex the digit places are each a power of 16:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="26%" />
+<col width="24%" />
+<col width="3%" />
+<col width="37%" />
+<col width="3%" />
+<col width="8%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">16&#8217;s place</th>
+<th class="head">1&#8217;s place</th>
+<th class="head">&nbsp;</th>
+<th class="head">&nbsp;</th>
+<th class="head">&nbsp;</th>
+<th class="head">&nbsp;</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>6</td>
+<td>A</td>
+<td>=</td>
+<td>6*16 + A(10)*1</td>
+<td>=</td>
+<td>106</td>
+</tr>
+<tr class="row-odd"><td>1</td>
+<td>0</td>
+<td>=</td>
+<td>1*16 +     0*1</td>
+<td>=</td>
+<td>16</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<div>Hex is largely used because it is much faster to write than binary. An</div></blockquote>
+<p>8 digit binary number turns into a 2 digit hex number:</p>
+<div class="highlight-asm"><div class="highlight"><pre><span></span>Binary     01101010
+split        |  |
+in half     /    \
+         0110   1010
+into       |     |
+hex        6     A
+           |     |
+put        \    /
+back         6A
+
+
+01101010 = 6A
+</pre></div>
+</div>
+<div class="section" id="and-more-examples">
+<h3>And more examples<a class="headerlink" href="#and-more-examples" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="40%" />
+<col width="5%" />
+<col width="15%" />
+<col width="5%" />
+<col width="35%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">Binary</th>
+<th class="head">&nbsp;</th>
+<th class="head">Hex</th>
+<th class="head">&nbsp;</th>
+<th class="head">Decimal</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>00000000</td>
+<td>=</td>
+<td>00</td>
+<td>=</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>00001111</td>
+<td>=</td>
+<td>0F</td>
+<td>=</td>
+<td>15</td>
+</tr>
+<tr class="row-even"><td>00010000</td>
+<td>=</td>
+<td>10</td>
+<td>=</td>
+<td>16</td>
+</tr>
+<tr class="row-odd"><td>10101010</td>
+<td>=</td>
+<td>AA</td>
+<td>=</td>
+<td>170</td>
+</tr>
+<tr class="row-even"><td>11111111</td>
+<td>=</td>
+<td>FF</td>
+<td>=</td>
+<td>255</td>
+</tr>
+</tbody>
+</table>
+<p>For easy converting open up the built in Windows calculator and switch
+it to scientific mode. Choose the base (Hex, Dec, or Bin), type the
+number, then switch to another base.</p>
+<p>When the numbers are written an extra character is added so you can
+tell which base is being used. Binary is typically prefixed with a %,
+like %00001111. Hex is prefixed with a $ like $2A. Some other
+conventions are postfixing binary with a b like 00001111b and postfixing
+hex with an h like 2Ah.</p>
+<p>The NES has a 16 bit address bus (more on that later), so it can access
+2^16 bytes of memory. 16 binary digits turns into 4 hex digits, so
+typical NES addresses look like $8000, $FFFF, and $4017.</p>
+</div>
+</div>
+<div class="section" id="core-programming-concepts">
+<h2>Core Programming Concepts<a class="headerlink" href="#core-programming-concepts" title="Permalink to this headline">¶</a></h2>
+<p>All programming languages have three basic concepts. They are
+instructions, variables, and control flow. If any of those three are
+missing it is no longer a true programming language. For example HTML
+has no control flow so it is not a programming language.</p>
+<div class="section" id="instructions">
+<h3>Instructions<a class="headerlink" href="#instructions" title="Permalink to this headline">¶</a></h3>
+<p>An instruction is the smallest command that the processor runs.
+Instructions are run one at a time, one after another. In the NES
+processor there are only 56 instructions. Typically around 10 of those
+will be used constantly, and at least 10 will be completely ignored.
+Some examples of these would be addition, loading a number, or comparing
+a variable to zero.</p>
+</div>
+<div class="section" id="variables">
+<h3>Variables<a class="headerlink" href="#variables" title="Permalink to this headline">¶</a></h3>
+<p>A variable is a place that stores data that can be modified. An example
+of this would be the vertical position of Mario on the screen. It can be
+changed any time during the game. Variables in source code all have
+names you set, so it would be something like MarioHorizPosition.</p>
+</div>
+<div class="section" id="control-flow">
+<h3>Control Flow<a class="headerlink" href="#control-flow" title="Permalink to this headline">¶</a></h3>
+<p>Normally your instructions run in sequential order. Sometimes you will
+want to run a different section of code depending on a variable. This
+would be a control flow statement which changes the normal flow of your
+program. An example would be if Mario is falling, jump to the code that
+checks if he hit the ground yet.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Number Systems</a><ul>
+<li><a class="reference internal" href="#decimal">Decimal</a></li>
+<li><a class="reference internal" href="#binary">Binary</a></li>
+<li><a class="reference internal" href="#hexadecimal">Hexadecimal</a><ul>
+<li><a class="reference internal" href="#and-more-examples">And more examples</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#core-programming-concepts">Core Programming Concepts</a><ul>
+<li><a class="reference internal" href="#instructions">Instructions</a></li>
+<li><a class="reference internal" href="#variables">Variables</a></li>
+<li><a class="reference internal" href="#control-flow">Control Flow</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="intro.html"
+                        title="previous chapter">Intro</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="nesarchitecture.html"
+                        title="next chapter">NES Architecture Overview</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/nerdynights/numbersystems.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="nesarchitecture.html" title="NES Architecture Overview"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="intro.html" title="Intro"
+             >previous</a> |</li>
+        <li><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &raquo;</li>
+          <li><a href="../nerdynights.html" >Nerdy Nights</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2017, bunnyboy, MetalSlime, Taywee.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

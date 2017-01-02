@@ -1,0 +1,591 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>6502 ASM, first app &mdash; Nerdy Nights 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Nerdy Nights 1.0.0 documentation" href="../index.html" />
+    <link rel="up" title="Nerdy Nights" href="../nerdynights.html" />
+    <link rel="next" title="&lt;no title&gt;" href="colorpalettes.html" />
+    <link rel="prev" title="NES Architecture Overview" href="nesarchitecture.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="colorpalettes.html" title="&lt;no title&gt;"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="nesarchitecture.html" title="NES Architecture Overview"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &raquo;</li>
+          <li><a href="../nerdynights.html" accesskey="U">Nerdy Nights</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="asm-first-app">
+<h1>6502 ASM, first app<a class="headerlink" href="#asm-first-app" title="Permalink to this headline">¶</a></h1>
+<div class="admonition-this-week admonition">
+<p class="first admonition-title">This Week</p>
+<p class="last">starts getting into more details about the 6502 and intro to assembly
+language. The lessons for asm usage and NES specifics will be done in
+sections together. There are many other 6502 <a class="reference external" href="http://www.obelisk.demon.co.uk/6502/">websites</a> and good books which may help you
+learn better.</p>
+</div>
+<dl class="docutils">
+<dt>Bit</dt>
+<dd>The smallest unit in computers. It is either a 1 (on) or a 0 (off), like a
+light switch.</dd>
+<dt>Byte</dt>
+<dd>8 bits together form one byte, a number from 0 to 255. Two bytes put
+together is 16 bits, forming a number from 0 to 65535. Bits in the byte are
+numbered starting from the right at 0.</dd>
+<dt>Instruction</dt>
+<dd>one command a processor executes. Instructions are run sequentially.</dd>
+</dl>
+<div class="section" id="code-layout">
+<h2>Code Layout<a class="headerlink" href="#code-layout" title="Permalink to this headline">¶</a></h2>
+<p>In assembly language there are 5 main parts. Some parts must be in a specific
+horizontal position for the assembler to use them correctly.</p>
+<div class="section" id="directives">
+<h3>Directives<a class="headerlink" href="#directives" title="Permalink to this headline">¶</a></h3>
+<p>Directives are commands you send to the assembler to do things like locating
+code in memory. They start with a . and are indented. Some people use tabs, or
+4 spaces, and I use 2 spaces. This sample directive tells the assembler to put
+the code starting at memory location $8000, which is inside the game ROM area:</p>
+<div class="highlight-asm"><div class="highlight"><pre><span></span><span class="na">.org</span> <span class="no">$8000</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="labels">
+<h3>Labels<a class="headerlink" href="#labels" title="Permalink to this headline">¶</a></h3>
+<p>The label is aligned to the far left and has a : at the end. The label is just
+something you use to organize your code and make it easier to read. The
+assembler translates the label into an address. Sample label:</p>
+<div class="highlight-asm"><div class="highlight"><pre><span></span>  <span class="na">.org</span> <span class="no">$8000</span>
+<span class="nl">MyFunction:</span>
+</pre></div>
+</div>
+<p>When the assembler runs, it will do a find/replace to set MyFunction to
+$8000. The if you have any code that uses MyFunction like:</p>
+<div class="highlight-asm"><div class="highlight"><pre><span></span><span class="nf">STA</span> <span class="no">MyFunction</span>
+</pre></div>
+</div>
+<p>It will find/replace to:</p>
+<div class="highlight-asm"><div class="highlight"><pre><span></span><span class="nf">STA</span> <span class="no">$8000</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="opcodes">
+<h3>Opcodes<a class="headerlink" href="#opcodes" title="Permalink to this headline">¶</a></h3>
+<p>The opcode is the instruction that the processor will run, and is indented like
+the directives. In this sample, JMP is the opcode that tells the processor to
+jump to the MyFunction label:</p>
+<div class="highlight-asm"><div class="highlight"><pre><span></span>  <span class="na">.org</span> <span class="no">$8000</span>
+<span class="nl">MyFunction:</span>
+  <span class="nf">JMP</span> <span class="no">MyFunction</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="operands">
+<h3>Operands<a class="headerlink" href="#operands" title="Permalink to this headline">¶</a></h3>
+<p>The operands are additional information for the opcode. Opcodes have between
+one and three operands. In this example the #$FF is the operand:</p>
+<div class="highlight-asm"><div class="highlight"><pre><span></span>  <span class="na">.org</span> <span class="no">$8000</span>
+<span class="nl">MyFunction:</span>
+  <span class="nf">LDA</span> <span class="c">#$FF</span>
+  <span class="nf">JMP</span> <span class="no">MyFunction</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="comments">
+<h3>Comments<a class="headerlink" href="#comments" title="Permalink to this headline">¶</a></h3>
+<p>Comments are to help you understand in English what the code is doing.  When
+you write code and come back later, the comments will save you. You do not need
+a comment on every line, but should have enough to explain what is happening.
+Comments start with a ; and are completely ignored by the assembler. They can
+be put anywhere horizontally, but are usually spaced beyond the long lines.:</p>
+<div class="highlight-asm"><div class="highlight"><pre><span></span>  .org $8000
+MyFunction:        ; loads FF into accumulator
+  LDA #$FF
+  JMP MyFunction
+</pre></div>
+</div>
+<p>This code would just continually run the loop, loading the hex value $FF into
+the accumulator each time.</p>
+</div>
+</div>
+<div class="section" id="processor-overview">
+<h2>6502 Processor Overview<a class="headerlink" href="#processor-overview" title="Permalink to this headline">¶</a></h2>
+<p>The 6502 is an 8 bit processor with a 16 bit address bus. It can access 64KB of
+memory without bank switching. In the NES this memory space is split up into
+RAM, PPU/Audio/Controller access, and game ROM.</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="23%" />
+<col width="77%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">$0000-0800</th>
+<th class="head">Internal RAM, 2KB chip in the NES</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>$2000-2007</td>
+<td>PPU access ports</td>
+</tr>
+<tr class="row-odd"><td>$4000-4017</td>
+<td>Audio and controller access ports</td>
+</tr>
+<tr class="row-even"><td>$6000-7FFF</td>
+<td>Optional WRAM inside the game cart</td>
+</tr>
+<tr class="row-odd"><td>$8000-FFFF</td>
+<td>Game cart ROM</td>
+</tr>
+</tbody>
+</table>
+<p>Any of the game cart sections can be bank switched to get access to more
+memory, but memory mappers will not be included in this tutorial.</p>
+</div>
+<div class="section" id="assembly-overview">
+<h2>6502 Assembly Overview<a class="headerlink" href="#assembly-overview" title="Permalink to this headline">¶</a></h2>
+<p>The assembly language for 6502 starts with a 3 character code for the
+instruction &#8220;opcode&#8221;. There are 56 instructions, 10 of which you will use
+frequently. Many instructions will have a value after the opcode, which you can
+write in decimal or hex. If that value starts with a # then it means use the
+actual number. If the value doesn&#8217;t have then # then it means use the value at
+that address. So LDA #$05 means load the value 5, LDA $0005 means load the
+value that is stored at address $0005.</p>
+</div>
+<div class="section" id="registers">
+<h2>6502 Registers<a class="headerlink" href="#registers" title="Permalink to this headline">¶</a></h2>
+<p>A register is a place inside the processor that holds a value. The 6502 has
+three 8 bit registers and a status register that you will be using.  All your
+data processing uses these registers. There are additional registers that are
+not covered in this tutorial.</p>
+<div class="section" id="accumulator">
+<h3>Accumulator<a class="headerlink" href="#accumulator" title="Permalink to this headline">¶</a></h3>
+<p>The Accumulator (A) is the main 8 bit register for loading, storing, comparing,
+and doing math on data. Some of the most frequent operations are:</p>
+<div class="highlight-asm"><div class="highlight"><pre><span></span>LDA #$FF  ;load the hex value $FF (decimal 256) into A
+STA $0000 ;store the accumulator into memory location $0000, internal RAM
+</pre></div>
+</div>
+</div>
+<div class="section" id="index-register-x">
+<h3>Index Register X<a class="headerlink" href="#index-register-x" title="Permalink to this headline">¶</a></h3>
+<p>The Index Register X (X) is another 8 bit register, usually used for counting
+or memory access. In loops you will use this register to keep track of how many
+times the loop has gone, while using A to process data. Some frequent
+operations are:</p>
+<div class="highlight-asm"><div class="highlight"><pre><span></span>LDX $0000 ;load the value at memory location $0000 into X
+INX       ;increment X   X = X + 1
+</pre></div>
+</div>
+</div>
+<div class="section" id="index-register-y">
+<h3>Index Register Y<a class="headerlink" href="#index-register-y" title="Permalink to this headline">¶</a></h3>
+<p>The Index Register Y (Y) works almost the same as X. Some instructions (not
+covered here) only work with X and not Y. Some operations are:</p>
+<div class="highlight-asm"><div class="highlight"><pre><span></span>STY $00BA ;store Y into memory location $00BA
+TYA       ;transfer Y into Accumulator
+</pre></div>
+</div>
+</div>
+<div class="section" id="status-register">
+<h3>Status Register<a class="headerlink" href="#status-register" title="Permalink to this headline">¶</a></h3>
+<p>The Status Register holds flags with information about the last
+instruction. For example when doing a subtract you can check if the
+result was a zero.</p>
+</div>
+</div>
+<div class="section" id="instruction-set">
+<h2>6502 Instruction Set<a class="headerlink" href="#instruction-set" title="Permalink to this headline">¶</a></h2>
+<p>These are just the most common and basic instructions. Most have a few
+different options which will be used later. There are also a few more
+complicated instructions to be covered later.</p>
+<div class="section" id="common-load-store-opcodes">
+<h3>Common Load/Store opcodes<a class="headerlink" href="#common-load-store-opcodes" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-asm"><div class="highlight"><pre><span></span>LDA #$0A   ; LoaD the value 0A into the accumulator A
+           ; the number part of the opcode can be a value or an address
+           ; if the value is zero, the zero flag will be set.
+
+LDX $0000  ; LoaD the value at address $0000 into the index register X
+           ; if the value is zero, the zero flag will be set.
+
+LDY #$FF   ; LoaD the value $FF into the index register Y
+           ; if the value is zero, the zero flag will be set.
+
+STA $2000  ; STore the value from accumulator A into the address $2000
+           ; the number part must be an address
+
+STX $4016  ; STore value in X into $4016
+           ; the number part must be an address
+
+STY $0101  ; STore Y into $0101
+           ; the number part must be an address
+
+TAX        ; Transfer the value from A into X
+           ; if the value is zero, the zero flag will be set
+
+TAY        ; Transfer A into Y
+           ; if the value is zero, the zero flag will be set
+
+TXA        ; Transfer X into A
+           ; if the value is zero, the zero flag will be set
+
+TYA        ; Transfer Y into A
+           ; if the value is zero, the zero flag will be set
+</pre></div>
+</div>
+</div>
+<div class="section" id="common-math-opcodes">
+<h3>Common Math opcodes<a class="headerlink" href="#common-math-opcodes" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-asm"><div class="highlight"><pre><span></span>ADC #$01   ; ADd with Carry
+           ; A = A + $01 + carry
+           ; if the result is zero, the zero flag will be set
+
+SBC #$80   ; SuBtract with Carry
+           ; A = A - $80 - (1 - carry)
+           ; if the result is zero, the zero flag will be set
+
+CLC        ; CLear Carry flag in status register
+           ; usually this should be done before ADC
+
+SEC        ; SEt Carry flag in status register
+           ; usually this should be done before SBC
+
+INC $0100  ; INCrement value at address $0100
+           ; if the result is zero, the zero flag will be set
+
+DEC $0001  ; DECrement $0001
+           ; if the result is zero, the zero flag will be set
+
+INY        ; INcrement Y register
+           ; if the result is zero, the zero flag will be set
+
+INX        ; INcrement X register
+           ; if the result is zero, the zero flag will be set
+
+DEY        ; DEcrement Y
+           ; if the result is zero, the zero flag will be set
+
+DEX        ; DEcrement X
+           ; if the result is zero, the zero flag will be set
+
+ASL A      ; Arithmetic Shift Left
+           ; shift all bits one position to the left
+           ; this is a multiply by 2
+           ; if the result is zero, the zero flag will be set
+
+LSR $6000  ; Logical Shift Right
+           ; shift all bits one position to the right
+           ; this is a divide by 2
+           ; if the result is zero, the zero flag will be set
+</pre></div>
+</div>
+</div>
+<div class="section" id="common-comparison-opcodes">
+<h3>Common Comparison opcodes<a class="headerlink" href="#common-comparison-opcodes" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-asm"><div class="highlight"><pre><span></span>CMP #$01   ; CoMPare A to the value $01
+           ; this actually does a subtract, but does not keep the result
+           ; instead you check the status register to check for equal,
+           ; less than, or greater than
+
+CPX $0050  ; ComPare X to the value at address $0050
+
+CPY #$FF   ; ComPare Y to the value $FF
+</pre></div>
+</div>
+</div>
+<div class="section" id="common-control-flow-opcodes">
+<h3>Common Control Flow opcodes<a class="headerlink" href="#common-control-flow-opcodes" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-asm"><div class="highlight"><pre><span></span>JMP $8000  ; JuMP to $8000, continue running code there
+
+BEQ $FF00  ; Branch if EQual, contnue running code there
+           ; first you would do a CMP, which clears or sets the zero flag
+           ; then the BEQ will check the zero flag
+           ; if zero is set (values were equal) the code jumps to $FF00 and runs there
+           ; if zero is clear (values not equal) there is no jump, runs next instruction
+
+BNE $FF00  ; Branch if Not Equal - opposite above, jump is made when zero flag is clear
+</pre></div>
+</div>
+</div>
+</div>
+<div class="section" id="nes-code-structure">
+<h2>NES Code Structure<a class="headerlink" href="#nes-code-structure" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="getting-started">
+<h3>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h3>
+<p>This section has a lot of information because it will get everything set up to
+run your first NES program. Much of the code can be copy/pasted then ignored
+for now. The main goal is to just get NESASM to output something useful.</p>
+</div>
+<div class="section" id="ines-header">
+<h3>iNES Header<a class="headerlink" href="#ines-header" title="Permalink to this headline">¶</a></h3>
+<p>The 16 byte iNES header gives the emulator all the information about the game
+including mapper, graphics mirroring, and PRG/CHR sizes. You can include all
+this inside your asm file at the very beginning.:</p>
+<div class="highlight-asm"><div class="highlight"><pre><span></span>.inesprg 1   ; 1x 16KB bank of PRG code
+.ineschr 1   ; 1x 8KB bank of CHR data
+.inesmap 0   ; mapper 0 = NROM, no bank swapping
+.inesmir 1   ; background mirroring (ignore for now)
+</pre></div>
+</div>
+</div>
+<div class="section" id="banking">
+<h3>Banking<a class="headerlink" href="#banking" title="Permalink to this headline">¶</a></h3>
+<p>NESASM arranges everything in 8KB code and 8KB graphics banks. To fill the 16KB
+PRG space 2 banks are needed. Like most things in computing, the numbering
+starts at 0. For each bank you have to tell the assembler where in memory it
+will start.:</p>
+<div class="highlight-asm"><div class="highlight"><pre><span></span>  .bank 0
+  .org $C000
+;some code here
+
+  .bank 1
+  .org $E000
+; more code here
+
+  .bank 2
+  .org $0000
+; graphics here
+</pre></div>
+</div>
+</div>
+<div class="section" id="adding-binary-files">
+<h3>Adding Binary Files<a class="headerlink" href="#adding-binary-files" title="Permalink to this headline">¶</a></h3>
+<p>Additional data files are frequently used for graphics data or level data. The
+incbin directive can be used to include that data in your .NES file. This data
+will not be used yet, but is needed to make the .NES file size match the iNES
+header.:</p>
+<div class="highlight-asm"><div class="highlight"><pre><span></span>.bank 2
+.org $0000
+.incbin &quot;mario.chr&quot;   ;includes 8KB graphics file from SMB1
+</pre></div>
+</div>
+</div>
+<div class="section" id="vectors">
+<h3>Vectors<a class="headerlink" href="#vectors" title="Permalink to this headline">¶</a></h3>
+<p>There are three times when the NES processor will interrupt your code and jump
+to a new location. These vectors, held in PRG ROM tell the processor where to
+go when that happens. Only the first two will be used in this tutorial.</p>
+<dl class="docutils">
+<dt>NMI Vector</dt>
+<dd>this happens once per video frame, when enabled. The PPU tells the
+processor it is starting the VBlank time and is available for graphics
+updates.</dd>
+<dt>RESET Vector</dt>
+<dd>this happens every time the NES starts up, or the reset button is pressed.</dd>
+<dt>IRQ Vector</dt>
+<dd>this is triggered from some mapper chips or audio interrupts and will not
+be covered.</dd>
+</dl>
+<p>These three must always appear in your assembly file the right order.  The .dw
+directive is used to define a Data Word (1 word = 2 bytes):</p>
+<div class="highlight-asm"><div class="highlight"><pre><span></span>.bank 1
+.org $FFFA     ;first of the three vectors starts here
+.dw NMI        ;when an NMI happens (once per frame if enabled) the
+                 ;processor will jump to the label NMI:
+.dw RESET      ;when the processor first turns on or is reset, it will jump
+                 ;to the label RESET:
+.dw 0          ;external interrupt IRQ is not used in this tutorial
+</pre></div>
+</div>
+</div>
+<div class="section" id="reset-code">
+<h3>Reset Code<a class="headerlink" href="#reset-code" title="Permalink to this headline">¶</a></h3>
+<p>The reset vector was set to the label RESET, so when the processor starts up it
+will start from RESET: Using the .org directive that code is set to a space in
+game ROM. A couple modes are set right at the beginning. We are not using IRQs,
+so they are turned off. The NES 6502 processor does not have a decimal mode, so
+that is also turned off. This section does NOT include everything needed to run
+code on the real NES, but will work with the FCEUXD SP emulator. More reset
+code will be added later.:</p>
+<div class="highlight-asm"><div class="highlight"><pre><span></span>  .bank 0
+  .org $C000
+RESET:
+  SEI        ; disable IRQs
+  CLD        ; disable decimal mode
+</pre></div>
+</div>
+</div>
+<div class="section" id="completing-the-program">
+<h3>Completing The Program<a class="headerlink" href="#completing-the-program" title="Permalink to this headline">¶</a></h3>
+<p>Your first program will be very exciting, displaying an entire screen of one
+color! To do this the first PPU settings need to be written. This is done to
+memory address $2001. The 76543210 is the bit number, from 7 to 0. Those 8 bits
+form the byte you will write to $2001.</p>
+<div class="highlight-asm"><div class="highlight"><pre><span></span>PPUMASK ($2001)
+
+76543210
+||||||||
+|||||||+- Grayscale (0: normal color; 1: AND all palette entries
+|||||||   with 0x30, effectively producing a monochrome display;
+|||||||   note that colour emphasis STILL works when this is on!)
+||||||+-- Disable background clipping in leftmost 8 pixels of screen
+|||||+--- Disable sprite clipping in leftmost 8 pixels of screen
+||||+---- Enable background rendering
+|||+----- Enable sprite rendering
+||+------ Intensify reds (and darken other colors)
+|+------- Intensify greens (and darken other colors)
++-------- Intensify blues (and darken other colors)
+</pre></div>
+</div>
+<p>So if you want to enable the sprites, you set bit 3 to 1. For this program bits
+7, 6, 5 will be used to set the screen color:</p>
+<div class="highlight-asm"><div class="highlight"><pre><span></span>  LDA %10000000   ;intensify blues
+  STA $2001
+Forever:
+  JMP Forever     ;infinite loop
+</pre></div>
+</div>
+</div>
+<div class="section" id="putting-it-all-together">
+<h3>Putting It All Together<a class="headerlink" href="#putting-it-all-together" title="Permalink to this headline">¶</a></h3>
+<p>Download and unzip the <a class="reference external" href="http://www.nespowerpak.com/nesasm/background.zip">background.zip</a> sample files. All the
+code above is in the background.asm file. Make sure that file, mario.chr, and
+background.bat is in the same folder as <a class="reference external" href="http://www.nespowerpak.com/nesasm/NESASM3.zip">NESASM3</a>, then double click on
+background.bat. That will run NESASM3 and should produce background.nes. Run
+that NES file in <a class="reference external" href="http://www.the-interweb.com/serendipity/exit.php?url_id=627_id=90">FCEUXD SP</a> to see
+your background color! Edit background.asm to change the intensity bits 7-5 to
+make the background red or green.</p>
+<p>You can start the Debug... from the Tools menu in <a class="reference external" href="http://www.the-interweb.com/serendipity/exit.php?url_id=627&amp;entry_id=90">FCEUXD SP</a> to
+watch your code run. Hit the Step Into button, choose Reset from the NES menu,
+then keep hitting Step Into to run one instruction at a time.  On the left is
+the memory address, next is the hex opcode that the 6502 is actually running.
+This will be between one and three bytes. After that is the code you wrote,
+with the comments taken out and labels translated to addresses. The top line is
+the instruction that is going to run next. So far there isn&#8217;t much code, but
+the debugger will be very helpful later.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">6502 ASM, first app</a><ul>
+<li><a class="reference internal" href="#code-layout">Code Layout</a><ul>
+<li><a class="reference internal" href="#directives">Directives</a></li>
+<li><a class="reference internal" href="#labels">Labels</a></li>
+<li><a class="reference internal" href="#opcodes">Opcodes</a></li>
+<li><a class="reference internal" href="#operands">Operands</a></li>
+<li><a class="reference internal" href="#comments">Comments</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#processor-overview">6502 Processor Overview</a></li>
+<li><a class="reference internal" href="#assembly-overview">6502 Assembly Overview</a></li>
+<li><a class="reference internal" href="#registers">6502 Registers</a><ul>
+<li><a class="reference internal" href="#accumulator">Accumulator</a></li>
+<li><a class="reference internal" href="#index-register-x">Index Register X</a></li>
+<li><a class="reference internal" href="#index-register-y">Index Register Y</a></li>
+<li><a class="reference internal" href="#status-register">Status Register</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#instruction-set">6502 Instruction Set</a><ul>
+<li><a class="reference internal" href="#common-load-store-opcodes">Common Load/Store opcodes</a></li>
+<li><a class="reference internal" href="#common-math-opcodes">Common Math opcodes</a></li>
+<li><a class="reference internal" href="#common-comparison-opcodes">Common Comparison opcodes</a></li>
+<li><a class="reference internal" href="#common-control-flow-opcodes">Common Control Flow opcodes</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#nes-code-structure">NES Code Structure</a><ul>
+<li><a class="reference internal" href="#getting-started">Getting Started</a></li>
+<li><a class="reference internal" href="#ines-header">iNES Header</a></li>
+<li><a class="reference internal" href="#banking">Banking</a></li>
+<li><a class="reference internal" href="#adding-binary-files">Adding Binary Files</a></li>
+<li><a class="reference internal" href="#vectors">Vectors</a></li>
+<li><a class="reference internal" href="#reset-code">Reset Code</a></li>
+<li><a class="reference internal" href="#completing-the-program">Completing The Program</a></li>
+<li><a class="reference internal" href="#putting-it-all-together">Putting It All Together</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="nesarchitecture.html"
+                        title="previous chapter">NES Architecture Overview</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="colorpalettes.html"
+                        title="next chapter">&lt;no title&gt;</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/nerdynights/asmfirstapp.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="colorpalettes.html" title="&lt;no title&gt;"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="nesarchitecture.html" title="NES Architecture Overview"
+             >previous</a> |</li>
+        <li><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &raquo;</li>
+          <li><a href="../nerdynights.html" >Nerdy Nights</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2017, bunnyboy, MetalSlime, Taywee.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

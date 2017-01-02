@@ -1,0 +1,272 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>&lt;no title&gt; &mdash; Nerdy Nights 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Nerdy Nights 1.0.0 documentation" href="../index.html" />
+    <link rel="up" title="Nerdy Nights" href="../nerdynights.html" />
+    <link rel="next" title="&lt;no title&gt;" href="subroutines.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="multiplesprites.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="subroutines.html" title="&lt;no title&gt;"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="multiplesprites.html" title="&lt;no title&gt;"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &raquo;</li>
+          <li><a href="../nerdynights.html" accesskey="U">Nerdy Nights</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="m8t"><p><a class="reference external" href="http://www.nintendoage.com/forum/messageview.cfm?catid=22&amp;threadid=7974">Previous
+Week</a>
+- Multiple sprites, reading controllers</p>
+<div></div><div><p>This Week: &nbsp;Now that you have a basic understanding of the NES tile
+graphics, we learn how to display one static non scrolling background.</p>
+</div><div></div><div><p>Backgrounds</p>
+</div><div><p>There are three components used to generate backgrounds on the NES.
+&nbsp;First is the background color palette, used to select the colors that
+will be used on screen. &nbsp;Next is the nametable that tells the layout of
+the graphics. &nbsp;Finally is the attribute table that assigns the colors in
+the palette to areas on screen.</p>
+</div><div></div><div><p>Background Palette</p>
+</div><div><p>Like the sprites there are 16 colors in the background palette. &nbsp;Our
+previous apps were already loading a background palette but it was not
+being used yet. &nbsp;You can use the PPU Viewer in FCEUXD SP to see the
+color palettes.</p>
+</div><div></div><div><p>Nametables</p>
+</div><div><p>Like the sprites, background images are made up from 8x8 pixel tiles.
+&nbsp;The screen video resolution is 32x30 tiles, or 256x240 pixels. &nbsp;PAL
+systems will show this full resolution but NTSC crops the top 8 and
+bottom 8 rows of pixels for a final resolution of 256x224. &nbsp;Additionally
+TV&#8217;s on either system can crop another few rows on the top or bottom.</p>
+</div><div></div><div><p>One screen full of background tiles is called a nametable, and the NES
+has enough internal RAM connected to the PPU for two nametables. &nbsp;Only
+one will be used here. &nbsp;The nametable has one byte (0-255) for which 8x8
+pixel graphics tile to draw on screen. &nbsp;The nametable we will use starts
+at PPU address $2000 and takes up 960 bytes (32x30). &nbsp;You can use the
+Nametable viewer in FCEUXD SP to see all the nametables.</p>
+</div><div></div><div><p>Attribute Tables</p>
+</div><div><p>The attribute tables may be the most difficult thing to understand, and
+sets many of the graphics limitations. &nbsp;Each nametable has an attribute
+table that sets which colors in the palette will be used in sections of
+the screen. &nbsp;The attribute table is stored in the same internal RAM as
+the nametable, and we will use the one that starts at PPU address $23C0
+($2000+960).</p>
+</div><div></div><div><p>First the screen is divided into a 32x32 pixel grid, or 4x4 tiles. &nbsp;Each
+byte in the attribute table sets the color group&nbsp;(0-3)&nbsp;in the background
+palette that will be used in that area. &nbsp;That 4x4 tile area is divided
+again into 4 2x2 tile grids. &nbsp;Two bits of the attribute table byte are
+assigned to each 2x2 area. &nbsp;That is the size of one block in SMB. &nbsp;This
+limitation means that only 4 colors (one color group) can be used in any
+16x16 pixel background section. &nbsp;A green SMB pipe section cannot use the
+color red because it already uses 4 colors.</p>
+</div><div></div><div align="baseline"><p>When looking at a sample SMB screen, first the 4x4 tile grid is added
+and the palette is shown at the bottom:</p>
+</div><div><p><img alt="image0" src="http://www.NintendoAgeMedia.com/users/142/photobucket/F837623F-9C98-E50B-F4D377EE82FA2BDA.png" /></p>
+</div><div></div><div><p>You can see there are 8 grid squares horizontally, so there will be 8
+attribute bytes horizontally. &nbsp;Then each one of those grid squares is
+split up into 2x2 tile sections to generate the attribute byte:</p>
+</div><div align="baseline"></div><div><p><img alt="image1" src="http://www.NintendoAgeMedia.com/users/142/photobucket/F8376193-9343-AF0D-B8DA7BD8B7DD9301.png" /></p>
+</div><div></div><div><p>No 16x16 area can use more than 4 colors, so the question mark and the
+block cannot use the greens from the palette.</p>
+</div><div></div><div></div><div><p>Uploading the data</p>
+</div><div><p>To set the background graphics your data has to be defined in your ROM
+using the .db directive, then copied to the PPU RAM. &nbsp;Some graphics
+tools will generate this data but here it will just be done manually.
+&nbsp;To keep it shorter only a few rows of graphics will be created. &nbsp;The
+same CHR file from SMB will be used here too. &nbsp;First the nametable data
+is defined, with each graphics row split into two 16 byte sections to
+keep lines shorter:</p>
+</div><div></div><div><p>nametable:</p>
+<p>&nbsp; .db $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24
+;;row 1</p>
+<p>&nbsp; .db $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24
+;;all sky ($24 = sky)</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>&nbsp; .db $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24
+;;row 2</p>
+<p>&nbsp; .db $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24
+;;all sky</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>&nbsp; .db $24,$24,$24,$24,$45,$45,$24,$24,$45,$45,$45,$45,$45,$45,$24,$24
+;;row 3</p>
+<p>&nbsp; .db $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$53,$54,$24,$24
+;;some brick tops</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>&nbsp; .db $24,$24,$24,$24,$47,$47,$24,$24,$47,$47,$47,$47,$47,$47,$24,$24
+;;row 4</p>
+<p>&nbsp; .db $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$55,$56,$24,$24
+;;brick bottoms</p>
+</div><div><div></div><div><p>Then the attribute table data is defined. &nbsp;Each byte covers 4x4 tiles,
+so only 8 bytes are needed here. &nbsp;Binary is used so editing the 2 bits
+per 2x2 tile area is easier:</p>
+</div><div></div><div><p>attribute:</p>
+<p>&nbsp; .db %00000000, %00010000, %0010000, %00010000, %00000000, %00000000,
+%00000000, %00110000</p>
+</div><div></div></div><div><p>And finally the same color palette as SMB is used:</p>
+</div><div></div><div><p>palette:</p>
+<p>&nbsp; .db $22,$29,$1A,$0F,&nbsp; $22,$36,$17,$0F,&nbsp; $22,$30,$21,$0F,
+$22,$27,$17,$0F</p>
+</div><div></div><div><p>Just like our previous palette loading, a loop is used to copy a
+specific number of bytes from a memory location to the PPU. &nbsp;First the
+PPU address is set to the beginning of the nametable at $2000. &nbsp;Then our
+128 bytes of background data are copied. &nbsp;Next the PPU address is set to
+the beginning of the attribute table at $23C0 and 8 bytes are copied.</p>
+</div><div></div><div><p>LoadBackground:</p>
+<p>&nbsp; LDA $2002 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; read PPU status to reset the high/low latch</p>
+<p>&nbsp; LDA #$20</p>
+<p>&nbsp; STA $2006 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; write the high byte of $2000 address</p>
+<p>&nbsp; LDA #$00</p>
+<p>&nbsp; STA $2006 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; write the low byte of $2000 address</p>
+<p>&nbsp; LDX #$00&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; start out at 0</p>
+<p>LoadBackgroundLoop:</p>
+<p>&nbsp; LDA background, x &nbsp; &nbsp; ; load data from address (background + the value
+in x)</p>
+<p>&nbsp; STA $2007 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; write to PPU</p>
+<p>&nbsp; INX &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; X = X + 1</p>
+<p>&nbsp; CPX #$80&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; Compare X to hex $80, decimal 128 - copying
+128 bytes</p>
+<p>&nbsp; BNE LoadBackgroundLoop&nbsp; ; Branch to LoadBackgroundLoop if compare was
+Not Equal to zero</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; if compare was equal to 128, keep going down</p>
+<p>LoadAttribute:</p>
+<p>&nbsp; LDA $2002 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; read PPU status to reset the high/low latch</p>
+<p>&nbsp; LDA #$23</p>
+<p>&nbsp; STA $2006 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; write the high byte of $23C0 address</p>
+<p>&nbsp; LDA #$C0</p>
+<p>&nbsp; STA $2006 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; write the low byte of $23C0 address</p>
+<p>&nbsp; LDX #$00&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; start out at 0</p>
+<p>LoadAttributeLoop:</p>
+<p>&nbsp; LDA attribute, x&nbsp; &nbsp; &nbsp; ; load data from address (attribute + the value
+in x)</p>
+<p>&nbsp; STA $2007 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; write to PPU</p>
+<p>&nbsp; INX &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; X = X + 1</p>
+<p>&nbsp; CPX #$08&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; Compare X to hex $08, decimal 8 - copying 8
+bytes</p>
+<p>&nbsp; BNE LoadAttributeLoop</p>
+<div></div></div><div><p>The final changes are to tell the PPU to use the Pattern Table 0
+graphics for sprites, and Pattern Table 1 for background:</p>
+</div><div></div><div><p>&nbsp;&nbsp;LDA #%10010000 ;enable NMI, sprites from Pattern 0, background from
+Pattern 1</p>
+<p>&nbsp; STA $2000</p>
+</div><div></div><div><p>Enable the background rendering:</p>
+</div><div></div><div><p>&nbsp;&nbsp;LDA #%00011110 ; enable sprites, enable background</p>
+<p>&nbsp; STA $2001</p>
+</div><div></div><div><p>And to tell the PPU that we are not doing any scrolling at the end of
+NMI:</p>
+</div><div></div><div><p>&nbsp;&nbsp;LDA #$00</p>
+<p>&nbsp; STA $2005</p>
+<p>&nbsp; STA $2005</p>
+</div><div><div></div></div><div><p>Putting It All Together</p>
+</div><div><p>Download and unzip the
+<a class="reference external" href="http://www.nespowerpak.com/nesasm/background2.zip">background2.zip</a>&nbsp;sample
+files.&nbsp; All the code above is in the background.asm file.&nbsp; Make sure
+that file, mario.chr, and background.bat is in the same folder as
+NESASM, then double click on background.bat.&nbsp; That will run NESASM and
+should produce background.nes.&nbsp; Run that NES file in FCEUXD SP to see
+the background. &nbsp;Set it to PAL Emulation so you get to see the whole
+screen.</p>
+</div><div></div><div><p>Any background areas that you did not write to will still be using tile
+0, which happens to be the number 0 in the SMB graphics. &nbsp;Try adding
+more nametable and attribute data to the .db sections, then changing the
+loops so they copy more bytes to the PPU RAM. &nbsp;You can also try changing
+the starting PPU address of the nametable and attribute table writes to
+move the rows further down.</p>
+</div><div></div><div></div><div><p>NEXT WEEK: &nbsp;Subroutines, game structure, states</p>
+</div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="multiplesprites.html"
+                        title="previous chapter">&lt;no title&gt;</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="subroutines.html"
+                        title="next chapter">&lt;no title&gt;</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/nerdynights/backgrounds.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="subroutines.html" title="&lt;no title&gt;"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="multiplesprites.html" title="&lt;no title&gt;"
+             >previous</a> |</li>
+        <li><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &raquo;</li>
+          <li><a href="../nerdynights.html" >Nerdy Nights</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2017, bunnyboy, MetalSlime, Taywee.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

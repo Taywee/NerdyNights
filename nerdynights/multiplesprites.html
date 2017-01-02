@@ -1,0 +1,337 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>&lt;no title&gt; &mdash; Nerdy Nights 1.0.0 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '1.0.0',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="top" title="Nerdy Nights 1.0.0 documentation" href="../index.html" />
+    <link rel="up" title="Nerdy Nights" href="../nerdynights.html" />
+    <link rel="next" title="&lt;no title&gt;" href="backgrounds.html" />
+    <link rel="prev" title="&lt;no title&gt;" href="colorpalettes.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="backgrounds.html" title="&lt;no title&gt;"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="colorpalettes.html" title="&lt;no title&gt;"
+             accesskey="P">previous</a> |</li>
+        <li><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &raquo;</li>
+          <li><a href="../nerdynights.html" accesskey="U">Nerdy Nights</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div><p><a class="reference external" href="http://www.nintendoage.com/forum/messageview.cfm?catid=22&amp;threadid=6082">Previous
+Week</a>
+- Palettes, Sprites</p>
+<div></div><div><p>This Week: &nbsp;one sprite is boring, so now we add many more! &nbsp;Also move
+that sprite around using the controller.</p>
+</div><div></div><div><p>Multiple Sprites</p>
+</div><div></div><div><p>Last time there was only 1 sprite loaded so we just used a few LDA/STA
+pairs to load the sprite data. &nbsp;This time we will have 4 sprites on
+screen. &nbsp;Doing that many load/stores just takes too much writing and
+code space. &nbsp;Instead a loop will be used to load the data, like was used
+to load the palette before. &nbsp;First the data bytes are set up using the
+.db directive:</p>
+</div><div></div><div><p>sprites:</p>
+<p>&nbsp;&nbsp; &nbsp; ;vert tile attr horiz</p>
+<p>&nbsp; .db $80, $32, $00, $80 &nbsp; ;sprite 0</p>
+<p>&nbsp; .db $80, $33, $00, $88 &nbsp; ;sprite 1</p>
+<p>&nbsp; .db $88, $34, $00, $80 &nbsp; ;sprite 2</p>
+<p>&nbsp; .db $88, $35, $00, $88 &nbsp; ;sprite 3</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>There are 4 bytes per sprite, each on one line.&nbsp; The bytes are in the
+correct order and easily changed.&nbsp; &nbsp; This is only the starting data,
+when the program is running the copy in RAM can be changed to move the
+sprite around.</p>
+<p>Next you need the loop to copy the data into RAM.&nbsp; This loop also works
+the same way as the palette loading, with the X register as the loop
+counter.</p>
+<p>LoadSprites:</p>
+<p>&nbsp; LDX #$00&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; start at 0</p>
+<p>LoadSpritesLoop:</p>
+<p>&nbsp; LDA sprites, x&nbsp; &nbsp; &nbsp; &nbsp; ; load data from address (sprites + x)</p>
+<p>&nbsp; STA $0200, x&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; store into RAM address ($0200 + x)</p>
+<p>&nbsp; INX &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; X = X + 1</p>
+<p>&nbsp; CPX #$10&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; Compare X to hex $10, decimal 16</p>
+<p>&nbsp; BNE LoadSpritesLoop &nbsp; ; Branch to LoadSpritesLoop if compare was Not
+Equal to zero</p>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; if compare was equal to 16, continue down</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>If you wanted to add more sprites, you would add lines into the sprite
+.db section then increase the CPX compare value.&nbsp; That will run the loop
+more times, copying more bytes.</p>
+<p>Once the&nbsp;sprites have been loaded into RAM, you can modify the data
+there.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>Controller Ports</strong></p>
+<p>The controllers are accessed through memory port addresses $4016 and
+$4017.&nbsp; First you have to write the value $01 then the value $00 to port
+$4016.&nbsp; This tells the controllers to latch the current button
+positions.&nbsp; Then you read from $4016 for first player or $4017 for
+second player.&nbsp; The buttons are sent&nbsp; one at a time, in bit 0.&nbsp; If bit 0
+is 0, the button is not pressed.&nbsp; If bit 0 is 1, the button is pressed.</p>
+<p>Button status for each controller is returned in the following order: A,
+B, Select, Start, Up, Down, Left, Right.</p>
+<p>&nbsp; LDA #$01</p>
+<p>&nbsp; STA $4016</p>
+<p>&nbsp; LDA #$00</p>
+<p>&nbsp; STA $4016 &nbsp; &nbsp; ; tell both the controllers to latch buttons</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>&nbsp; LDA $4016 &nbsp; &nbsp; ; player 1 - A</p>
+<p>&nbsp; LDA $4016 &nbsp; &nbsp; ; player 1 - B</p>
+<p>&nbsp; LDA $4016 &nbsp; &nbsp; ; player 1 - Select</p>
+<p>&nbsp; LDA $4016 &nbsp; &nbsp; ; player 1 - Start</p>
+<p>&nbsp; LDA $4016 &nbsp; &nbsp; ; player 1 - Up</p>
+<p>&nbsp; LDA $4016 &nbsp; &nbsp; ; player 1 - Down</p>
+<p>&nbsp; LDA $4016 &nbsp; &nbsp; ; player 1 - Left</p>
+<p>&nbsp; LDA $4016 &nbsp; &nbsp; ; player 1 - Right</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>&nbsp; LDA $4017 &nbsp; &nbsp; ; player 2 - A</p>
+<p>&nbsp; LDA $4017 &nbsp; &nbsp; ; player 2 - B</p>
+<p>&nbsp; LDA $4017 &nbsp; &nbsp; ; player 2 - Select</p>
+<p>&nbsp; LDA $4017 &nbsp; &nbsp; ; player 2 - Start</p>
+<p>&nbsp; LDA $4017 &nbsp; &nbsp; ; player 2 - Up</p>
+<p>&nbsp; LDA $4017 &nbsp; &nbsp; ; player 2 - Down</p>
+<p>&nbsp; LDA $4017 &nbsp; &nbsp; ; player 2 - Left</p>
+<p>&nbsp; LDA $4017 &nbsp; &nbsp; ; player 2 - Right</p>
+<div></div><div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>AND Instruction</strong></p>
+<p>Button information is only sent in bit 0, so we want to erase all the
+other bits.&nbsp; This can be done with the AND instruction.&nbsp; Each of the 8
+bits is ANDed with the bits from another value.&nbsp; If the bit from both
+the first AND second value is 1, then the result is 1.&nbsp; Otherwise the
+result is 0.</p>
+<p>0 AND 0 = 0</p>
+<p>0 AND 1 = 0</p>
+<p>1 AND 0 = 0</p>
+<p>1 AND 1 = 1</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>For a full random 8 bit value:</p>
+<p>&nbsp; &nbsp; &nbsp; 01011011</p>
+<p>AND &nbsp; 10101101</p>
+<hr class="docutils" />
+<p>&nbsp; &nbsp; &nbsp; 00001001</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>We only want bit 0, so that bit is set and the others are cleared:</p>
+<p>&nbsp; &nbsp; &nbsp; 01011011&nbsp; &nbsp; controller data</p>
+<p>AND &nbsp; 00000001&nbsp; &nbsp; AND value</p>
+<hr class="docutils" />
+<p>&nbsp; &nbsp; &nbsp; 00000001&nbsp; &nbsp; only bit 0 is used, everything else erased</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>So to erase all the other bits when reading controllers, the AND should
+come after each read from $4016 or $4017:</p>
+<p>&nbsp; LDA $4016 &nbsp; &nbsp; &nbsp; ; player 1 - A</p>
+<p>&nbsp; AND #%00000001</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>&nbsp; LDA $4016 &nbsp; &nbsp; &nbsp; ; player 1 - B</p>
+<p>&nbsp; AND #%00000001</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>&nbsp; LDA $4016 &nbsp; &nbsp; &nbsp; ; player 1 - Select</p>
+<p>&nbsp; AND #%00000001</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>BEQ instruction</strong></p>
+<p>The BNE instruction was used earlier in loops to Branch when Not Equal
+to a compared value.&nbsp; Here BEQ will be used without the compare
+instruction to Branch when EQual to zero.&nbsp; When a button is not pressed,
+the value will be zero, so the branch is taken.&nbsp; That skips over all the
+instructions that do something when the button is pressed:</p>
+<p>ReadA:</p>
+<p>&nbsp; LDA $4016 &nbsp; &nbsp; &nbsp; ; player 1 - A</p>
+<p>&nbsp; AND #%00000001&nbsp; ; erase everything but bit 0</p>
+<p>&nbsp; BEQ ReadADone &nbsp; ; branch to ReadADone if button is NOT pressed (0)</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; add instructions here to do something when button IS
+pressed (1)</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>ReadADone:&nbsp; &nbsp; &nbsp; &nbsp; ; handling this button is done</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>CLC/ADC instructions</strong></p>
+<p>For this demo we will use the player 1 controller to move the Mario
+sprite around.&nbsp; To do that we need to be able to add to values.&nbsp; The ADC
+instruction stands for Add with Carry.&nbsp; Before adding, you have to make
+sure the carry is cleared, using CLC.&nbsp; This sample will load the sprite
+position into A, clear the carry, add one to the value, then store back
+into the sprite position:</p>
+<p>&nbsp; LDA $0203 &nbsp; ; load sprite X (horizontal) position</p>
+<p>&nbsp; CLC &nbsp; &nbsp; &nbsp; &nbsp; ; make sure the carry flag is clear</p>
+<p>&nbsp; ADC #$01&nbsp; &nbsp; ; A = A + 1</p>
+<p>&nbsp; STA $0203 &nbsp; ; save sprite X (horizontal) position</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>SEC/SBC instructions</strong></p>
+<p>To move the sprite the other direction, a subtract is needed.&nbsp; SBC is
+Subtract with Carry.&nbsp; This time the carry has to be set before doing the
+subtract:</p>
+<p>&nbsp; LDA $0203 &nbsp; ; load sprite position</p>
+<p>&nbsp; SEC &nbsp; &nbsp; &nbsp; &nbsp; ; make sure carry flag is set</p>
+<p>&nbsp; SBC #$01&nbsp; &nbsp; ; A = A - 1</p>
+<p>&nbsp; STA $0203 &nbsp; ; save sprite position</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p><strong>Putting It All Together</strong></p>
+<p>Download and unzip the
+<a class="reference external" href="http://www.nespowerpak.com/nesasm/controller.zip">controller.zip</a>&nbsp;sample
+files.&nbsp; All the code above is in the controller.asm file.&nbsp; Make sure
+that file, mario.chr, and controller.bat is in the same folder as
+NESASM, then double click on controller.bat.&nbsp; That will run NESASM and
+should produce controller.nes.&nbsp; Run that NES file in FCEUXD SP to see
+small Mario.&nbsp; Press the A and B buttons on the player 1 controller to
+move one sprite of Mario.&nbsp; The movement will be one pixel per frame, or
+60 pixels per second on NTSC machines.&nbsp; If Mario isn&#8217;t moving, make sure
+your controls are set up correctly in the Config menu under Input...&nbsp; If
+you hold both buttons together, the value will be added then subtracted
+so no movement will happen.</p>
+<p>Try editing the ADC and SBC values to make him move faster.&nbsp; The screen
+is only 256 pixels across, so too fast and he will just jump around
+randomly!&nbsp; Also try editing the code to move all 4 sprites together.</p>
+<p>Finally try changing the code to use the dpad instead of the A and B
+buttons. &nbsp;Left/right should change the X position of the sprites, and
+up/down should change the Y position of the sprites.</p>
+<div class="line-block">
+<div class="line"><br /></div>
+</div>
+<p>NEXT WEEK: &nbsp;Backgrounds, attribute table</p>
+<div></div></div></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="colorpalettes.html"
+                        title="previous chapter">&lt;no title&gt;</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="backgrounds.html"
+                        title="next chapter">&lt;no title&gt;</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="../_sources/nerdynights/multiplesprites.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="backgrounds.html" title="&lt;no title&gt;"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="colorpalettes.html" title="&lt;no title&gt;"
+             >previous</a> |</li>
+        <li><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &raquo;</li>
+          <li><a href="../nerdynights.html" >Nerdy Nights</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2017, bunnyboy, MetalSlime, Taywee.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>
