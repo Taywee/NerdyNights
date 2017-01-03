@@ -86,7 +86,7 @@ Comments are to help you understand in English what the code is doing.  When
 you write code and come back later, the comments will save you. You do not need
 a comment on every line, but should have enough to explain what is happening.
 Comments start with a ; and are completely ignored by the assembler. They can
-be put anywhere horizontally, but are usually spaced beyond the long lines.::
+be put anywhere horizontally, but are usually spaced beyond the long lines::
 
       .org $8000
     MyFunction:        ; loads FF into accumulator
