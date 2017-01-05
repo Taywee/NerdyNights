@@ -274,12 +274,12 @@ whatever you choose.
 Putting It All Together
 =======================
 
-Download and unzip the :download:`pong2.zip <files/pong2.zip>` sample files.
-The playing game state and ball movement code is in the pong2.asm file. Make
-sure that file, mario.chr, and pong2.bat is in the same folder as NESASM3, then
-double click on pong1.bat. That will run NESASM3 and should produce pong2.nes.
-Run that NES file in FCEUXD SP to see the score! Right now the score just
-increments every time the ball bounces off a side wall.
+Download and unzip the `master.zip`_ sample files.  This lesson is in
+**pong2**.  The playing game state and ball movement code is in the pong2.asm
+file. Make sure that file, mario.chr, and pong2.bat is in the same folder as
+NESASM3, then double click on pong1.bat. That will run NESASM3 and should
+produce pong2.nes.  Run that NES file in FCEUXD SP to see the score! Right now
+the score just increments every time the ball bounces off a side wall.
 
 Try making two scoring variables and drawing them both. You can also use the
 other binary to decimal converters to add more than 1 to the score each time.
@@ -287,3 +287,4 @@ In the DrawScore you can also check the score digits and not draw any leading
 zeros. Instead replace them with spaces when you are drawing to the background.
 
 .. _Parodius: http://nesdev.parodius.com/bbs/viewtopic.php?p=10824&sid=55359b42282d1e02b91bebcf1caf56ef#10824
+.. _master.zip: https://github.com/Taywee/NerdyNights-sources/archive/master.zip

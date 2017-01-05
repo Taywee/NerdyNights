@@ -16,8 +16,8 @@ programming tutorial.
     I am not any of the original writer of Nerdy Nights.  It is also not
     finished.  Most of the base tutorial is done, but Advanced Nerdy Nights,
     Hacking 1, and Sound all need to be converted and set up.  As long as this
-    warning is here, you might be better off checking out the original `Nerdy
-    Nights`_ instead.
+    warning is here, you might be better off checking out the `original <Nerdy
+    Nights_>`_ instead.
 
 .. toctree::
    :maxdepth: 2

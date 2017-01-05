@@ -4,7 +4,7 @@ NES Architecture Overview
 
 .. admonition:: This Week
 
-    general overview of the NES architecture with the major components covered.
+    General overview of the NES architecture with the major components covered.
     All general purpose computers are arranged the same way with a place to
     store code (ROM), a place to store variables (RAM), and a processor to run
     code (CPU). The NES also adds another processor to generate the graphics

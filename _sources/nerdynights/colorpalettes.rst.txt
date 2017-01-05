@@ -4,7 +4,7 @@ Color Palettes, Sprites, second app
 
 .. admonition:: This Week
 
-    now that you can make and run a program, time to put
+    Now that you can make and run a program, time to put
     something on screen!
 
 Palettes 
@@ -173,14 +173,15 @@ And the new code to set up the sprite data::
 Putting It All Together
 -----------------------
 
-Download and unzip the :download:`sprites.zip <files/sprites.zip>` sample files. All the
-code above is in the sprites.asm file. Make sure sprites.asm, mario.chr, and
-sprites.bat are all in the same folder as NESASM3, then double click
-sprites.bat. That will run NESASM3 and should produce the sprites.nes file. Run
-that NES file in FCEUXD SP to see your sprite! Tile number 0 is the back of
-Mario's head and hat, can you see it? Edit sprites.asm to change the sprite
-position (0 to 255), or to change the color palette for the sprite (0 to 3).
-You can choose the PPU viewer in FCEUXD SP to see both Pattern Tables, and both
-Palettes.
+Download and unzip the `master.zip`_ sample files.  This lesson is in
+**sprites**. All the code above is in the sprites.asm file. Make sure
+sprites.asm, mario.chr, and sprites.bat are all in the same folder as NESASM3,
+then double click sprites.bat. That will run NESASM3 and should produce the
+sprites.nes file. Run that NES file in FCEUXD SP to see your sprite! Tile
+number 0 is the back of Mario's head and hat, can you see it? Edit sprites.asm
+to change the sprite position (0 to 255), or to change the color palette for
+the sprite (0 to 3).  You can choose the PPU viewer in FCEUXD SP to see both
+Pattern Tables, and both Palettes.
 
-.. |palette| image:: images/4924FAF3-9FC9-CED2-8403873F9EA75342.png
+.. |palette| image:: images/palette.png
+.. _master.zip: https://github.com/Taywee/NerdyNights-sources/archive/master.zip
