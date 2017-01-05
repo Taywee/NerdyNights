@@ -4,7 +4,7 @@
 
 .. admonition:: This Week
 
-    starts getting into more details about the 6502 and intro to assembly
+    Starts getting into more details about the 6502 and intro to assembly
     language. The lessons for asm usage and NES specifics will be done in
     sections together. There are many other 6502 `websites
     <http://www.obelisk.demon.co.uk/6502/>`__ and good books which may help you
@@ -423,12 +423,12 @@ So if you want to enable the sprites, you set bit 3 to 1. For this program bits
 Putting It All Together
 -----------------------
 
-Download and unzip the :download:`background.zip <files/background.zip>` sample
-files. All the code above is in the background.asm file. Make sure that file,
-mario.chr, and background.bat is in the same folder as :download:`NESASM3
-<files/NESASM3.zip>`, then double click on
-background.bat. That will run NESASM3 and should produce background.nes. Run
-that NES file in `FCEUXD SP
+Download and unzip the `master.zip`_ sample files.  This lesson is in
+**background**. All the code above is in the background.asm file. Make sure
+that file, mario.chr, and background.bat is in the same folder as
+:download:`NESASM3 <files/NESASM3.zip>`, then double click on background.bat.
+That will run NESASM3 and should produce background.nes. Run that NES file in
+`FCEUXD SP
 <http://www.the-interweb.com/serendipity/exit.php?url_id=627_id=90>`__ to see
 your background color! Edit background.asm to change the intensity bits 7-5 to
 make the background red or green.
@@ -442,3 +442,5 @@ This will be between one and three bytes. After that is the code you wrote,
 with the comments taken out and labels translated to addresses. The top line is
 the instruction that is going to run next. So far there isn't much code, but
 the debugger will be very helpful later.
+
+.. _master.zip: https://github.com/Taywee/NerdyNights-sources/archive/master.zip

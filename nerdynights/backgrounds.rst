@@ -161,13 +161,12 @@ And to tell the PPU that we are not doing any scrolling at the end of NMI::
 Putting It All Together
 =======================
 
-Download and unzip the :download:`background2.zip
-<files/background2.zip>` sample files.  All the code above is in the
-background.asm file.  Make sure that file, mario.chr, and background.bat is in
-the same folder as NESASM, then double click on background.bat.  That will run
-NESASM and should produce background.nes.  Run that NES file in FCEUXD SP to
-see the background.  Set it to PAL Emulation so you get to see the whole
-screen.
+Download and unzip the `master.zip`_ sample files.  This lesson is in
+**background2**.  All the code above is in the background.asm file.  Make sure
+that file, mario.chr, and background.bat is in the same folder as NESASM, then
+double click on background.bat.  That will run NESASM and should produce
+background.nes.  Run that NES file in FCEUXD SP to see the background.  Set it
+to PAL Emulation so you get to see the whole screen.
 
 Any background areas that you did not write to will still be using tile 0,
 which happens to be the number 0 in the SMB graphics.  Try adding more
@@ -176,5 +175,7 @@ they copy more bytes to the PPU RAM.  You can also try changing the starting
 PPU address of the nametable and attribute table writes to move the rows
 further down.
 
-.. |fullgrid| image:: images/F837623F-9C98-E50B-F4D377EE82FA2BDA.png
-.. |attribute| image:: images/F8376193-9343-AF0D-B8DA7BD8B7DD9301.png
+.. |fullgrid| image:: images/fullgrid.png
+.. |attribute| image:: images/attribute.png
+
+.. _master.zip: https://github.com/Taywee/NerdyNights-sources/archive/master.zip

@@ -243,8 +243,8 @@ CopyLoop above::
 Putting It All Together
 =======================
 
-Download and unzip the :download:`background3.zip <files/background3.zip>`
-sample files. All the code is in the background.asm file. Make sure that file,
+Download and unzip the `master.zip`_ sample files.  This lesson is in
+**background3**. All the code is in the background.asm file. Make sure that file,
 mario.chr, and background.bat is in the same folder as NESASM, then double
 click on background.bat. That will run NESASM and should produce
 background3.nes. Run that NES file in FCEUXD SP to see the full background.
@@ -260,3 +260,5 @@ different pointer loading code, but the same copy code.
 
 If you are using a different assembler, the Indirect Indexed mode may use ()
 instead of []. The LOW() and HIGH() syntax may also be different.
+
+.. _master.zip: https://github.com/Taywee/NerdyNights-sources/archive/master.zip

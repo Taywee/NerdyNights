@@ -4,7 +4,7 @@ multiple sprites, reading controllers, more instructions
 
 .. admonition:: This Week
 
-    one sprite is boring, so now we add many more!  Also move that sprite
+    One sprite is boring, so now we add many more!  Also move that sprite
     around using the controller.
 
 Multiple Sprites
@@ -176,10 +176,10 @@ subtract::
 Putting It All Together
 =======================
 
-Download and unzip the :download:`controller.zip <files/controller.zip>` sample files. 
-All the code above is in the controller.asm file.  Make sure that file,
-mario.chr, and controller.bat is in the same folder as NESASM, then double
-click on controller.bat.  That will run NESASM and should produce
+Download and unzip the `master.zip`_ sample files.  This lesson is in
+**controller**.  All the code above is in the controller.asm file.  Make sure
+that file, mario.chr, and controller.bat is in the same folder as NESASM, then
+double click on controller.bat.  That will run NESASM and should produce
 controller.nes.  Run that NES file in FCEUXD SP to see small Mario.  Press the
 A and B buttons on the player 1 controller to move one sprite of Mario.  The
 movement will be one pixel per frame, or 60 pixels per second on NTSC
@@ -194,3 +194,5 @@ editing the code to move all 4 sprites together.
 Finally try changing the code to use the dpad instead of the A and B buttons.
  Left/right should change the X position of the sprites, and up/down should
 change the Y position of the sprites.
+
+.. _master.zip: https://github.com/Taywee/NerdyNights-sources/archive/master.zip
