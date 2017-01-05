@@ -425,8 +425,8 @@ Putting It All Together
 
 Download and unzip the :download:`background.zip <files/background.zip>` sample
 files. All the code above is in the background.asm file. Make sure that file,
-mario.chr, and background.bat is in the same folder as `NESASM3
-<http://www.nespowerpak.com/nesasm/NESASM3.zip>`__, then double click on
+mario.chr, and background.bat is in the same folder as :download:`NESASM3
+<files/NESASM3.zip>`, then double click on
 background.bat. That will run NESASM3 and should produce background.nes. Run
 that NES file in `FCEUXD SP
 <http://www.the-interweb.com/serendipity/exit.php?url_id=627_id=90>`__ to see
