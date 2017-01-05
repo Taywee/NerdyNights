@@ -173,7 +173,7 @@ And the new code to set up the sprite data::
 Putting It All Together
 -----------------------
 
-Download and unzip the `sprites.zip <files/sprites.zip>` sample files. All the
+Download and unzip the :download:`sprites.zip <files/sprites.zip>` sample files. All the
 code above is in the sprites.asm file. Make sure sprites.asm, mario.chr, and
 sprites.bat are all in the same folder as NESASM3, then double click
 sprites.bat. That will run NESASM3 and should produce the sprites.nes file. Run

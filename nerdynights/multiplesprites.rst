@@ -176,7 +176,7 @@ subtract::
 Putting It All Together
 =======================
 
-Download and unzip the `controller.zip <files/controller.zip>` sample files. 
+Download and unzip the :download:`controller.zip <files/controller.zip>` sample files. 
 All the code above is in the controller.asm file.  Make sure that file,
 mario.chr, and controller.bat is in the same folder as NESASM, then double
 click on controller.bat.  That will run NESASM and should produce
