@@ -115,7 +115,9 @@ instruction is where the vblankwait code used to be::
 And then when the subroutine has finished, it needs to return back to
 the spot it was called from.  This is done with the RTS (ReTurn from
 Subroutine) instruction.  The RTS will jump back to the next instruction
-after the JSR::
+after the JSR:
+
+.. code-block:: text
 
          vblankwait:      ; wait for vblank  <--------
            BIT $2002                                  \
@@ -162,7 +164,9 @@ many places without having to read the whole controller again::
 
 This code uses two new instructions.  The first is LSR (Logical Shift Right). 
 This takes each bit in A and shifts them over 1 position to the right.  Bit 7
-is filled with a 0, and bit 0 is shifted into the Carry flag::
+is filled with a 0, and bit 0 is shifted into the Carry flag:
+
+.. code-block:: text
 
     bit number      7 6 5 4 3 2 1 0  carry
     original data   1 0 0 1 1 0 1 1  0
