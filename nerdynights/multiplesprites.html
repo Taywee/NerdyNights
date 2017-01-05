@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>multiple sprites, reading controllers, more instructions &mdash; Nerdy Nights 1.0.0 documentation</title>
+    <title>5. multiple sprites, reading controllers, more instructions &mdash; Nerdy Nights 1.0.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -25,8 +25,8 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="Nerdy Nights 1.0.0 documentation" href="../index.html" />
     <link rel="up" title="Nerdy Nights" href="../nerdynights.html" />
-    <link rel="next" title="Backgrounds" href="backgrounds.html" />
-    <link rel="prev" title="Color Palettes, Sprites, second app" href="colorpalettes.html" /> 
+    <link rel="next" title="6. Backgrounds" href="backgrounds.html" />
+    <link rel="prev" title="4. Color Palettes, Sprites, second app" href="colorpalettes.html" /> 
   </head>
   <body>
     <div class="related">
@@ -36,10 +36,10 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="backgrounds.html" title="Backgrounds"
+          <a href="backgrounds.html" title="6. Backgrounds"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="colorpalettes.html" title="Color Palettes, Sprites, second app"
+          <a href="colorpalettes.html" title="4. Color Palettes, Sprites, second app"
              accesskey="P">previous</a> |</li>
         <li><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &raquo;</li>
           <li><a href="../nerdynights.html" accesskey="U">Nerdy Nights</a> &raquo;</li> 
@@ -52,14 +52,14 @@
           <div class="body">
             
   <div class="section" id="multiple-sprites-reading-controllers-more-instructions">
-<h1>multiple sprites, reading controllers, more instructions<a class="headerlink" href="#multiple-sprites-reading-controllers-more-instructions" title="Permalink to this headline">¶</a></h1>
+<h1>5. multiple sprites, reading controllers, more instructions<a class="headerlink" href="#multiple-sprites-reading-controllers-more-instructions" title="Permalink to this headline">¶</a></h1>
 <div class="admonition-this-week admonition">
 <p class="first admonition-title">This Week</p>
 <p class="last">one sprite is boring, so now we add many more! &nbsp;Also move that sprite
 around using the controller.</p>
 </div>
 <div class="section" id="multiple-sprites">
-<h2>Multiple Sprites<a class="headerlink" href="#multiple-sprites" title="Permalink to this headline">¶</a></h2>
+<h2>5.1. Multiple Sprites<a class="headerlink" href="#multiple-sprites" title="Permalink to this headline">¶</a></h2>
 <p>Last time there was only 1 sprite loaded so we just used a few LDA/STA pairs to
 load the sprite data. &nbsp;This time we will have 4 sprites on screen. &nbsp;Doing that
 many load/stores just takes too much writing and code space. &nbsp;Instead a loop
@@ -96,7 +96,7 @@ times, copying more bytes.</p>
 <p>Once the&nbsp;sprites have been loaded into RAM, you can modify the data there.</p>
 </div>
 <div class="section" id="controller-ports">
-<h2>Controller Ports<a class="headerlink" href="#controller-ports" title="Permalink to this headline">¶</a></h2>
+<h2>5.2. Controller Ports<a class="headerlink" href="#controller-ports" title="Permalink to this headline">¶</a></h2>
 <p>The controllers are accessed through memory port addresses $4016 and $4017.
 First you have to write the value $01 then the value $00 to port $4016.&nbsp; This
 tells the controllers to latch the current button positions.&nbsp; Then you read
@@ -131,13 +131,13 @@ LDA $4017     ; player 2 - Right
 </div>
 </div>
 <div class="section" id="and-instruction">
-<h2>AND Instruction<a class="headerlink" href="#and-instruction" title="Permalink to this headline">¶</a></h2>
+<h2>5.3. AND Instruction<a class="headerlink" href="#and-instruction" title="Permalink to this headline">¶</a></h2>
 <p>Button information is only sent in bit 0, so we want to erase all the other
 bits.&nbsp; This can be done with the AND instruction.&nbsp; Each of the 8 bits is ANDed
 with the bits from another value.&nbsp; If the bit from both the first AND second
 value is 1, then the result is 1.&nbsp; Otherwise the result is 0.</p>
 <div class="section" id="and-table">
-<h3>AND Table<a class="headerlink" href="#and-table" title="Permalink to this headline">¶</a></h3>
+<h3>5.3.1. AND Table<a class="headerlink" href="#and-table" title="Permalink to this headline">¶</a></h3>
 <table border="1" class="docutils">
 <colgroup>
 <col width="33%" />
@@ -198,7 +198,7 @@ AND #%00000001
 </div>
 </div>
 <div class="section" id="beq-instruction">
-<h2>BEQ instruction<a class="headerlink" href="#beq-instruction" title="Permalink to this headline">¶</a></h2>
+<h2>5.4. BEQ instruction<a class="headerlink" href="#beq-instruction" title="Permalink to this headline">¶</a></h2>
 <p>The BNE instruction was used earlier in loops to Branch when Not Equal
 to a compared value.&nbsp; Here BEQ will be used without the compare
 instruction to Branch when EQual to zero.&nbsp; When a button is not pressed,
@@ -216,7 +216,7 @@ ReadADone:        ; handling this button is done
 </div>
 </div>
 <div class="section" id="clc-adc-instructions">
-<h2>CLC/ADC instructions<a class="headerlink" href="#clc-adc-instructions" title="Permalink to this headline">¶</a></h2>
+<h2>5.5. CLC/ADC instructions<a class="headerlink" href="#clc-adc-instructions" title="Permalink to this headline">¶</a></h2>
 <p>For this demo we will use the player 1 controller to move the Mario sprite
 around.&nbsp; To do that we need to be able to add to values.&nbsp; The ADC instruction
 stands for Add with Carry.&nbsp; Before adding, you have to make sure the carry is
@@ -230,7 +230,7 @@ STA $0203   ; save sprite X (horizontal) position
 </div>
 </div>
 <div class="section" id="sec-sbc-instructions">
-<h2>SEC/SBC instructions<a class="headerlink" href="#sec-sbc-instructions" title="Permalink to this headline">¶</a></h2>
+<h2>5.6. SEC/SBC instructions<a class="headerlink" href="#sec-sbc-instructions" title="Permalink to this headline">¶</a></h2>
 <p>To move the sprite the other direction, a subtract is needed.&nbsp; SBC is
 Subtract with Carry.&nbsp; This time the carry has to be set before doing the
 subtract:</p>
@@ -242,7 +242,7 @@ STA $0203   ; save sprite position
 </div>
 </div>
 <div class="section" id="putting-it-all-together">
-<h2>Putting It All Together<a class="headerlink" href="#putting-it-all-together" title="Permalink to this headline">¶</a></h2>
+<h2>5.7. Putting It All Together<a class="headerlink" href="#putting-it-all-together" title="Permalink to this headline">¶</a></h2>
 <p>Download and unzip the <a class="reference external" href="http://www.nespowerpak.com/nesasm/controller.zip">controller.zip</a>&nbsp;sample files.&nbsp; All the
 code above is in the controller.asm file.&nbsp; Make sure that file, mario.chr, and
 controller.bat is in the same folder as NESASM, then double click on
@@ -270,27 +270,27 @@ change the Y position of the sprites.</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">multiple sprites, reading controllers, more instructions</a><ul>
-<li><a class="reference internal" href="#multiple-sprites">Multiple Sprites</a></li>
-<li><a class="reference internal" href="#controller-ports">Controller Ports</a></li>
-<li><a class="reference internal" href="#and-instruction">AND Instruction</a><ul>
-<li><a class="reference internal" href="#and-table">AND Table</a></li>
+<li><a class="reference internal" href="#">5. multiple sprites, reading controllers, more instructions</a><ul>
+<li><a class="reference internal" href="#multiple-sprites">5.1. Multiple Sprites</a></li>
+<li><a class="reference internal" href="#controller-ports">5.2. Controller Ports</a></li>
+<li><a class="reference internal" href="#and-instruction">5.3. AND Instruction</a><ul>
+<li><a class="reference internal" href="#and-table">5.3.1. AND Table</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#beq-instruction">BEQ instruction</a></li>
-<li><a class="reference internal" href="#clc-adc-instructions">CLC/ADC instructions</a></li>
-<li><a class="reference internal" href="#sec-sbc-instructions">SEC/SBC instructions</a></li>
-<li><a class="reference internal" href="#putting-it-all-together">Putting It All Together</a></li>
+<li><a class="reference internal" href="#beq-instruction">5.4. BEQ instruction</a></li>
+<li><a class="reference internal" href="#clc-adc-instructions">5.5. CLC/ADC instructions</a></li>
+<li><a class="reference internal" href="#sec-sbc-instructions">5.6. SEC/SBC instructions</a></li>
+<li><a class="reference internal" href="#putting-it-all-together">5.7. Putting It All Together</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="colorpalettes.html"
-                        title="previous chapter">Color Palettes, Sprites, second app</a></p>
+                        title="previous chapter">4. Color Palettes, Sprites, second app</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="backgrounds.html"
-                        title="next chapter">Backgrounds</a></p>
+                        title="next chapter">6. Backgrounds</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/nerdynights/multiplesprites.txt"
@@ -320,10 +320,10 @@ change the Y position of the sprites.</p>
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="backgrounds.html" title="Backgrounds"
+          <a href="backgrounds.html" title="6. Backgrounds"
              >next</a> |</li>
         <li class="right" >
-          <a href="colorpalettes.html" title="Color Palettes, Sprites, second app"
+          <a href="colorpalettes.html" title="4. Color Palettes, Sprites, second app"
              >previous</a> |</li>
         <li><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &raquo;</li>
           <li><a href="../nerdynights.html" >Nerdy Nights</a> &raquo;</li> 

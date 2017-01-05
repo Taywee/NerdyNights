@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Backgrounds &mdash; Nerdy Nights 1.0.0 documentation</title>
+    <title>6. Backgrounds &mdash; Nerdy Nights 1.0.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -26,7 +26,7 @@
     <link rel="top" title="Nerdy Nights 1.0.0 documentation" href="../index.html" />
     <link rel="up" title="Nerdy Nights" href="../nerdynights.html" />
     <link rel="next" title="&lt;no title&gt;" href="subroutines.html" />
-    <link rel="prev" title="multiple sprites, reading controllers, more instructions" href="multiplesprites.html" /> 
+    <link rel="prev" title="5. multiple sprites, reading controllers, more instructions" href="multiplesprites.html" /> 
   </head>
   <body>
     <div class="related">
@@ -39,7 +39,7 @@
           <a href="subroutines.html" title="&lt;no title&gt;"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="multiplesprites.html" title="multiple sprites, reading controllers, more instructions"
+          <a href="multiplesprites.html" title="5. multiple sprites, reading controllers, more instructions"
              accesskey="P">previous</a> |</li>
         <li><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &raquo;</li>
           <li><a href="../nerdynights.html" accesskey="U">Nerdy Nights</a> &raquo;</li> 
@@ -52,7 +52,7 @@
           <div class="body">
             
   <div class="section" id="backgrounds">
-<h1>Backgrounds<a class="headerlink" href="#backgrounds" title="Permalink to this headline">¶</a></h1>
+<h1>6. Backgrounds<a class="headerlink" href="#backgrounds" title="Permalink to this headline">¶</a></h1>
 <div class="admonition-this-week admonition">
 <p class="first admonition-title">This Week</p>
 <p class="last">Now that you have a basic understanding of the NES tile graphics, we learn
@@ -64,14 +64,14 @@ screen. &nbsp;Next is the nametable that tells the layout of the graphics. &nbsp
 is the attribute table that assigns the colors in the palette to areas on
 screen.</p>
 <div class="section" id="background-palette">
-<h2>Background Palette<a class="headerlink" href="#background-palette" title="Permalink to this headline">¶</a></h2>
+<h2>6.1. Background Palette<a class="headerlink" href="#background-palette" title="Permalink to this headline">¶</a></h2>
 <p>Like the sprites there are 16 colors in the <strong>background palette</strong>. &nbsp;Our
 previous apps were already loading a background palette but it was not
 being used yet. &nbsp;You can use the PPU Viewer in FCEUXD SP to see the
 color palettes.</p>
 </div>
 <div class="section" id="nametables">
-<h2>Nametables<a class="headerlink" href="#nametables" title="Permalink to this headline">¶</a></h2>
+<h2>6.2. Nametables<a class="headerlink" href="#nametables" title="Permalink to this headline">¶</a></h2>
 <p>Like the sprites, background images are made up from 8x8 pixel tiles.  &nbsp;The
 screen video resolution is 32x30 tiles, or 256x240 pixels. &nbsp;PAL systems will
 show this full resolution but NTSC crops the top 8 and bottom 8 rows of pixels
@@ -85,7 +85,7 @@ and takes up 960 bytes (32x30). &nbsp;You can use the Nametable viewer in FCEUXD
 to see all the nametables.</p>
 </div>
 <div class="section" id="attribute-tables">
-<h2>Attribute Tables<a class="headerlink" href="#attribute-tables" title="Permalink to this headline">¶</a></h2>
+<h2>6.3. Attribute Tables<a class="headerlink" href="#attribute-tables" title="Permalink to this headline">¶</a></h2>
 <p>The attribute tables may be the most difficult thing to understand, and
 sets many of the graphics limitations. &nbsp;Each nametable has an <strong>attribute
 table</strong> that sets which colors in the palette will be used in sections of
@@ -111,7 +111,7 @@ split up into 2x2 tile sections to generate the attribute byte:</p>
 block cannot use the greens from the palette.</p>
 </div>
 <div class="section" id="uploading-the-data">
-<h2>Uploading the data<a class="headerlink" href="#uploading-the-data" title="Permalink to this headline">¶</a></h2>
+<h2>6.4. Uploading the data<a class="headerlink" href="#uploading-the-data" title="Permalink to this headline">¶</a></h2>
 <p>To set the background graphics your data has to be defined in your ROM
 using the .db directive, then copied to the PPU RAM. &nbsp;Some graphics
 tools will generate this data but here it will just be done manually.
@@ -199,7 +199,7 @@ graphics for sprites, and Pattern Table 1 for background:</p>
 </div>
 </div>
 <div class="section" id="putting-it-all-together">
-<h2>Putting It All Together<a class="headerlink" href="#putting-it-all-together" title="Permalink to this headline">¶</a></h2>
+<h2>6.5. Putting It All Together<a class="headerlink" href="#putting-it-all-together" title="Permalink to this headline">¶</a></h2>
 <p>Download and unzip the <a class="reference external" href="http://www.nespowerpak.com/nesasm/background2.zip">background2.zip</a>&nbsp;sample files.&nbsp; All the
 code above is in the background.asm file.&nbsp; Make sure that file, mario.chr, and
 background.bat is in the same folder as NESASM, then double click on
@@ -223,19 +223,19 @@ further down.</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Backgrounds</a><ul>
-<li><a class="reference internal" href="#background-palette">Background Palette</a></li>
-<li><a class="reference internal" href="#nametables">Nametables</a></li>
-<li><a class="reference internal" href="#attribute-tables">Attribute Tables</a></li>
-<li><a class="reference internal" href="#uploading-the-data">Uploading the data</a></li>
-<li><a class="reference internal" href="#putting-it-all-together">Putting It All Together</a></li>
+<li><a class="reference internal" href="#">6. Backgrounds</a><ul>
+<li><a class="reference internal" href="#background-palette">6.1. Background Palette</a></li>
+<li><a class="reference internal" href="#nametables">6.2. Nametables</a></li>
+<li><a class="reference internal" href="#attribute-tables">6.3. Attribute Tables</a></li>
+<li><a class="reference internal" href="#uploading-the-data">6.4. Uploading the data</a></li>
+<li><a class="reference internal" href="#putting-it-all-together">6.5. Putting It All Together</a></li>
 </ul>
 </li>
 </ul>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="multiplesprites.html"
-                        title="previous chapter">multiple sprites, reading controllers, more instructions</a></p>
+                        title="previous chapter">5. multiple sprites, reading controllers, more instructions</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="subroutines.html"
                         title="next chapter">&lt;no title&gt;</a></p>
@@ -271,7 +271,7 @@ further down.</p>
           <a href="subroutines.html" title="&lt;no title&gt;"
              >next</a> |</li>
         <li class="right" >
-          <a href="multiplesprites.html" title="multiple sprites, reading controllers, more instructions"
+          <a href="multiplesprites.html" title="5. multiple sprites, reading controllers, more instructions"
              >previous</a> |</li>
         <li><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &raquo;</li>
           <li><a href="../nerdynights.html" >Nerdy Nights</a> &raquo;</li> 

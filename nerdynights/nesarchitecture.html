@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>NES Architecture Overview &mdash; Nerdy Nights 1.0.0 documentation</title>
+    <title>2. NES Architecture Overview &mdash; Nerdy Nights 1.0.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -25,8 +25,8 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="Nerdy Nights 1.0.0 documentation" href="../index.html" />
     <link rel="up" title="Nerdy Nights" href="../nerdynights.html" />
-    <link rel="next" title="6502 ASM, first app" href="asmfirstapp.html" />
-    <link rel="prev" title="Number Systems" href="numbersystems.html" /> 
+    <link rel="next" title="3. 6502 ASM, first app" href="asmfirstapp.html" />
+    <link rel="prev" title="1. Number Systems" href="numbersystems.html" /> 
   </head>
   <body>
     <div class="related">
@@ -36,10 +36,10 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="asmfirstapp.html" title="6502 ASM, first app"
+          <a href="asmfirstapp.html" title="3. 6502 ASM, first app"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="numbersystems.html" title="Number Systems"
+          <a href="numbersystems.html" title="1. Number Systems"
              accesskey="P">previous</a> |</li>
         <li><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &raquo;</li>
           <li><a href="../nerdynights.html" accesskey="U">Nerdy Nights</a> &raquo;</li> 
@@ -52,7 +52,7 @@
           <div class="body">
             
   <div class="section" id="nes-architecture-overview">
-<h1>NES Architecture Overview<a class="headerlink" href="#nes-architecture-overview" title="Permalink to this headline">¶</a></h1>
+<h1>2. NES Architecture Overview<a class="headerlink" href="#nes-architecture-overview" title="Permalink to this headline">¶</a></h1>
 <div class="admonition-this-week admonition">
 <p class="first admonition-title">This Week</p>
 <p class="last">general overview of the NES architecture with the major components covered.
@@ -88,7 +88,7 @@ data valid.</dd>
 <dd>Audio Processing Unit, the sound chip inside the CPU*</dd>
 </dl>
 <div class="section" id="system-overview">
-<h2>System Overview<a class="headerlink" href="#system-overview" title="Permalink to this headline">¶</a></h2>
+<h2>2.1. System Overview<a class="headerlink" href="#system-overview" title="Permalink to this headline">¶</a></h2>
 <p>The NES includes a custom 6502 based CPU with the APU and controller handling
 inside one chip, and a PPU that displays graphics in another chip. Your code
 instructions run on the CPU and sends out commands to the APU and PPU. The NOAC
@@ -108,7 +108,7 @@ another holds the character graphics (CHR), and the last is the lockout. The
 graphics chip can be RAM instead of ROM, which means the game code would copy
 graphics from the PRG ROM chip to the CHR RAM. PRG is always a ROM chip.</p>
 <div class="section" id="lockout-chip">
-<h3>Lockout Chip<a class="headerlink" href="#lockout-chip" title="Permalink to this headline">¶</a></h3>
+<h3>2.1.1. Lockout Chip<a class="headerlink" href="#lockout-chip" title="Permalink to this headline">¶</a></h3>
 <p>Inside the NES and the cart are also two lockout chips. The lockout chip
 controls resetting the console. First the NES lockout sends out a stream ID,
 0-15. The cart lockout records this number. Then both lockout chips run a
@@ -131,7 +131,7 @@ with the most lockout protection. Almost all unlicensed carts that use lockout
 defeaters will not work on a NES-CPU-11 system.</p>
 </div>
 <div class="section" id="cpu-overview">
-<h3>CPU Overview<a class="headerlink" href="#cpu-overview" title="Permalink to this headline">¶</a></h3>
+<h3>2.1.2. CPU Overview<a class="headerlink" href="#cpu-overview" title="Permalink to this headline">¶</a></h3>
 <p>The NES CPU is a modified 6502, an 8 bit data processor similar to the Apple 2,
 Atari 2600, C64, and many other systems. By the time the Famicom was created it
 was underpowered for a computer but great for a game system.</p>
@@ -148,7 +148,7 @@ was the most common size.</p>
 <p><img alt="image2" src="http://www.nesmuseum.com/images/cpumemmap.png" /></p>
 </div>
 <div class="section" id="ppu-overview">
-<h3>PPU Overview<a class="headerlink" href="#ppu-overview" title="Permalink to this headline">¶</a></h3>
+<h3>2.1.3. PPU Overview<a class="headerlink" href="#ppu-overview" title="Permalink to this headline">¶</a></h3>
 <p>The NES PPU is a custom chip that does all the graphics display. It includes
 internal RAM for sprites and the color palette. There is RAM on the NES board
 that holds the background, and all actual graphics are fetched from the cart
@@ -174,9 +174,9 @@ will be slower because of this timing difference. Sounds will also be slower.</p
 </div>
 </div>
 <div class="section" id="graphics-system-overview">
-<h2>Graphics System Overview<a class="headerlink" href="#graphics-system-overview" title="Permalink to this headline">¶</a></h2>
+<h2>2.2. Graphics System Overview<a class="headerlink" href="#graphics-system-overview" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="tiles">
-<h3>Tiles<a class="headerlink" href="#tiles" title="Permalink to this headline">¶</a></h3>
+<h3>2.2.1. Tiles<a class="headerlink" href="#tiles" title="Permalink to this headline">¶</a></h3>
 <p>All graphics are made up of 8x8 pixel tiles. Large characters like Mario are
 made from multiple 8x8 tiles. All the backgrounds are also made from these
 tiles. The tile system means less memory is needed (was expensive at the time)
@@ -187,14 +187,14 @@ static. You can see that small tiles are arranged by the game to make large
 images.</p>
 </div>
 <div class="section" id="sprites">
-<h3>Sprites<a class="headerlink" href="#sprites" title="Permalink to this headline">¶</a></h3>
+<h3>2.2.2. Sprites<a class="headerlink" href="#sprites" title="Permalink to this headline">¶</a></h3>
 <p>The PPU has enough memory for 64 sprites, or things that move around on screen
 like Mario. Only 8 sprites per scanline are allowed, any more than that will be
 ignored. This is where the flickering comes from in some games when there are
 too many objects on screen.</p>
 </div>
 <div class="section" id="background">
-<h3>Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h3>
+<h3>2.2.3. Background<a class="headerlink" href="#background" title="Permalink to this headline">¶</a></h3>
 <p>This is the landscape graphics, which scrolls all at once. The sprites can
 either be displayed in front or behind the background. The screen is big enough
 for 32x30 background tiles, and there is enough internal RAM to hold 2 screens.
@@ -202,19 +202,19 @@ When games scroll the background graphics are updated off screen before they
 are scrolled on screen.</p>
 </div>
 <div class="section" id="pattern-tables">
-<h3>Pattern Tables<a class="headerlink" href="#pattern-tables" title="Permalink to this headline">¶</a></h3>
+<h3>2.2.4. Pattern Tables<a class="headerlink" href="#pattern-tables" title="Permalink to this headline">¶</a></h3>
 <p>These are where the actual tile data is stored. It is either ROM or RAM on the
 cart. Each pattern table holds 256 tiles. One table is used for backgrounds,
 and the other for sprites. All graphics currently on screen must be in these
 tables.</p>
 </div>
 <div class="section" id="attribute-tables">
-<h3>Attribute Tables<a class="headerlink" href="#attribute-tables" title="Permalink to this headline">¶</a></h3>
+<h3>2.2.5. Attribute Tables<a class="headerlink" href="#attribute-tables" title="Permalink to this headline">¶</a></h3>
 <p>These tables set the color information in 2x2 tile sections. This means that a
 16x16 pixel area can only have 4 different colors selected from the palette.</p>
 </div>
 <div class="section" id="palettes">
-<h3>Palettes<a class="headerlink" href="#palettes" title="Permalink to this headline">¶</a></h3>
+<h3>2.2.6. Palettes<a class="headerlink" href="#palettes" title="Permalink to this headline">¶</a></h3>
 <p>These two areas hold the color information, one for the background and one for
 sprites. Each palette has 16 colors.</p>
 <p>To display a tile on screen, the pixel color index is taken from the Pattern
@@ -240,20 +240,20 @@ updated.</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">NES Architecture Overview</a><ul>
-<li><a class="reference internal" href="#system-overview">System Overview</a><ul>
-<li><a class="reference internal" href="#lockout-chip">Lockout Chip</a></li>
-<li><a class="reference internal" href="#cpu-overview">CPU Overview</a></li>
-<li><a class="reference internal" href="#ppu-overview">PPU Overview</a></li>
+<li><a class="reference internal" href="#">2. NES Architecture Overview</a><ul>
+<li><a class="reference internal" href="#system-overview">2.1. System Overview</a><ul>
+<li><a class="reference internal" href="#lockout-chip">2.1.1. Lockout Chip</a></li>
+<li><a class="reference internal" href="#cpu-overview">2.1.2. CPU Overview</a></li>
+<li><a class="reference internal" href="#ppu-overview">2.1.3. PPU Overview</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#graphics-system-overview">Graphics System Overview</a><ul>
-<li><a class="reference internal" href="#tiles">Tiles</a></li>
-<li><a class="reference internal" href="#sprites">Sprites</a></li>
-<li><a class="reference internal" href="#background">Background</a></li>
-<li><a class="reference internal" href="#pattern-tables">Pattern Tables</a></li>
-<li><a class="reference internal" href="#attribute-tables">Attribute Tables</a></li>
-<li><a class="reference internal" href="#palettes">Palettes</a></li>
+<li><a class="reference internal" href="#graphics-system-overview">2.2. Graphics System Overview</a><ul>
+<li><a class="reference internal" href="#tiles">2.2.1. Tiles</a></li>
+<li><a class="reference internal" href="#sprites">2.2.2. Sprites</a></li>
+<li><a class="reference internal" href="#background">2.2.3. Background</a></li>
+<li><a class="reference internal" href="#pattern-tables">2.2.4. Pattern Tables</a></li>
+<li><a class="reference internal" href="#attribute-tables">2.2.5. Attribute Tables</a></li>
+<li><a class="reference internal" href="#palettes">2.2.6. Palettes</a></li>
 </ul>
 </li>
 </ul>
@@ -262,10 +262,10 @@ updated.</p>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="numbersystems.html"
-                        title="previous chapter">Number Systems</a></p>
+                        title="previous chapter">1. Number Systems</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="asmfirstapp.html"
-                        title="next chapter">6502 ASM, first app</a></p>
+                        title="next chapter">3. 6502 ASM, first app</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/nerdynights/nesarchitecture.txt"
@@ -295,10 +295,10 @@ updated.</p>
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="asmfirstapp.html" title="6502 ASM, first app"
+          <a href="asmfirstapp.html" title="3. 6502 ASM, first app"
              >next</a> |</li>
         <li class="right" >
-          <a href="numbersystems.html" title="Number Systems"
+          <a href="numbersystems.html" title="1. Number Systems"
              >previous</a> |</li>
         <li><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &raquo;</li>
           <li><a href="../nerdynights.html" >Nerdy Nights</a> &raquo;</li> 

@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>6502 ASM, first app &mdash; Nerdy Nights 1.0.0 documentation</title>
+    <title>3. 6502 ASM, first app &mdash; Nerdy Nights 1.0.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -25,8 +25,8 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="Nerdy Nights 1.0.0 documentation" href="../index.html" />
     <link rel="up" title="Nerdy Nights" href="../nerdynights.html" />
-    <link rel="next" title="Color Palettes, Sprites, second app" href="colorpalettes.html" />
-    <link rel="prev" title="NES Architecture Overview" href="nesarchitecture.html" /> 
+    <link rel="next" title="4. Color Palettes, Sprites, second app" href="colorpalettes.html" />
+    <link rel="prev" title="2. NES Architecture Overview" href="nesarchitecture.html" /> 
   </head>
   <body>
     <div class="related">
@@ -36,10 +36,10 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="colorpalettes.html" title="Color Palettes, Sprites, second app"
+          <a href="colorpalettes.html" title="4. Color Palettes, Sprites, second app"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="nesarchitecture.html" title="NES Architecture Overview"
+          <a href="nesarchitecture.html" title="2. NES Architecture Overview"
              accesskey="P">previous</a> |</li>
         <li><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &raquo;</li>
           <li><a href="../nerdynights.html" accesskey="U">Nerdy Nights</a> &raquo;</li> 
@@ -52,7 +52,7 @@
           <div class="body">
             
   <div class="section" id="asm-first-app">
-<h1>6502 ASM, first app<a class="headerlink" href="#asm-first-app" title="Permalink to this headline">¶</a></h1>
+<h1>3. 6502 ASM, first app<a class="headerlink" href="#asm-first-app" title="Permalink to this headline">¶</a></h1>
 <div class="admonition-this-week admonition">
 <p class="first admonition-title">This Week</p>
 <p class="last">starts getting into more details about the 6502 and intro to assembly
@@ -72,11 +72,11 @@ numbered starting from the right at 0.</dd>
 <dd>one command a processor executes. Instructions are run sequentially.</dd>
 </dl>
 <div class="section" id="code-layout">
-<h2>Code Layout<a class="headerlink" href="#code-layout" title="Permalink to this headline">¶</a></h2>
+<h2>3.1. Code Layout<a class="headerlink" href="#code-layout" title="Permalink to this headline">¶</a></h2>
 <p>In assembly language there are 5 main parts. Some parts must be in a specific
 horizontal position for the assembler to use them correctly.</p>
 <div class="section" id="directives">
-<h3>Directives<a class="headerlink" href="#directives" title="Permalink to this headline">¶</a></h3>
+<h3>3.1.1. Directives<a class="headerlink" href="#directives" title="Permalink to this headline">¶</a></h3>
 <p>Directives are commands you send to the assembler to do things like locating
 code in memory. They start with a . and are indented. Some people use tabs, or
 4 spaces, and I use 2 spaces. This sample directive tells the assembler to put
@@ -86,7 +86,7 @@ the code starting at memory location $8000, which is inside the game ROM area:</
 </div>
 </div>
 <div class="section" id="labels">
-<h3>Labels<a class="headerlink" href="#labels" title="Permalink to this headline">¶</a></h3>
+<h3>3.1.2. Labels<a class="headerlink" href="#labels" title="Permalink to this headline">¶</a></h3>
 <p>The label is aligned to the far left and has a : at the end. The label is just
 something you use to organize your code and make it easier to read. The
 assembler translates the label into an address. Sample label:</p>
@@ -105,7 +105,7 @@ $8000. The if you have any code that uses MyFunction like:</p>
 </div>
 </div>
 <div class="section" id="opcodes">
-<h3>Opcodes<a class="headerlink" href="#opcodes" title="Permalink to this headline">¶</a></h3>
+<h3>3.1.3. Opcodes<a class="headerlink" href="#opcodes" title="Permalink to this headline">¶</a></h3>
 <p>The opcode is the instruction that the processor will run, and is indented like
 the directives. In this sample, JMP is the opcode that tells the processor to
 jump to the MyFunction label:</p>
@@ -116,7 +116,7 @@ jump to the MyFunction label:</p>
 </div>
 </div>
 <div class="section" id="operands">
-<h3>Operands<a class="headerlink" href="#operands" title="Permalink to this headline">¶</a></h3>
+<h3>3.1.4. Operands<a class="headerlink" href="#operands" title="Permalink to this headline">¶</a></h3>
 <p>The operands are additional information for the opcode. Opcodes have between
 one and three operands. In this example the #$FF is the operand:</p>
 <div class="highlight-ca65"><div class="highlight"><pre><span></span>  <span class="kp">.org</span> <span class="mh">$8000</span>
@@ -127,7 +127,7 @@ one and three operands. In this example the #$FF is the operand:</p>
 </div>
 </div>
 <div class="section" id="comments">
-<h3>Comments<a class="headerlink" href="#comments" title="Permalink to this headline">¶</a></h3>
+<h3>3.1.5. Comments<a class="headerlink" href="#comments" title="Permalink to this headline">¶</a></h3>
 <p>Comments are to help you understand in English what the code is doing.  When
 you write code and come back later, the comments will save you. You do not need
 a comment on every line, but should have enough to explain what is happening.
@@ -144,7 +144,7 @@ the accumulator each time.</p>
 </div>
 </div>
 <div class="section" id="processor-overview">
-<h2>6502 Processor Overview<a class="headerlink" href="#processor-overview" title="Permalink to this headline">¶</a></h2>
+<h2>3.2. 6502 Processor Overview<a class="headerlink" href="#processor-overview" title="Permalink to this headline">¶</a></h2>
 <p>The 6502 is an 8 bit processor with a 16 bit address bus. It can access 64KB of
 memory without bank switching. In the NES this memory space is split up into
 RAM, PPU/Audio/Controller access, and game ROM.</p>
@@ -175,7 +175,7 @@ RAM, PPU/Audio/Controller access, and game ROM.</p>
 memory, but memory mappers will not be included in this tutorial.</p>
 </div>
 <div class="section" id="assembly-overview">
-<h2>6502 Assembly Overview<a class="headerlink" href="#assembly-overview" title="Permalink to this headline">¶</a></h2>
+<h2>3.3. 6502 Assembly Overview<a class="headerlink" href="#assembly-overview" title="Permalink to this headline">¶</a></h2>
 <p>The assembly language for 6502 starts with a 3 character code for the
 instruction &#8220;opcode&#8221;. There are 56 instructions, 10 of which you will use
 frequently. Many instructions will have a value after the opcode, which you can
@@ -185,13 +185,13 @@ that address. So LDA #$05 means load the value 5, LDA $0005 means load the
 value that is stored at address $0005.</p>
 </div>
 <div class="section" id="registers">
-<h2>6502 Registers<a class="headerlink" href="#registers" title="Permalink to this headline">¶</a></h2>
+<h2>3.4. 6502 Registers<a class="headerlink" href="#registers" title="Permalink to this headline">¶</a></h2>
 <p>A register is a place inside the processor that holds a value. The 6502 has
 three 8 bit registers and a status register that you will be using.  All your
 data processing uses these registers. There are additional registers that are
 not covered in this tutorial.</p>
 <div class="section" id="accumulator">
-<h3>Accumulator<a class="headerlink" href="#accumulator" title="Permalink to this headline">¶</a></h3>
+<h3>3.4.1. Accumulator<a class="headerlink" href="#accumulator" title="Permalink to this headline">¶</a></h3>
 <p>The Accumulator (A) is the main 8 bit register for loading, storing, comparing,
 and doing math on data. Some of the most frequent operations are:</p>
 <div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="k">LDA</span> <span class="p">#</span><span class="mh">$FF</span>  <span class="c1">;load the hex value $FF (decimal 256) into A</span>
@@ -200,7 +200,7 @@ and doing math on data. Some of the most frequent operations are:</p>
 </div>
 </div>
 <div class="section" id="index-register-x">
-<h3>Index Register X<a class="headerlink" href="#index-register-x" title="Permalink to this headline">¶</a></h3>
+<h3>3.4.2. Index Register X<a class="headerlink" href="#index-register-x" title="Permalink to this headline">¶</a></h3>
 <p>The Index Register X (X) is another 8 bit register, usually used for counting
 or memory access. In loops you will use this register to keep track of how many
 times the loop has gone, while using A to process data. Some frequent
@@ -211,7 +211,7 @@ operations are:</p>
 </div>
 </div>
 <div class="section" id="index-register-y">
-<h3>Index Register Y<a class="headerlink" href="#index-register-y" title="Permalink to this headline">¶</a></h3>
+<h3>3.4.3. Index Register Y<a class="headerlink" href="#index-register-y" title="Permalink to this headline">¶</a></h3>
 <p>The Index Register Y (Y) works almost the same as X. Some instructions (not
 covered here) only work with X and not Y. Some operations are:</p>
 <div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="k">STY</span> <span class="mh">$00BA</span> <span class="c1">;store Y into memory location $00BA</span>
@@ -220,19 +220,19 @@ covered here) only work with X and not Y. Some operations are:</p>
 </div>
 </div>
 <div class="section" id="status-register">
-<h3>Status Register<a class="headerlink" href="#status-register" title="Permalink to this headline">¶</a></h3>
+<h3>3.4.4. Status Register<a class="headerlink" href="#status-register" title="Permalink to this headline">¶</a></h3>
 <p>The Status Register holds flags with information about the last
 instruction. For example when doing a subtract you can check if the
 result was a zero.</p>
 </div>
 </div>
 <div class="section" id="instruction-set">
-<h2>6502 Instruction Set<a class="headerlink" href="#instruction-set" title="Permalink to this headline">¶</a></h2>
+<h2>3.5. 6502 Instruction Set<a class="headerlink" href="#instruction-set" title="Permalink to this headline">¶</a></h2>
 <p>These are just the most common and basic instructions. Most have a few
 different options which will be used later. There are also a few more
 complicated instructions to be covered later.</p>
 <div class="section" id="common-load-store-opcodes">
-<h3>Common Load/Store opcodes<a class="headerlink" href="#common-load-store-opcodes" title="Permalink to this headline">¶</a></h3>
+<h3>3.5.1. Common Load/Store opcodes<a class="headerlink" href="#common-load-store-opcodes" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="k">LDA</span> <span class="p">#</span><span class="mh">$0A</span>   <span class="c1">; LoaD the value 0A into the accumulator A</span>
            <span class="c1">; the number part of the opcode can be a value or an address</span>
            <span class="c1">; if the value is zero, the zero flag will be set.</span>
@@ -267,7 +267,7 @@ complicated instructions to be covered later.</p>
 </div>
 </div>
 <div class="section" id="common-math-opcodes">
-<h3>Common Math opcodes<a class="headerlink" href="#common-math-opcodes" title="Permalink to this headline">¶</a></h3>
+<h3>3.5.2. Common Math opcodes<a class="headerlink" href="#common-math-opcodes" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="k">ADC</span> <span class="p">#</span><span class="mh">$01</span>   <span class="c1">; ADd with Carry</span>
            <span class="c1">; A = A + $01 + carry</span>
            <span class="c1">; if the result is zero, the zero flag will be set</span>
@@ -313,7 +313,7 @@ complicated instructions to be covered later.</p>
 </div>
 </div>
 <div class="section" id="common-comparison-opcodes">
-<h3>Common Comparison opcodes<a class="headerlink" href="#common-comparison-opcodes" title="Permalink to this headline">¶</a></h3>
+<h3>3.5.3. Common Comparison opcodes<a class="headerlink" href="#common-comparison-opcodes" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="k">CMP</span> <span class="p">#</span><span class="mh">$01</span>   <span class="c1">; CoMPare A to the value $01</span>
            <span class="c1">; this actually does a subtract, but does not keep the result</span>
            <span class="c1">; instead you check the status register to check for equal,</span>
@@ -326,7 +326,7 @@ complicated instructions to be covered later.</p>
 </div>
 </div>
 <div class="section" id="common-control-flow-opcodes">
-<h3>Common Control Flow opcodes<a class="headerlink" href="#common-control-flow-opcodes" title="Permalink to this headline">¶</a></h3>
+<h3>3.5.4. Common Control Flow opcodes<a class="headerlink" href="#common-control-flow-opcodes" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="k">JMP</span> <span class="mh">$8000</span>  <span class="c1">; JuMP to $8000, continue running code there</span>
 
 <span class="k">BEQ</span> <span class="mh">$FF00</span>  <span class="c1">; Branch if EQual, contnue running code there</span>
@@ -341,15 +341,15 @@ complicated instructions to be covered later.</p>
 </div>
 </div>
 <div class="section" id="nes-code-structure">
-<h2>NES Code Structure<a class="headerlink" href="#nes-code-structure" title="Permalink to this headline">¶</a></h2>
+<h2>3.6. NES Code Structure<a class="headerlink" href="#nes-code-structure" title="Permalink to this headline">¶</a></h2>
 <div class="section" id="getting-started">
-<h3>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h3>
+<h3>3.6.1. Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h3>
 <p>This section has a lot of information because it will get everything set up to
 run your first NES program. Much of the code can be copy/pasted then ignored
 for now. The main goal is to just get NESASM to output something useful.</p>
 </div>
 <div class="section" id="ines-header">
-<h3>iNES Header<a class="headerlink" href="#ines-header" title="Permalink to this headline">¶</a></h3>
+<h3>3.6.2. iNES Header<a class="headerlink" href="#ines-header" title="Permalink to this headline">¶</a></h3>
 <p>The 16 byte iNES header gives the emulator all the information about the game
 including mapper, graphics mirroring, and PRG/CHR sizes. You can include all
 this inside your asm file at the very beginning.:</p>
@@ -361,7 +361,7 @@ this inside your asm file at the very beginning.:</p>
 </div>
 </div>
 <div class="section" id="banking">
-<h3>Banking<a class="headerlink" href="#banking" title="Permalink to this headline">¶</a></h3>
+<h3>3.6.3. Banking<a class="headerlink" href="#banking" title="Permalink to this headline">¶</a></h3>
 <p>NESASM arranges everything in 8KB code and 8KB graphics banks. To fill the 16KB
 PRG space 2 banks are needed. Like most things in computing, the numbering
 starts at 0. For each bank you have to tell the assembler where in memory it
@@ -381,7 +381,7 @@ will start.:</p>
 </div>
 </div>
 <div class="section" id="adding-binary-files">
-<h3>Adding Binary Files<a class="headerlink" href="#adding-binary-files" title="Permalink to this headline">¶</a></h3>
+<h3>3.6.4. Adding Binary Files<a class="headerlink" href="#adding-binary-files" title="Permalink to this headline">¶</a></h3>
 <p>Additional data files are frequently used for graphics data or level data. The
 incbin directive can be used to include that data in your .NES file. This data
 will not be used yet, but is needed to make the .NES file size match the iNES
@@ -393,7 +393,7 @@ header.:</p>
 </div>
 </div>
 <div class="section" id="vectors">
-<h3>Vectors<a class="headerlink" href="#vectors" title="Permalink to this headline">¶</a></h3>
+<h3>3.6.5. Vectors<a class="headerlink" href="#vectors" title="Permalink to this headline">¶</a></h3>
 <p>There are three times when the NES processor will interrupt your code and jump
 to a new location. These vectors, held in PRG ROM tell the processor where to
 go when that happens. Only the first two will be used in this tutorial.</p>
@@ -421,7 +421,7 @@ directive is used to define a Data Word (1 word = 2 bytes):</p>
 </div>
 </div>
 <div class="section" id="reset-code">
-<h3>Reset Code<a class="headerlink" href="#reset-code" title="Permalink to this headline">¶</a></h3>
+<h3>3.6.6. Reset Code<a class="headerlink" href="#reset-code" title="Permalink to this headline">¶</a></h3>
 <p>The reset vector was set to the label RESET, so when the processor starts up it
 will start from RESET: Using the .org directive that code is set to a space in
 game ROM. A couple modes are set right at the beginning. We are not using IRQs,
@@ -438,7 +438,7 @@ code will be added later.:</p>
 </div>
 </div>
 <div class="section" id="completing-the-program">
-<h3>Completing The Program<a class="headerlink" href="#completing-the-program" title="Permalink to this headline">¶</a></h3>
+<h3>3.6.7. Completing The Program<a class="headerlink" href="#completing-the-program" title="Permalink to this headline">¶</a></h3>
 <p>Your first program will be very exciting, displaying an entire screen of one
 color! To do this the first PPU settings need to be written. This is done to
 memory address $2001. The 76543210 is the bit number, from 7 to 0. Those 8 bits
@@ -469,7 +469,7 @@ form the byte you will write to $2001.</p>
 </div>
 </div>
 <div class="section" id="putting-it-all-together">
-<h3>Putting It All Together<a class="headerlink" href="#putting-it-all-together" title="Permalink to this headline">¶</a></h3>
+<h3>3.6.8. Putting It All Together<a class="headerlink" href="#putting-it-all-together" title="Permalink to this headline">¶</a></h3>
 <p>Download and unzip the <a class="reference external" href="http://www.nespowerpak.com/nesasm/background.zip">background.zip</a> sample files. All the
 code above is in the background.asm file. Make sure that file, mario.chr, and
 background.bat is in the same folder as <a class="reference external" href="http://www.nespowerpak.com/nesasm/NESASM3.zip">NESASM3</a>, then double click on
@@ -497,40 +497,40 @@ the debugger will be very helpful later.</p>
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">6502 ASM, first app</a><ul>
-<li><a class="reference internal" href="#code-layout">Code Layout</a><ul>
-<li><a class="reference internal" href="#directives">Directives</a></li>
-<li><a class="reference internal" href="#labels">Labels</a></li>
-<li><a class="reference internal" href="#opcodes">Opcodes</a></li>
-<li><a class="reference internal" href="#operands">Operands</a></li>
-<li><a class="reference internal" href="#comments">Comments</a></li>
+<li><a class="reference internal" href="#">3. 6502 ASM, first app</a><ul>
+<li><a class="reference internal" href="#code-layout">3.1. Code Layout</a><ul>
+<li><a class="reference internal" href="#directives">3.1.1. Directives</a></li>
+<li><a class="reference internal" href="#labels">3.1.2. Labels</a></li>
+<li><a class="reference internal" href="#opcodes">3.1.3. Opcodes</a></li>
+<li><a class="reference internal" href="#operands">3.1.4. Operands</a></li>
+<li><a class="reference internal" href="#comments">3.1.5. Comments</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#processor-overview">6502 Processor Overview</a></li>
-<li><a class="reference internal" href="#assembly-overview">6502 Assembly Overview</a></li>
-<li><a class="reference internal" href="#registers">6502 Registers</a><ul>
-<li><a class="reference internal" href="#accumulator">Accumulator</a></li>
-<li><a class="reference internal" href="#index-register-x">Index Register X</a></li>
-<li><a class="reference internal" href="#index-register-y">Index Register Y</a></li>
-<li><a class="reference internal" href="#status-register">Status Register</a></li>
+<li><a class="reference internal" href="#processor-overview">3.2. 6502 Processor Overview</a></li>
+<li><a class="reference internal" href="#assembly-overview">3.3. 6502 Assembly Overview</a></li>
+<li><a class="reference internal" href="#registers">3.4. 6502 Registers</a><ul>
+<li><a class="reference internal" href="#accumulator">3.4.1. Accumulator</a></li>
+<li><a class="reference internal" href="#index-register-x">3.4.2. Index Register X</a></li>
+<li><a class="reference internal" href="#index-register-y">3.4.3. Index Register Y</a></li>
+<li><a class="reference internal" href="#status-register">3.4.4. Status Register</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#instruction-set">6502 Instruction Set</a><ul>
-<li><a class="reference internal" href="#common-load-store-opcodes">Common Load/Store opcodes</a></li>
-<li><a class="reference internal" href="#common-math-opcodes">Common Math opcodes</a></li>
-<li><a class="reference internal" href="#common-comparison-opcodes">Common Comparison opcodes</a></li>
-<li><a class="reference internal" href="#common-control-flow-opcodes">Common Control Flow opcodes</a></li>
+<li><a class="reference internal" href="#instruction-set">3.5. 6502 Instruction Set</a><ul>
+<li><a class="reference internal" href="#common-load-store-opcodes">3.5.1. Common Load/Store opcodes</a></li>
+<li><a class="reference internal" href="#common-math-opcodes">3.5.2. Common Math opcodes</a></li>
+<li><a class="reference internal" href="#common-comparison-opcodes">3.5.3. Common Comparison opcodes</a></li>
+<li><a class="reference internal" href="#common-control-flow-opcodes">3.5.4. Common Control Flow opcodes</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#nes-code-structure">NES Code Structure</a><ul>
-<li><a class="reference internal" href="#getting-started">Getting Started</a></li>
-<li><a class="reference internal" href="#ines-header">iNES Header</a></li>
-<li><a class="reference internal" href="#banking">Banking</a></li>
-<li><a class="reference internal" href="#adding-binary-files">Adding Binary Files</a></li>
-<li><a class="reference internal" href="#vectors">Vectors</a></li>
-<li><a class="reference internal" href="#reset-code">Reset Code</a></li>
-<li><a class="reference internal" href="#completing-the-program">Completing The Program</a></li>
-<li><a class="reference internal" href="#putting-it-all-together">Putting It All Together</a></li>
+<li><a class="reference internal" href="#nes-code-structure">3.6. NES Code Structure</a><ul>
+<li><a class="reference internal" href="#getting-started">3.6.1. Getting Started</a></li>
+<li><a class="reference internal" href="#ines-header">3.6.2. iNES Header</a></li>
+<li><a class="reference internal" href="#banking">3.6.3. Banking</a></li>
+<li><a class="reference internal" href="#adding-binary-files">3.6.4. Adding Binary Files</a></li>
+<li><a class="reference internal" href="#vectors">3.6.5. Vectors</a></li>
+<li><a class="reference internal" href="#reset-code">3.6.6. Reset Code</a></li>
+<li><a class="reference internal" href="#completing-the-program">3.6.7. Completing The Program</a></li>
+<li><a class="reference internal" href="#putting-it-all-together">3.6.8. Putting It All Together</a></li>
 </ul>
 </li>
 </ul>
@@ -539,10 +539,10 @@ the debugger will be very helpful later.</p>
 
   <h4>Previous topic</h4>
   <p class="topless"><a href="nesarchitecture.html"
-                        title="previous chapter">NES Architecture Overview</a></p>
+                        title="previous chapter">2. NES Architecture Overview</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="colorpalettes.html"
-                        title="next chapter">Color Palettes, Sprites, second app</a></p>
+                        title="next chapter">4. Color Palettes, Sprites, second app</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/nerdynights/asmfirstapp.txt"
@@ -572,10 +572,10 @@ the debugger will be very helpful later.</p>
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="colorpalettes.html" title="Color Palettes, Sprites, second app"
+          <a href="colorpalettes.html" title="4. Color Palettes, Sprites, second app"
              >next</a> |</li>
         <li class="right" >
-          <a href="nesarchitecture.html" title="NES Architecture Overview"
+          <a href="nesarchitecture.html" title="2. NES Architecture Overview"
              >previous</a> |</li>
         <li><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &raquo;</li>
           <li><a href="../nerdynights.html" >Nerdy Nights</a> &raquo;</li> 
