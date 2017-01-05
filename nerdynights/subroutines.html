@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>&lt;no title&gt; &mdash; Nerdy Nights 1.0.0 documentation</title>
+    <title>7. subroutines, game layout, starting Pong &mdash; Nerdy Nights 1.0.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -51,424 +51,653 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div><p><a class="reference external" href="http://www.nintendoage.com/forum/messageview.cfm?catid=22&amp;threadid=8172">Previous
-Week</a>
-- Backgrounds</p>
-<div></div><div><p>This Week: &nbsp;Most of this lesson is about how to organize and structure
-your game. &nbsp;Subroutines and game states help arrange the code for easier
-reading and reuse of code.</p>
-</div><div></div><div></div><div><p><strong>Variables</strong></p>
-<p>As covered in week 1, variables are data stored in RAM that you can
-change any time.&nbsp; The sprite data in RAM is all variables.&nbsp; You will
-need more variables for keeping track of things like the score in the
-game.&nbsp; To do that you first need to tell NESASM where in RAM to put the
-variable.&nbsp; This is done using the .rsset and .rs directives.&nbsp; First
-.rsset is used to set the starting address of the variable.&nbsp; Then .rs is
-used to reserve space.&nbsp; Usually just 1 byte is reserved, but you can
-have as much as you want.&nbsp; Each time you do a .rs the address gets
-incremented so you don&#8217;t need to do .rsset again.</p>
-<p>&nbsp; .rsset $0000&nbsp; &nbsp; ;put variables starting at 0</p>
-<p>&nbsp; score1 &nbsp; .rs 1&nbsp; ;put score for player 1 at $0000</p>
-<p>&nbsp; score2 &nbsp; .rs 1&nbsp; ;put score for player 2 at $0001</p>
-<p>&nbsp; buttons1 .rs 1&nbsp; ;put controller data for player 1 at $0002</p>
-<p>&nbsp; buttons2 .rs 1&nbsp; ;put controller data for player 2 at $0003</p>
-<div class="line-block">
-<div class="line"><br /></div>
+  <div class="section" id="subroutines-game-layout-starting-pong">
+<h1>7. subroutines, game layout, starting Pong<a class="headerlink" href="#subroutines-game-layout-starting-pong" title="Permalink to this headline">¶</a></h1>
+<div class="admonition-this-week admonition">
+<p class="first admonition-title">This Week</p>
+<p class="last">Most of this lesson is about how to organize and structure your game.
+Subroutines and game states help arrange the code for easier reading and
+reuse of code.</p>
+</div>
+<div class="section" id="variables">
+<h2>7.1. Variables<a class="headerlink" href="#variables" title="Permalink to this headline">¶</a></h2>
+<p>As covered in week 1, variables are data stored in RAM that you can change any
+time.&nbsp; The sprite data in RAM is all variables.&nbsp; You will need more variables
+for keeping track of things like the score in the game.&nbsp; To do that you first
+need to tell NESASM where in RAM to put the variable.&nbsp; This is done using the
+.rsset and .rs directives.&nbsp; First .rsset is used to set the starting address of
+the variable.&nbsp; Then .rs is used to reserve space.&nbsp; Usually just 1 byte is
+reserved, but you can have as much as you want.&nbsp; Each time you do a .rs the
+address gets incremented so you don&#8217;t need to do .rsset again:</p>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span>.rsset $0000    ;put variables starting at 0
+score1   .rs 1  ;put score for player 1 at $0000
+score2   .rs 1  ;put score for player 2 at $0001
+buttons1 .rs 1  ;put controller data for player 1 at $0002
+buttons2 .rs 1  ;put controller data for player 2 at $0003
+</pre></div>
 </div>
 <p>Once you set the address for the variable, you do not need to know the
 address anymore.&nbsp; You can just reference it using the variable name you
 created.&nbsp; You can insert more variables above the current ones and the
 assembler will automatically recalculate the addresses.</p>
-<div class="line-block">
-<div class="line"><br /></div>
 </div>
-<p>Constants</p>
-<p>Constants are numbers that you do not change.&nbsp; They are just used to
-make your code easier to read.&nbsp; In Pong an example of a constant would
-be the position of the outer walls.&nbsp; You will need to compare the ball
-position to the walls to make the ball bounce, but the walls do not
-change so they are good constants.&nbsp; Doing a compare to LEFTWALL is
-easier to read and understand than a comparison to $F6.</p>
+<div class="section" id="constants">
+<h2>7.2. Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h2>
+<p>Constants are numbers that you do not change.&nbsp; They are just used to make your
+code easier to read.&nbsp; In Pong an example of a constant would be the position of
+the outer walls.&nbsp; You will need to compare the ball position to the walls to
+make the ball bounce, but the walls do not change so they are good constants.
+Doing a compare to LEFTWALL is easier to read and understand than a comparison
+to $F6.</p>
 <p>To declare constants you use the = sign:</p>
-<p>&nbsp; RIGHTWALL&nbsp; &nbsp; &nbsp; = $02&nbsp;; when ball reaches one of these, do something</p>
-<p>&nbsp; TOPWALL&nbsp; &nbsp; &nbsp; &nbsp; = $20</p>
-<p>&nbsp; BOTTOMWALL &nbsp; &nbsp; = $D8</p>
-<p>&nbsp; LEFTWALL &nbsp; &nbsp; &nbsp; = $F6</p>
-<div class="line-block">
-<div class="line"><br /></div>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span>RIGHTWALL      = $02 ; when ball reaches one of these, do something
+TOPWALL        = $20
+BOTTOMWALL     = $D8
+LEFTWALL       = $F6
+</pre></div>
 </div>
 <p>The assembler will then do a find/replace when building your code.</p>
-<div class="line-block">
-<div class="line"><br /></div>
-<div class="line"><br /></div>
 </div>
-<p><strong>Subroutines</strong></p>
-<p>As your program gets larger, you will want subroutines for organization
-and to reuse code.&nbsp; Instead of progressing linearly down your code, a
-subroutine is a block of code located somewhere else that you jump to,
-then return from.&nbsp; The subroutine can be called at any time, and used as
-many times as you want.&nbsp; Here is what some code looks like without
-subroutines:</p>
-<p>RESET:</p>
-<p>&nbsp; SEI&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; disable IRQs</p>
-<p>&nbsp; CLD&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; disable decimal mode</p>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>vblankwait1: &nbsp; &nbsp; &nbsp; ; First wait for vblank to make sure PPU is ready</p>
-<p>&nbsp; BIT $2002</p>
-<p>&nbsp; BPL vblankwait1</p>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>clrmem:</p>
-<p>&nbsp; LDA #$FE</p>
-<p>&nbsp; STA $0200, x</p>
-<p>&nbsp; INX</p>
-<p>&nbsp; BNE clrmem</p>
-<p>vblankwait2:&nbsp; &nbsp; &nbsp; ; Second wait for vblank, PPU is ready after this</p>
-<p>&nbsp; BIT $2002</p>
-<p>&nbsp; BPL vblankwait2</p>
-<div class="line-block">
-<div class="line"><br /></div>
+<div class="section" id="subroutines">
+<h2>7.3. Subroutines<a class="headerlink" href="#subroutines" title="Permalink to this headline">¶</a></h2>
+<p>As your program gets larger, you will want subroutines for organization and to
+reuse code.&nbsp; Instead of progressing linearly down your code, a subroutine is a
+block of code located somewhere else that you jump to, then return from.&nbsp; The
+subroutine can be called at any time, and used as many times as you want.&nbsp; Here
+is what some code looks like without subroutines:</p>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span>RESET:
+  SEI          ; disable IRQs
+  CLD          ; disable decimal mode
+
+vblankwait1:       ; First wait for vblank to make sure PPU is ready
+  BIT $2002
+  BPL vblankwait1
+
+clrmem:
+  LDA #$FE
+  STA $0200, x
+  INX
+  BNE clrmem
+
+vblankwait2:      ; Second wait for vblank, PPU is ready after this
+  BIT $2002
+  BPL vblankwait2
+</pre></div>
 </div>
 <p>Notice that the vblankwait is done twice, so it is a good choice to turn
 into a subroutine.&nbsp; First the vblankwait code is moved outside the
 normal linear flow:</p>
-<p>vblankwait:&nbsp; &nbsp; &nbsp; ; wait for vblank</p>
-<p>&nbsp; BIT $2002</p>
-<p>&nbsp; BPL vblankwait</p>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>RESET:</p>
-<p>&nbsp; SEI&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; disable IRQs</p>
-<p>&nbsp; CLD&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; disable decimal mode</p>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>clrmem:</p>
-<p>&nbsp; LDA #$FE</p>
-<p>&nbsp; STA $0200, x</p>
-<p>&nbsp; INX</p>
-<p>&nbsp; BNE clrmem</p>
-<div class="line-block">
-<div class="line"><br /></div>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span>vblankwait:      ; wait for vblank
+  BIT $2002
+  BPL vblankwait
+
+RESET:
+  SEI          ; disable IRQs
+  CLD          ; disable decimal mode
+
+clrmem:
+  LDA #$FE
+  STA $0200, x
+  INX
+  BNE clrmem
+</pre></div>
 </div>
 <p>Then that code needs to be called, so the JSR (Jump to SubRoutine)
 instruction is where the vblankwait code used to be:</p>
-<p>RESET:</p>
-<p>&nbsp; SEI&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; disable IRQs</p>
-<p>&nbsp; CLD&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; disable decimal mode</p>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>&nbsp; JSR vblankwait&nbsp; ;;jump to vblank wait #1</p>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>clrmem:</p>
-<p>&nbsp; LDA #$FE</p>
-<p>&nbsp; STA $0200, x</p>
-<p>&nbsp; INX</p>
-<p>&nbsp; BNE clrmem</p>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>&nbsp; JSR vblankwait&nbsp; ;; jump to vblank wait again</p>
-<div class="line-block">
-<div class="line"><br /></div>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span>RESET:
+  SEI          ; disable IRQs
+  CLD          ; disable decimal mode
+
+  JSR vblankwait  ;;jump to vblank wait #1
+
+clrmem:
+  LDA #$FE
+  STA $0200, x
+  INX
+  BNE clrmem
+
+  JSR vblankwait  ;; jump to vblank wait again
+</pre></div>
 </div>
 <p>And then when the subroutine has finished, it needs to return back to
 the spot it was called from.&nbsp; This is done with the RTS (ReTurn from
 Subroutine) instruction.&nbsp; The RTS will jump back to the next instruction
 after the JSR:</p>
-<p>&nbsp;&nbsp; &nbsp; vblankwait:&nbsp; &nbsp; &nbsp; ; wait for vblank&nbsp; &lt;&#8212;&#8212;&#8211;</p>
-<p>&nbsp;&nbsp; &nbsp; &nbsp; BIT $2002&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; \</p>
-<p>&nbsp;&nbsp; &nbsp; &nbsp; BPL vblankwait&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |</p>
-<p>&nbsp;&#8212;&#8211; RTS &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |</p>
-<p>/&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |</p>
-<p>|&nbsp; &nbsp; RESET:&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |</p>
-<p>|&nbsp; &nbsp; &nbsp; SEI&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; disable IRQs &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |</p>
-<p>|&nbsp; &nbsp; &nbsp; CLD&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; disable decimal mode &nbsp; &nbsp; &nbsp; &nbsp; |</p>
-<p>|&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |</p>
-<p>|&nbsp; &nbsp; &nbsp; JSR vblankwait&nbsp; ;;jump to vblank wait #1 &#8211;/</p>
-<p>|</p>
-<p>\&#8211;&gt; clrmem:</p>
-<p>&nbsp; &nbsp; &nbsp; LDA #$FE</p>
-<p>&nbsp; &nbsp; &nbsp; STA $0200, x</p>
-<p>&nbsp; &nbsp; &nbsp; INX</p>
-<p>&nbsp; &nbsp; &nbsp; BNE clrmem</p>
-<div class="line-block">
-<div class="line"><br /></div>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span>     vblankwait:      ; wait for vblank  &lt;--------
+       BIT $2002                                  \
+       BPL vblankwait                              |
+ ----- RTS                                         |
+/                                                  |
+|    RESET:                                        |
+|      SEI          ; disable IRQs                 |
+|      CLD          ; disable decimal mode         |
+|                                                  |
+|      JSR vblankwait  ;;jump to vblank wait #1 --/
+|
+\--&gt; clrmem:
+      LDA #$FE
+      STA $0200, x
+      INX
+      BNE clrmem
+
+      JSR vblankwait  ;; jump to vblank wait again, returns here
+</pre></div>
 </div>
-<p>&nbsp; &nbsp; &nbsp; JSR vblankwait&nbsp; ;; jump to vblank wait again, returns here</p>
-<div class="line-block">
-<div class="line"><br /></div>
 </div>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p><strong>Better Controller Reading</strong></p>
+<div class="section" id="better-controller-reading">
+<h2>7.4. Better Controller Reading<a class="headerlink" href="#better-controller-reading" title="Permalink to this headline">¶</a></h2>
 <p>Now that you can set up subroutines, you can do much better controller
 reading.&nbsp; Previously the controller was read as it was processed.&nbsp; With
 multiple game states, that would mean many copies of the same controller
-reading code.&nbsp; This is replaced with one controller reading subroutine
-that saves the button data into a variable.&nbsp; That variable can then be
-checked in many places without having to read the whole controller
-again.</p>
-<div class="line-block">
-<div class="line"><br /></div>
+reading code.&nbsp; This is replaced with one controller reading subroutine that
+saves the button data into a variable.&nbsp; That variable can then be checked in
+many places without having to read the whole controller again:</p>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span>ReadController:
+  LDA #$01
+  STA $4016
+  LDA #$00
+  STA $4016
+  LDX #$08
+ReadControllerLoop:
+  LDA $4016
+  LSR A           ; bit0 -&gt; Carry
+  ROL buttons     ; bit0 &lt;- Carry
+  DEX
+  BNE ReadControllerLoop
+  RTS
+</pre></div>
 </div>
-<p>ReadController:</p>
-<p>&nbsp; LDA #$01</p>
-<p>&nbsp; STA $4016</p>
-<p>&nbsp; LDA #$00</p>
-<p>&nbsp; STA $4016</p>
-<p>&nbsp; LDX #$08</p>
-<p>ReadControllerLoop:</p>
-<p>&nbsp; LDA $4016</p>
-<p>&nbsp; LSR A &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ; bit0 -&gt; Carry</p>
-<p>&nbsp; ROL buttons &nbsp; &nbsp; ; bit0 &lt;- Carry</p>
-<p>&nbsp; DEX</p>
-<p>&nbsp; BNE ReadControllerLoop</p>
-<p>&nbsp; RTS</p>
-<div class="line-block">
-<div class="line"><br /></div>
+<p>This code uses two new instructions.&nbsp; The first is LSR (Logical Shift Right).
+This takes each bit in A and shifts them over 1 position to the right.&nbsp; Bit 7
+is filled with a 0, and bit 0 is shifted into the Carry flag:</p>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span>bit number      7 6 5 4 3 2 1 0  carry
+original data   1 0 0 1 1 0 1 1  0
+                \ \ \ \ \ \ \  \
+                 \ \ \ \ \ \ \  \
+shifted data    0 1 0 0 1 1 0 1  1
+</pre></div>
 </div>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>This code uses two new instructions.&nbsp; The first is LSR (Logical Shift
-Right).&nbsp; This takes each bit in A and shifts them over 1 position to the
-right.&nbsp; Bit 7 is filled with a 0, and bit 0 is shifted into the Carry
-flag.</p>
-<p>bit number&nbsp; &nbsp; &nbsp; 7 6 5 4 3 2 1 0&nbsp; carry</p>
-<p>original data &nbsp; 1 0 0 1 1 0 1 1&nbsp; 0</p>
-<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; \ \ \ \ \ \ \&nbsp; \</p>
-<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; \ \ \ \ \ \ \&nbsp; \</p>
-<p>shifted data&nbsp; &nbsp; 0 1 0 0 1 1 0 1&nbsp; 1</p>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>Each bit position is a power of 2, so LSR is the same thing as divide by
-2.</p>
-<p>The next new instruction is ROL (ROtate Left) which is the opposite of
-LSR.&nbsp; Each bit is shifted to the left by one position.&nbsp; The Carry flag
-is put into bit 0.&nbsp; This is the same as a multiply by 2.</p>
-<p>These instructions are used together in a clever way for controller
-reading.&nbsp; When each button is read, the button data is in bit 0.&nbsp; Doing
-the LSR puts the button data into Carry.&nbsp; Then the ROL shifts the
-previous button data over and puts Carry back to bit 0.&nbsp; The following
-diagram shows the values of Accumulator and buttons data at each step of
-reading the controller:</p>
-<p>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Accumulator &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; buttons
-data</p>
-<p>bit: &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 7&nbsp; 6&nbsp; 5&nbsp; 4&nbsp; 3&nbsp; 2&nbsp; 1&nbsp; 0&nbsp; Carry &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 7&nbsp; 6&nbsp; 5&nbsp; 4&nbsp; 3
-2&nbsp; 1&nbsp; 0&nbsp; Carry</p>
-<p>read button A&nbsp; &nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; A&nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0
-0&nbsp; 0&nbsp; 0&nbsp; 0</p>
-<p>LSR A&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; A &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0
-0&nbsp; 0&nbsp; 0&nbsp; A</p>
-<p>ROL buttons&nbsp; &nbsp; &nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; A &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0
-0&nbsp; 0&nbsp; A&nbsp; 0</p>
-<p>read button B&nbsp; &nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; B&nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0
-0&nbsp; 0&nbsp; A&nbsp; 0</p>
-<p>LSR A&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; B &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0
-0&nbsp; 0&nbsp; A&nbsp; B</p>
-<p>ROL buttons&nbsp; &nbsp; &nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0
-0&nbsp; A&nbsp; B&nbsp; 0</p>
-<p>read button SEL&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0 SEL 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0
-0&nbsp; 0&nbsp; A&nbsp; 0</p>
-<p>LSR A&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0 SEL&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0
-0&nbsp; 0&nbsp; A SEL</p>
-<p>ROL buttons&nbsp; &nbsp; &nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0
-A&nbsp; B SEL 0</p>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>read button STA&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0 STA 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0
-0&nbsp; 0&nbsp; A&nbsp; 0</p>
-<p>LSR A&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0 STA&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0
-0&nbsp; 0&nbsp; A STA</p>
-<p>ROL buttons&nbsp; &nbsp; &nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 0&nbsp; 0&nbsp; 0&nbsp; 0&nbsp; A
-B SEL STA 0</p>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>The loop continues for a total of 8 times to read all buttons.&nbsp; When it
-is done there is one button in each bit:</p>
-<p>bit: &nbsp; &nbsp; &nbsp; 7 &nbsp; &nbsp; 6 &nbsp; &nbsp; 5 &nbsp; &nbsp; 4 &nbsp; &nbsp; 3 &nbsp; &nbsp; 2 &nbsp; &nbsp; 1 &nbsp; &nbsp; 0</p>
-<p>button:&nbsp; &nbsp; A &nbsp; &nbsp; B &nbsp; select start&nbsp; up &nbsp; down&nbsp; left right</p>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
+<p>Each bit position is a power of 2, so LSR is the same thing as divide by 2.</p>
+<p>The next new instruction is ROL (ROtate Left) which is the opposite of LSR.
+Each bit is shifted to the left by one position.&nbsp; The Carry flag is put into
+bit 0.&nbsp; This is the same as a multiply by 2.</p>
+<p>These instructions are used together in a clever way for controller reading.
+When each button is read, the button data is in bit 0.&nbsp; Doing the LSR puts the
+button data into Carry.&nbsp; Then the ROL shifts the previous button data over and
+puts Carry back to bit 0.&nbsp; The following diagram shows the values of
+Accumulator and buttons data at each step of reading the controller:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="5%" />
+<col width="8%" />
+<col width="9%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="3%" />
+<col width="5%" />
+<col width="5%" />
+<col width="8%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">&nbsp;</th>
+<th class="head" colspan="9">Accumulator</th>
+<th class="head">&nbsp;</th>
+<th class="head" colspan="9">buttons data</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>bit:</td>
+<td>7</td>
+<td>6</td>
+<td>5</td>
+<td>4</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>Carry</td>
+<td>&nbsp;</td>
+<td>7</td>
+<td>6</td>
+<td>5</td>
+<td>4</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>0</td>
+<td>Carry</td>
+</tr>
+<tr class="row-odd"><td>read button A</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>A</td>
+<td>0</td>
+<td>&nbsp;</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>LSR A</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>A</td>
+<td>&nbsp;</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>A</td>
+</tr>
+<tr class="row-odd"><td>ROL buttons</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>A</td>
+<td>&nbsp;</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>A</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>read button B</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>B</td>
+<td>0</td>
+<td>&nbsp;</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>A</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>LSR A</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>B</td>
+<td>&nbsp;</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>A</td>
+<td>B</td>
+</tr>
+<tr class="row-even"><td>ROL buttons</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>&nbsp;</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>A</td>
+<td>B</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>read button SEL</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>SEL</td>
+<td>0</td>
+<td>&nbsp;</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>A</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>LSR A</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>SEL</td>
+<td>&nbsp;</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>A</td>
+<td>SEL</td>
+</tr>
+<tr class="row-odd"><td>ROL buttons</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>&nbsp;</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>A</td>
+<td>B</td>
+<td>SEL</td>
+<td>0</td>
+</tr>
+<tr class="row-even"><td>read button STA</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>STA</td>
+<td>0</td>
+<td>&nbsp;</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>A</td>
+<td>0</td>
+</tr>
+<tr class="row-odd"><td>LSR A</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>STA</td>
+<td>&nbsp;</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>A</td>
+<td>STA</td>
+</tr>
+<tr class="row-even"><td>ROL buttons</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>&nbsp;</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+<td>A</td>
+<td>B</td>
+<td>SEL</td>
+<td>STA</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p>The loop continues for a total of 8 times to read all buttons.&nbsp; When it is done
+there is one button in each bit:</p>
+<table border="1" class="docutils">
+<colgroup>
+<col width="20%" />
+<col width="3%" />
+<col width="3%" />
+<col width="17%" />
+<col width="14%" />
+<col width="6%" />
+<col width="11%" />
+<col width="11%" />
+<col width="14%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">bit:</th>
+<th class="head">7</th>
+<th class="head">6</th>
+<th class="head">5</th>
+<th class="head">4</th>
+<th class="head">3</th>
+<th class="head">2</th>
+<th class="head">1</th>
+<th class="head">0</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>button:</td>
+<td>A</td>
+<td>B</td>
+<td>select</td>
+<td>start</td>
+<td>up</td>
+<td>down</td>
+<td>left</td>
+<td>right</td>
+</tr>
+</tbody>
+</table>
 <p>If the bit is 1, that button is pressed.</p>
-<div class="line-block">
-<div class="line"><br /></div>
-<div class="line"><br /></div>
 </div>
-<p><strong>Game Layout</strong></p>
-<p><strong>The Pong game engine will use the typical simple NES game layout.
-First all the initialization is done.&nbsp; This includes clearing out RAM,
-setting up the PPU, and loading in the title screen graphics.&nbsp; Then it
-enters an infinite loop, waiting for the NMI to happen.&nbsp; When the NMI
-hits the PPU is ready to accept all graphics updates.&nbsp; There is a short
-time to do these so code like sprite DMA is done first.&nbsp; When all
-graphics are done the actual game engine starts.&nbsp; The controllers are
-read, then game processing is done.&nbsp; The sprite position is updated in
-RAM, but does not get updated until the next NMI.&nbsp; Once the game engine
-has finished it goes back to the infinite loop.</strong></p>
-<div class="line-block">
-<div class="line"><br /></div>
+<div class="section" id="game-layout">
+<h2>7.5. Game Layout<a class="headerlink" href="#game-layout" title="Permalink to this headline">¶</a></h2>
+<p>The Pong game engine will use the typical simple NES game layout.&nbsp; First all
+the initialization is done.&nbsp; This includes clearing out RAM, setting up the
+PPU, and loading in the title screen graphics.&nbsp; Then it enters an infinite
+loop, waiting for the NMI to happen.&nbsp; When the NMI hits the PPU is ready to
+accept all graphics updates.&nbsp; There is a short time to do these so code like
+sprite DMA is done first.&nbsp; When all graphics are done the actual game engine
+starts.&nbsp; The controllers are read, then game processing is done.&nbsp; The sprite
+position is updated in RAM, but does not get updated until the next NMI.&nbsp; Once
+the game engine has finished it goes back to the infinite loop:</p>
+<div class="highlight-text"><div class="highlight"><pre><span></span>Init Code -&gt; Infinite Loop -&gt; NMI -&gt; Graphics Updates -&gt; Read Buttons -&gt; Game Engine --\
+                   ^                                                                    |
+                    \------------------------------------------------------------------/
+</pre></div>
 </div>
-<p>Init Code -&gt; Infinite Loop -&gt; NMI -&gt; Graphics Updates -&gt; Read Buttons -&gt;
-Game Engine &#8211;\</p>
-<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; ^
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |</p>
-<p>\&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;/</p>
-<div class="line-block">
-<div class="line"><br /></div>
-<div class="line"><br /></div>
 </div>
-<p>Game State</p>
-<p>The use of a &#8220;game state&#8221; variable is a common way to arrange code.&nbsp; The
-game state just specifies what code should be run in the game engine
-each frame.&nbsp; If the game is in the title screen state, then none of the
-ball movement code needs to be run.&nbsp; A flow chart can be created that
-includes what each state should do, and the next state that should be
-set when it is done.&nbsp; For Pong there are just 3 basic states.</p>
-<div class="line-block">
-<div class="line"><br /></div>
+<div class="section" id="game-state">
+<h2>7.6. Game State<a class="headerlink" href="#game-state" title="Permalink to this headline">¶</a></h2>
+<p>The use of a &#8220;game state&#8221; variable is a common way to arrange code.&nbsp; The game
+state just specifies what code should be run in the game engine each frame.&nbsp; If
+the game is in the title screen state, then none of the ball movement code
+needs to be run.&nbsp; A flow chart can be created that includes what each state
+should do, and the next state that should be set when it is done.&nbsp; For Pong
+there are just 3 basic states:</p>
+<div class="highlight-text"><div class="highlight"><pre><span></span> -&gt;Title State              /--&gt; Playing State            /--&gt;  Game Over State
+/  wait for start button --/     move ball               /      wait for start button -\
+|                                move paddles           |                               \
+|                                check for collisions   /                               |
+|                                check for score = 15 -/                                |
+ \                                                                                     /
+  \-----------------------------------------------------------------------------------/
+</pre></div>
 </div>
-<p>&nbsp;-&gt;Title State&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; /&#8211;&gt; Playing State&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; /&#8211;&gt;&nbsp; Game
-Over State</p>
-<p>/ &nbsp;wait for start button &#8211;/ &nbsp; &nbsp; move ball &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; /&nbsp; &nbsp; &nbsp; wait for
-start button -\</p>
-<p>|&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; move paddles &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; \</p>
-<p>|&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; check for collisions &nbsp; /
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |</p>
-<p>|&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; check for score = 15 -/
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; |</p>
-<p>&nbsp;\
-&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; /</p>
-<p>\&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8212;&#8211;/</p>
-<div class="line-block">
-<div class="line"><br /></div>
-<div class="line"><br /></div>
+<p>The next step is to add much more detail to each state to figure out exactly
+what is needed.&nbsp; These layouts are done before any significant coding starts.
+Some of the game engine like the second player and the score will be added
+later.&nbsp; Without the score there is no way to get to the Game Over State yet</p>
+<div class="highlight-text"><div class="highlight"><pre><span></span>Title State:
+  if start button pressed
+    turn screen off
+    load game screen
+    set paddle/ball position
+    go to Playing State
+    turn screen on
+
+Playing State:
+  move ball
+    if ball moving right
+      add ball speed x to ball position x
+      if ball x &gt; right wall
+        bounce, ball now moving left
+
+    if ball moving left
+      subtract ball speed x from ball position x
+      if ball x &lt; left wall
+        bounce, ball now moving right
+
+    if ball moving up
+     subtract ball speed y from ball position y
+      if ball y &lt; top wall
+        bounce, ball now moving down
+
+    if ball moving down
+      add ball speed y to ball position y
+       if ball y &gt; bottom wall
+         bounce, ball now moving up
+
+  if up button pressed
+    if paddle top &gt; top wall
+      move paddle top and bottom up
+
+  if down button pressed
+    if paddle bottom &lt; bottom wall
+      move paddle top and bottom down
+
+  if ball x &lt; paddle1x
+    if ball y &gt; paddle y top
+      if ball y &lt; paddle y bottom
+        bounce, ball now moving left
+
+Game Over State:
+  if start button pressed
+    turn screen off
+    load title screen
+    go to Title State
+    turn screen on
+</pre></div>
 </div>
-<div class="line-block">
-<div class="line"><br /></div>
 </div>
-<p>The next step is to add much more detail to each state to figure out
-exactly what is needed.&nbsp; These layouts are done before any significant
-coding starts.&nbsp; Some of the game engine like the second player and the
-score will be added later.&nbsp; Without the score there is no way to get to
-the Game Over State yet.</p>
-<div class="line-block">
-<div class="line"><br /></div>
+<div class="section" id="putting-it-all-together">
+<h2>7.7. Putting It All Together<a class="headerlink" href="#putting-it-all-together" title="Permalink to this headline">¶</a></h2>
+<p>Download and unzip the <a class="reference external" href="http://www.nespowerpak.com/nesasm/pong1.zip">pong1.zip</a> sample files.&nbsp; The playing
+game state and ball movement code is in the pong1.asm file. Make sure that
+file, mario.chr, and pong1.bat is in the same folder as NESASM3, then double
+click on pong1.bat. That will run NESASM3 and should produce pong1.nes. Run
+that NES file in FCEUXD SP to see the ball moving!</p>
+<p>Other code segments have been set up but not yet completed.&nbsp; See how many of
+those you can program yourself.&nbsp; The main parts missing are the paddle
+movements and paddle/ball collisions.&nbsp;&nbsp;You can also add the intro state and the
+intro screen, and the playing screen using the background information from the
+previous week.</p>
 </div>
-<p>Title State:</p>
-<p>&nbsp; if start button pressed</p>
-<p>&nbsp; &nbsp; turn screen off</p>
-<p>&nbsp; &nbsp; load game screen</p>
-<p>&nbsp; &nbsp; set paddle/ball position</p>
-<p>&nbsp; &nbsp; go to Playing State</p>
-<p>&nbsp; &nbsp; turn screen on</p>
-<div class="line-block">
-<div class="line"><br /></div>
 </div>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>Playing State:</p>
-<p>&nbsp; move ball</p>
-<p>&nbsp; &nbsp; if ball moving right</p>
-<p>&nbsp; &nbsp; &nbsp; add ball speed x to ball position x</p>
-<p>&nbsp; &nbsp; &nbsp; if ball x &gt; right wall</p>
-<p>&nbsp; &nbsp; &nbsp; &nbsp; bounce, ball now moving left</p>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>&nbsp; &nbsp; if ball moving left</p>
-<p>&nbsp; &nbsp; &nbsp; subtract ball speed x from ball position x</p>
-<p>&nbsp; &nbsp; &nbsp; if ball x &lt; left wall</p>
-<p>&nbsp; &nbsp; &nbsp; &nbsp; bounce, ball now moving right</p>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>&nbsp; &nbsp; if ball moving up</p>
-<p>&nbsp;&nbsp; &nbsp; subtract ball speed y from ball position y</p>
-<p>&nbsp; &nbsp; &nbsp; if ball y &lt; top wall</p>
-<p>&nbsp; &nbsp; &nbsp; &nbsp; bounce, ball now moving down</p>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>&nbsp; &nbsp; if ball moving down</p>
-<p>&nbsp; &nbsp; &nbsp; add ball speed y to ball position y</p>
-<p>&nbsp;&nbsp; &nbsp; &nbsp; if ball y &gt; bottom wall</p>
-<p>&nbsp;&nbsp; &nbsp; &nbsp; &nbsp; bounce, ball now moving up</p>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>&nbsp; if up button pressed</p>
-<p>&nbsp; &nbsp; if paddle top &gt; top wall</p>
-<p>&nbsp; &nbsp; &nbsp; move paddle top and bottom up</p>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>&nbsp; if down button pressed</p>
-<p>&nbsp; &nbsp; if paddle bottom &lt; bottom wall</p>
-<p>&nbsp; &nbsp; &nbsp; move paddle top and bottom down</p>
-<p>&nbsp; if ball x &lt; paddle1x</p>
-<p>&nbsp; &nbsp; if ball y &gt; paddle y top</p>
-<p>&nbsp; &nbsp; &nbsp; if ball y &lt; paddle y bottom</p>
-<p>&nbsp; &nbsp; &nbsp; &nbsp; bounce, ball now moving left</p>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>Game Over State:</p>
-<p>&nbsp; if start button pressed</p>
-<p>&nbsp; &nbsp; turn screen off</p>
-<p>&nbsp; &nbsp; load title screen</p>
-<p>&nbsp; &nbsp; go to Title State</p>
-<p>&nbsp; &nbsp; turn screen on</p>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<div class="line-block">
-<div class="line"><br /></div>
-</div>
-<p>Putting It All Together</p>
-<p>Download and unzip the
-<a class="reference external" href="http://www.nespowerpak.com/nesasm/pong1.zip">pong1.zip</a> sample
-files.&nbsp; The playing game state and ball movement code is in the
-pong1.asm file. Make sure that file, mario.chr, and pong1.bat is in the
-same folder as NESASM3, then double click on pong1.bat. That will run
-NESASM3 and should produce pong1.nes. Run that NES file in FCEUXD SP to
-see the ball moving!</p>
-<p>Other code segments have been set up but not yet completed.&nbsp; See how
-many of those you can program yourself.&nbsp; The main parts missing are the
-paddle movements and paddle/ball collisions.&nbsp;&nbsp;You can also add the intro
-state and the intro screen, and the playing screen using the background
-information from the previous week.</p>
-</div><div></div></div>
+
 
           </div>
         </div>
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">7. subroutines, game layout, starting Pong</a><ul>
+<li><a class="reference internal" href="#variables">7.1. Variables</a></li>
+<li><a class="reference internal" href="#constants">7.2. Constants</a></li>
+<li><a class="reference internal" href="#subroutines">7.3. Subroutines</a></li>
+<li><a class="reference internal" href="#better-controller-reading">7.4. Better Controller Reading</a></li>
+<li><a class="reference internal" href="#game-layout">7.5. Game Layout</a></li>
+<li><a class="reference internal" href="#game-state">7.6. Game State</a></li>
+<li><a class="reference internal" href="#putting-it-all-together">7.7. Putting It All Together</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="backgrounds.html"
                         title="previous chapter">6. Backgrounds</a></p>
