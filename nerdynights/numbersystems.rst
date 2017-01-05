@@ -95,10 +95,10 @@ As with decimal and hex the digit places are each a power of 16:
     1           0       = 1*16 +     0*1 = 16
 ==========   =========  = ============== = ===
 
- Hex is largely used because it is much faster to write than binary. An
+Hex is largely used because it is much faster to write than binary. An
 8 digit binary number turns into a 2 digit hex number:
   
-::
+.. code-block:: text
 
     Binary     01101010
     split        |  |

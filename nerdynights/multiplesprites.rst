@@ -176,17 +176,16 @@ subtract::
 Putting It All Together
 =======================
 
-Download and unzip the `controller.zip
-<http://www.nespowerpak.com/nesasm/controller.zip>`__ sample files.  All the
-code above is in the controller.asm file.  Make sure that file, mario.chr, and
-controller.bat is in the same folder as NESASM, then double click on
-controller.bat.  That will run NESASM and should produce controller.nes.  Run
-that NES file in FCEUXD SP to see small Mario.  Press the A and B buttons on
-the player 1 controller to move one sprite of Mario.  The movement will be one
-pixel per frame, or 60 pixels per second on NTSC machines.  If Mario isn't
-moving, make sure your controls are set up correctly in the Config menu under
-Input...  If you hold both buttons together, the value will be added then
-subtracted so no movement will happen.
+Download and unzip the `controller.zip <files/controller.zip>` sample files. 
+All the code above is in the controller.asm file.  Make sure that file,
+mario.chr, and controller.bat is in the same folder as NESASM, then double
+click on controller.bat.  That will run NESASM and should produce
+controller.nes.  Run that NES file in FCEUXD SP to see small Mario.  Press the
+A and B buttons on the player 1 controller to move one sprite of Mario.  The
+movement will be one pixel per frame, or 60 pixels per second on NTSC
+machines.  If Mario isn't moving, make sure your controls are set up correctly
+in the Config menu under Input...  If you hold both buttons together, the value
+will be added then subtracted so no movement will happen.
 
 Try editing the ADC and SBC values to make him move faster.  The screen is only
 256 pixels across, so too fast and he will just jump around randomly!  Also try

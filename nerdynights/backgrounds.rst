@@ -59,13 +59,13 @@ color red because it already uses 4 colors.
 When looking at a sample SMB screen, first the 4x4 tile grid is added
 and the palette is shown at the bottom:
 
-|image0|
+|fullgrid|
 
 You can see there are 8 grid squares horizontally, so there will be 8
 attribute bytes horizontally.  Then each one of those grid squares is
 split up into 2x2 tile sections to generate the attribute byte:
 
-|image1|
+|attribute|
 
 No 16x16 area can use more than 4 colors, so the question mark and the
 block cannot use the greens from the palette.
@@ -161,13 +161,13 @@ And to tell the PPU that we are not doing any scrolling at the end of NMI::
 Putting It All Together
 =======================
 
-Download and unzip the `background2.zip
-<http://www.nespowerpak.com/nesasm/background2.zip>`__ sample files.  All the
-code above is in the background.asm file.  Make sure that file, mario.chr, and
-background.bat is in the same folder as NESASM, then double click on
-background.bat.  That will run NESASM and should produce background.nes.  Run
-that NES file in FCEUXD SP to see the background.  Set it to PAL Emulation so
-you get to see the whole screen.
+Download and unzip the :download:`background2.zip
+<files/background2.zip>` sample files.  All the code above is in the
+background.asm file.  Make sure that file, mario.chr, and background.bat is in
+the same folder as NESASM, then double click on background.bat.  That will run
+NESASM and should produce background.nes.  Run that NES file in FCEUXD SP to
+see the background.  Set it to PAL Emulation so you get to see the whole
+screen.
 
 Any background areas that you did not write to will still be using tile 0,
 which happens to be the number 0 in the SMB graphics.  Try adding more
@@ -176,5 +176,5 @@ they copy more bytes to the PPU RAM.  You can also try changing the starting
 PPU address of the nametable and attribute table writes to move the rows
 further down.
 
-.. |image0| image:: http://www.NintendoAgeMedia.com/users/142/photobucket/F837623F-9C98-E50B-F4D377EE82FA2BDA.png
-.. |image1| image:: http://www.NintendoAgeMedia.com/users/142/photobucket/F8376193-9343-AF0D-B8DA7BD8B7DD9301.png
+.. |fullgrid| image:: images/F837623F-9C98-E50B-F4D377EE82FA2BDA.png
+.. |attribute| image:: images/F8376193-9343-AF0D-B8DA7BD8B7DD9301.png

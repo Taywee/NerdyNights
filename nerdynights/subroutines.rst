@@ -323,12 +323,11 @@ later.  Without the score there is no way to get to the Game Over State yet
 Putting It All Together
 =======================
 
-Download and unzip the `pong1.zip
-<http://www.nespowerpak.com/nesasm/pong1.zip>`__ sample files.  The playing
-game state and ball movement code is in the pong1.asm file. Make sure that
-file, mario.chr, and pong1.bat is in the same folder as NESASM3, then double
-click on pong1.bat. That will run NESASM3 and should produce pong1.nes. Run
-that NES file in FCEUXD SP to see the ball moving!
+Download and unzip the :download:`pong1.zip <files/pong1.zip>` sample files. 
+The playing game state and ball movement code is in the pong1.asm file. Make
+sure that file, mario.chr, and pong1.bat is in the same folder as NESASM3, then
+double click on pong1.bat. That will run NESASM3 and should produce pong1.nes.
+Run that NES file in FCEUXD SP to see the ball moving!
 
 Other code segments have been set up but not yet completed.  See how many of
 those you can program yourself.  The main parts missing are the paddle
