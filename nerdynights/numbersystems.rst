@@ -50,15 +50,15 @@ smaller.
 The NES is an 8 bit system, which means the binary number it works with are 8
 binary digits long. 8 bits is one byte. Some examples are:
   
-======   = =======
+======== = =======
 Binary     Decimal
-======   = =======
+======== = =======
 00000000 =  0
 00001111 =  15
 00010000 =  16
 10101010 =  170
 11111111 =  255
-======   = =======
+======== = =======
 
 Eventually you become fast at reading binary numbers, or at least
 recognizing patterns. You can see that one byte can only range from
