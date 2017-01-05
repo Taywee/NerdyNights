@@ -6,9 +6,9 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>5. multiple sprites, reading controllers, more instructions &mdash; Nerdy Nights 1.0.0 documentation</title>
+    <title>5. multiple sprites, reading controllers, more instructions &#8212; Nerdy Nights 1.0.0 documentation</title>
     
-    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -17,39 +17,31 @@
         VERSION:     '1.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="Nerdy Nights 1.0.0 documentation" href="../index.html" />
-    <link rel="up" title="Nerdy Nights" href="../nerdynights.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="6. Backgrounds" href="backgrounds.html" />
-    <link rel="prev" title="4. Color Palettes, Sprites, second app" href="colorpalettes.html" /> 
+    <link rel="prev" title="4. Color Palettes, Sprites, second app" href="colorpalettes.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
   </head>
-  <body>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="backgrounds.html" title="6. Backgrounds"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="colorpalettes.html" title="4. Color Palettes, Sprites, second app"
-             accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &raquo;</li>
-          <li><a href="../nerdynights.html" accesskey="U">Nerdy Nights</a> &raquo;</li> 
-      </ul>
-    </div>  
+  <body role="document">
+  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="multiple-sprites-reading-controllers-more-instructions">
 <h1>5. multiple sprites, reading controllers, more instructions<a class="headerlink" href="#multiple-sprites-reading-controllers-more-instructions" title="Permalink to this headline">¶</a></h1>
@@ -65,12 +57,12 @@ load the sprite data. &nbsp;This time we will have 4 sprites on screen. &nbsp;Do
 many load/stores just takes too much writing and code space. &nbsp;Instead a loop
 will be used to load the data, like was used to load the palette before. &nbsp;First
 the data bytes are set up using the .db directive:</p>
-<div class="highlight-ca65"><div class="highlight"><pre><span></span>sprites:
-     ;vert tile attr horiz
-  .db $80, $32, $00, $80   ;sprite 0
-  .db $80, $33, $00, $88   ;sprite 1
-  .db $88, $34, $00, $80   ;sprite 2
-  .db $88, $35, $00, $88   ;sprite 3
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="nl">sprites:</span>
+     <span class="c1">;vert tile attr horiz</span>
+  <span class="kp">.db</span> <span class="mh">$80</span><span class="p">,</span> <span class="mh">$32</span><span class="p">,</span> <span class="mh">$00</span><span class="p">,</span> <span class="mh">$80</span>   <span class="c1">;sprite 0</span>
+  <span class="kp">.db</span> <span class="mh">$80</span><span class="p">,</span> <span class="mh">$33</span><span class="p">,</span> <span class="mh">$00</span><span class="p">,</span> <span class="mh">$88</span>   <span class="c1">;sprite 1</span>
+  <span class="kp">.db</span> <span class="mh">$88</span><span class="p">,</span> <span class="mh">$34</span><span class="p">,</span> <span class="mh">$00</span><span class="p">,</span> <span class="mh">$80</span>   <span class="c1">;sprite 2</span>
+  <span class="kp">.db</span> <span class="mh">$88</span><span class="p">,</span> <span class="mh">$35</span><span class="p">,</span> <span class="mh">$00</span><span class="p">,</span> <span class="mh">$88</span>   <span class="c1">;sprite 3</span>
 </pre></div>
 </div>
 <p>There are 4 bytes per sprite, each on one line.&nbsp; The bytes are in the correct
@@ -78,16 +70,16 @@ order and easily changed.&nbsp; &nbsp; This is only the starting data, when the 
 is running the copy in RAM can be changed to move the sprite around.</p>
 <p>Next you need the loop to copy the data into RAM.&nbsp; This loop also works the
 same way as the palette loading, with the X register as the loop counter:</p>
-<div class="highlight-ca65"><div class="highlight"><pre><span></span>LoadSprites:
-  LDX #$00              ; start at 0
-LoadSpritesLoop:
-  LDA sprites, x        ; load data from address (sprites + x)
-  STA $0200, x          ; store into RAM address ($0200 + x)
-  INX                   ; X = X + 1
-  CPX #$10              ; Compare X to hex $10, decimal 16
-  BNE LoadSpritesLoop   ; Branch to LoadSpritesLoop if compare was Not
-Equal to zero
-                        ; if compare was equal to 16, continue down
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="nl">LoadSprites:</span>
+  <span class="k">LDX</span> <span class="p">#</span><span class="mh">$00</span>              <span class="c1">; start at 0</span>
+<span class="nl">LoadSpritesLoop:</span>
+  <span class="k">LDA</span> <span class="n">sprites</span><span class="p">,</span> <span class="n">x</span>        <span class="c1">; load data from address (sprites + x)</span>
+  <span class="k">STA</span> <span class="mh">$0200</span><span class="p">,</span> <span class="n">x</span>          <span class="c1">; store into RAM address ($0200 + x)</span>
+  <span class="k">INX</span>                   <span class="c1">; X = X + 1</span>
+  <span class="k">CPX</span> <span class="p">#</span><span class="mh">$10</span>              <span class="c1">; Compare X to hex $10, decimal 16</span>
+  <span class="k">BNE</span> <span class="n">LoadSpritesLoop</span>   <span class="c1">; Branch to LoadSpritesLoop if compare was Not</span>
+<span class="n">Equal</span> <span class="n">to</span> <span class="n">zero</span>
+                        <span class="c1">; if compare was equal to 16, continue down</span>
 </pre></div>
 </div>
 <p>If you wanted to add more sprites, you would add lines into the sprite .db
@@ -105,28 +97,28 @@ one at a time, in bit 0.&nbsp; If bit 0 is 0, the button is not pressed.&nbsp; I
 is 1, the button is pressed.</p>
 <p>Button status for each controller is returned in the following order: A, B,
 Select, Start, Up, Down, Left, Right:</p>
-<div class="highlight-ca65"><div class="highlight"><pre><span></span>LDA #$01
-STA $4016
-LDA #$00
-STA $4016     ; tell both the controllers to latch buttons
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="k">LDA</span> <span class="p">#</span><span class="mh">$01</span>
+<span class="k">STA</span> <span class="mh">$4016</span>
+<span class="k">LDA</span> <span class="p">#</span><span class="mh">$00</span>
+<span class="k">STA</span> <span class="mh">$4016</span>     <span class="c1">; tell both the controllers to latch buttons</span>
 
-LDA $4016     ; player 1 - A
-LDA $4016     ; player 1 - B
-LDA $4016     ; player 1 - Select
-LDA $4016     ; player 1 - Start
-LDA $4016     ; player 1 - Up
-LDA $4016     ; player 1 - Down
-LDA $4016     ; player 1 - Left
-LDA $4016     ; player 1 - Right
+<span class="k">LDA</span> <span class="mh">$4016</span>     <span class="c1">; player 1 - A</span>
+<span class="k">LDA</span> <span class="mh">$4016</span>     <span class="c1">; player 1 - B</span>
+<span class="k">LDA</span> <span class="mh">$4016</span>     <span class="c1">; player 1 - Select</span>
+<span class="k">LDA</span> <span class="mh">$4016</span>     <span class="c1">; player 1 - Start</span>
+<span class="k">LDA</span> <span class="mh">$4016</span>     <span class="c1">; player 1 - Up</span>
+<span class="k">LDA</span> <span class="mh">$4016</span>     <span class="c1">; player 1 - Down</span>
+<span class="k">LDA</span> <span class="mh">$4016</span>     <span class="c1">; player 1 - Left</span>
+<span class="k">LDA</span> <span class="mh">$4016</span>     <span class="c1">; player 1 - Right</span>
 
-LDA $4017     ; player 2 - A
-LDA $4017     ; player 2 - B
-LDA $4017     ; player 2 - Select
-LDA $4017     ; player 2 - Start
-LDA $4017     ; player 2 - Up
-LDA $4017     ; player 2 - Down
-LDA $4017     ; player 2 - Left
-LDA $4017     ; player 2 - Right
+<span class="k">LDA</span> <span class="mh">$4017</span>     <span class="c1">; player 2 - A</span>
+<span class="k">LDA</span> <span class="mh">$4017</span>     <span class="c1">; player 2 - B</span>
+<span class="k">LDA</span> <span class="mh">$4017</span>     <span class="c1">; player 2 - Select</span>
+<span class="k">LDA</span> <span class="mh">$4017</span>     <span class="c1">; player 2 - Start</span>
+<span class="k">LDA</span> <span class="mh">$4017</span>     <span class="c1">; player 2 - Up</span>
+<span class="k">LDA</span> <span class="mh">$4017</span>     <span class="c1">; player 2 - Down</span>
+<span class="k">LDA</span> <span class="mh">$4017</span>     <span class="c1">; player 2 - Left</span>
+<span class="k">LDA</span> <span class="mh">$4017</span>     <span class="c1">; player 2 - Right</span>
 </pre></div>
 </div>
 </div>
@@ -170,29 +162,29 @@ value is 1, then the result is 1.&nbsp; Otherwise the result is 0.</p>
 </tbody>
 </table>
 <p>For a full random 8 bit value:</p>
-<div class="highlight-ca65"><div class="highlight"><pre><span></span>      01011011
-AND   10101101
---------------
-      00001001
+<div class="highlight-ca65"><div class="highlight"><pre><span></span>      <span class="mi">01011011</span>
+<span class="k">AND</span>   <span class="mi">10101101</span>
+<span class="o">--------------</span>
+      <span class="mi">00001001</span>
 </pre></div>
 </div>
 <p>We only want bit 0, so that bit is set and the others are cleared:</p>
-<div class="highlight-ca65"><div class="highlight"><pre><span></span>      01011011    controller data
-AND   00000001    AND value
---------------
-      00000001    only bit 0 is used, everything else erased
+<div class="highlight-ca65"><div class="highlight"><pre><span></span>      <span class="mi">01011011</span>    <span class="n">controller</span> <span class="n">data</span>
+<span class="k">AND</span>   <span class="mi">00000001</span>    <span class="k">AND</span> <span class="n">value</span>
+<span class="o">--------------</span>
+      <span class="mi">00000001</span>    <span class="n">only</span> <span class="k">bit</span> <span class="mi">0</span> <span class="n">is</span> <span class="n">used</span><span class="p">,</span> <span class="n">everything</span> <span class="n">else</span> <span class="n">erased</span>
 </pre></div>
 </div>
 <p>So to erase all the other bits when reading controllers, the AND should
 come after each read from $4016 or $4017:</p>
-<div class="highlight-ca65"><div class="highlight"><pre><span></span>LDA $4016       ; player 1 - A
-AND #%00000001
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="k">LDA</span> <span class="mh">$4016</span>       <span class="c1">; player 1 - A</span>
+<span class="k">AND</span> <span class="p">#</span><span class="mb">%00000001</span>
 
-LDA $4016       ; player 1 - B
-AND #%00000001
+<span class="k">LDA</span> <span class="mh">$4016</span>       <span class="c1">; player 1 - B</span>
+<span class="k">AND</span> <span class="p">#</span><span class="mb">%00000001</span>
 
-LDA $4016       ; player 1 - Select
-AND #%00000001
+<span class="k">LDA</span> <span class="mh">$4016</span>       <span class="c1">; player 1 - Select</span>
+<span class="k">AND</span> <span class="p">#</span><span class="mb">%00000001</span>
 </pre></div>
 </div>
 </div>
@@ -204,14 +196,14 @@ to a compared value.&nbsp; Here BEQ will be used without the compare
 instruction to Branch when EQual to zero.&nbsp; When a button is not pressed,
 the value will be zero, so the branch is taken.&nbsp; That skips over all the
 instructions that do something when the button is pressed:</p>
-<div class="highlight-ca65"><div class="highlight"><pre><span></span>ReadA:
-  LDA $4016       ; player 1 - A
-  AND #%00000001  ; erase everything but bit 0
-  BEQ ReadADone   ; branch to ReadADone if button is NOT pressed (0)
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="nl">ReadA:</span>
+  <span class="k">LDA</span> <span class="mh">$4016</span>       <span class="c1">; player 1 - A</span>
+  <span class="k">AND</span> <span class="p">#</span><span class="mb">%00000001</span>  <span class="c1">; erase everything but bit 0</span>
+  <span class="k">BEQ</span> <span class="n">ReadADone</span>   <span class="c1">; branch to ReadADone if button is NOT pressed (0)</span>
 
-                  ; add instructions here to do something when button IS pressed (1)
+                  <span class="c1">; add instructions here to do something when button IS pressed (1)</span>
 
-ReadADone:        ; handling this button is done
+<span class="nl">ReadADone:</span>        <span class="c1">; handling this button is done</span>
 </pre></div>
 </div>
 </div>
@@ -222,10 +214,10 @@ around.&nbsp; To do that we need to be able to add to values.&nbsp; The ADC inst
 stands for Add with Carry.&nbsp; Before adding, you have to make sure the carry is
 cleared, using CLC.&nbsp; This sample will load the sprite position into A, clear
 the carry, add one to the value, then store back into the sprite position:</p>
-<div class="highlight-ca65"><div class="highlight"><pre><span></span>LDA $0203   ; load sprite X (horizontal) position
-CLC         ; make sure the carry flag is clear
-ADC #$01    ; A = A + 1
-STA $0203   ; save sprite X (horizontal) position
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="k">LDA</span> <span class="mh">$0203</span>   <span class="c1">; load sprite X (horizontal) position</span>
+<span class="k">CLC</span>         <span class="c1">; make sure the carry flag is clear</span>
+<span class="k">ADC</span> <span class="p">#</span><span class="mh">$01</span>    <span class="c1">; A = A + 1</span>
+<span class="k">STA</span> <span class="mh">$0203</span>   <span class="c1">; save sprite X (horizontal) position</span>
 </pre></div>
 </div>
 </div>
@@ -234,16 +226,16 @@ STA $0203   ; save sprite X (horizontal) position
 <p>To move the sprite the other direction, a subtract is needed.&nbsp; SBC is
 Subtract with Carry.&nbsp; This time the carry has to be set before doing the
 subtract:</p>
-<div class="highlight-ca65"><div class="highlight"><pre><span></span>LDA $0203   ; load sprite position
-SEC         ; make sure carry flag is set
-SBC #$01    ; A = A - 1
-STA $0203   ; save sprite position
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="k">LDA</span> <span class="mh">$0203</span>   <span class="c1">; load sprite position</span>
+<span class="k">SEC</span>         <span class="c1">; make sure carry flag is set</span>
+<span class="k">SBC</span> <span class="p">#</span><span class="mh">$01</span>    <span class="c1">; A = A - 1</span>
+<span class="k">STA</span> <span class="mh">$0203</span>   <span class="c1">; save sprite position</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="putting-it-all-together">
 <h2>5.7. Putting It All Together<a class="headerlink" href="#putting-it-all-together" title="Permalink to this headline">¶</a></h2>
-<p>Download and unzip the <a class="reference download internal" href="../_downloads/controller.zip"><tt class="xref download docutils literal"><span class="pre">controller.zip</span></tt></a>&nbsp;sample files.
+<p>Download and unzip the <a class="reference download internal" href="../_downloads/controller.zip" download=""><code class="xref download docutils literal"><span class="pre">controller.zip</span></code></a>&nbsp;sample files.
 All the code above is in the controller.asm file.&nbsp; Make sure that file,
 mario.chr, and controller.bat is in the same folder as NESASM, then double
 click on controller.bat.&nbsp; That will run NESASM and should produce
@@ -266,7 +258,7 @@ change the Y position of the sprites.</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
@@ -284,54 +276,52 @@ change the Y position of the sprites.</p>
 </ul>
 </li>
 </ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="colorpalettes.html"
-                        title="previous chapter">4. Color Palettes, Sprites, second app</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="backgrounds.html"
-                        title="next chapter">6. Backgrounds</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../_sources/nerdynights/multiplesprites.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../nerdynights.html">Nerdy Nights</a><ul>
+      <li>Previous: <a href="colorpalettes.html" title="previous chapter">4. Color Palettes, Sprites, second app</a></li>
+      <li>Next: <a href="backgrounds.html" title="next chapter">6. Backgrounds</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/nerdynights/multiplesprites.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="backgrounds.html" title="6. Backgrounds"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="colorpalettes.html" title="4. Color Palettes, Sprites, second app"
-             >previous</a> |</li>
-        <li><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &raquo;</li>
-          <li><a href="../nerdynights.html" >Nerdy Nights</a> &raquo;</li> 
-      </ul>
-    </div>
     <div class="footer">
-        &copy; Copyright 2017, bunnyboy, MetalSlime, Taywee.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      &copy;2017, bunnyboy, MetalSlime, Taywee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../_sources/nerdynights/multiplesprites.rst.txt"
+          rel="nofollow">Page source</a>
     </div>
+
+    
+
+    
   </body>
 </html>

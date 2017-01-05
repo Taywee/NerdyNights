@@ -6,9 +6,9 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>6. Backgrounds &mdash; Nerdy Nights 1.0.0 documentation</title>
+    <title>6. Backgrounds &#8212; Nerdy Nights 1.0.0 documentation</title>
     
-    <link rel="stylesheet" href="../_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     
     <script type="text/javascript">
@@ -17,39 +17,31 @@
         VERSION:     '1.0.0',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
-        HAS_SOURCE:  true
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
       };
     </script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <link rel="top" title="Nerdy Nights 1.0.0 documentation" href="../index.html" />
-    <link rel="up" title="Nerdy Nights" href="../nerdynights.html" />
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="7. subroutines, game layout, starting Pong" href="subroutines.html" />
-    <link rel="prev" title="5. multiple sprites, reading controllers, more instructions" href="multiplesprites.html" /> 
+    <link rel="prev" title="5. multiple sprites, reading controllers, more instructions" href="multiplesprites.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
   </head>
-  <body>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="subroutines.html" title="7. subroutines, game layout, starting Pong"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="multiplesprites.html" title="5. multiple sprites, reading controllers, more instructions"
-             accesskey="P">previous</a> |</li>
-        <li><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &raquo;</li>
-          <li><a href="../nerdynights.html" accesskey="U">Nerdy Nights</a> &raquo;</li> 
-      </ul>
-    </div>  
+  <body role="document">
+  
 
     <div class="document">
       <div class="documentwrapper">
         <div class="bodywrapper">
-          <div class="body">
+          <div class="body" role="main">
             
   <div class="section" id="backgrounds">
 <h1>6. Backgrounds<a class="headerlink" href="#backgrounds" title="Permalink to this headline">¶</a></h1>
@@ -119,30 +111,30 @@ tools will generate this data but here it will just be done manually.
 same CHR file from SMB will be used here too. &nbsp;First the nametable data
 is defined, with each graphics row split into two 16 byte sections to
 keep lines shorter:</p>
-<div class="highlight-ca65"><div class="highlight"><pre><span></span>nametable:
-  .db $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24  ;;row 1
-  .db $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24  ;;all sky ($24 = sky)
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="nl">nametable:</span>
+  <span class="kp">.db</span> <span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span>  <span class="c1">;;row 1</span>
+  <span class="kp">.db</span> <span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span>  <span class="c1">;;all sky ($24 = sky)</span>
 
-  .db $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24  ;;row 2
-  .db $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24  ;;all sky
+  <span class="kp">.db</span> <span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span>  <span class="c1">;;row 2</span>
+  <span class="kp">.db</span> <span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span>  <span class="c1">;;all sky</span>
 
-  .db $24,$24,$24,$24,$45,$45,$24,$24,$45,$45,$45,$45,$45,$45,$24,$24  ;;row 3
-  .db $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$53,$54,$24,$24  ;;some brick tops
+  <span class="kp">.db</span> <span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$45</span><span class="p">,</span><span class="mh">$45</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$45</span><span class="p">,</span><span class="mh">$45</span><span class="p">,</span><span class="mh">$45</span><span class="p">,</span><span class="mh">$45</span><span class="p">,</span><span class="mh">$45</span><span class="p">,</span><span class="mh">$45</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span>  <span class="c1">;;row 3</span>
+  <span class="kp">.db</span> <span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$53</span><span class="p">,</span><span class="mh">$54</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span>  <span class="c1">;;some brick tops</span>
 
-  .db $24,$24,$24,$24,$47,$47,$24,$24,$47,$47,$47,$47,$47,$47,$24,$24  ;;row 4
-  .db $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$55,$56,$24,$24  ;;brick bottoms
+  <span class="kp">.db</span> <span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$47</span><span class="p">,</span><span class="mh">$47</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$47</span><span class="p">,</span><span class="mh">$47</span><span class="p">,</span><span class="mh">$47</span><span class="p">,</span><span class="mh">$47</span><span class="p">,</span><span class="mh">$47</span><span class="p">,</span><span class="mh">$47</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span>  <span class="c1">;;row 4</span>
+  <span class="kp">.db</span> <span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$55</span><span class="p">,</span><span class="mh">$56</span><span class="p">,</span><span class="mh">$24</span><span class="p">,</span><span class="mh">$24</span>  <span class="c1">;;brick bottoms</span>
 </pre></div>
 </div>
 <p>Then the attribute table data is defined. &nbsp;Each byte covers 4x4 tiles,
 so only 8 bytes are needed here. &nbsp;Binary is used so editing the 2 bits
 per 2x2 tile area is easier:</p>
-<div class="highlight-ca65"><div class="highlight"><pre><span></span>attribute:
-  .db %00000000, %00010000, %0010000, %00010000, %00000000, %00000000, %00000000, %00110000
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="nl">attribute:</span>
+  <span class="kp">.db</span> <span class="mb">%00000000</span><span class="p">,</span> <span class="mb">%00010000</span><span class="p">,</span> <span class="mb">%0010000</span><span class="p">,</span> <span class="mb">%00010000</span><span class="p">,</span> <span class="mb">%00000000</span><span class="p">,</span> <span class="mb">%00000000</span><span class="p">,</span> <span class="mb">%00000000</span><span class="p">,</span> <span class="mb">%00110000</span>
 </pre></div>
 </div>
 <p>And finally the same color palette as SMB is used:</p>
-<div class="highlight-ca65"><div class="highlight"><pre><span></span>palette:
-  .db $22,$29,$1A,$0F,  $22,$36,$17,$0F,  $22,$30,$21,$0F,  $22,$27,$17,$0F
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="nl">palette:</span>
+  <span class="kp">.db</span> <span class="mh">$22</span><span class="p">,</span><span class="mh">$29</span><span class="p">,</span><span class="mh">$1A</span><span class="p">,</span><span class="mh">$0F</span><span class="p">,</span>  <span class="mh">$22</span><span class="p">,</span><span class="mh">$36</span><span class="p">,</span><span class="mh">$17</span><span class="p">,</span><span class="mh">$0F</span><span class="p">,</span>  <span class="mh">$22</span><span class="p">,</span><span class="mh">$30</span><span class="p">,</span><span class="mh">$21</span><span class="p">,</span><span class="mh">$0F</span><span class="p">,</span>  <span class="mh">$22</span><span class="p">,</span><span class="mh">$27</span><span class="p">,</span><span class="mh">$17</span><span class="p">,</span><span class="mh">$0F</span>
 </pre></div>
 </div>
 <p>Just like our previous palette loading, a loop is used to copy a
@@ -150,34 +142,34 @@ specific number of bytes from a memory location to the PPU. &nbsp;First the
 PPU address is set to the beginning of the nametable at $2000. &nbsp;Then our
 128 bytes of background data are copied. &nbsp;Next the PPU address is set to
 the beginning of the attribute table at $23C0 and 8 bytes are copied:</p>
-<div class="highlight-ca65"><div class="highlight"><pre><span></span>LoadBackground:
-  LDA $2002             ; read PPU status to reset the high/low latch
-  LDA #$20
-  STA $2006             ; write the high byte of $2000 address
-  LDA #$00
-  STA $2006             ; write the low byte of $2000 address
-  LDX #$00              ; start out at 0
-LoadBackgroundLoop:
-  LDA background, x     ; load data from address (background + the value in x)
-  STA $2007             ; write to PPU
-  INX                   ; X = X + 1
-  CPX #$80              ; Compare X to hex $80, decimal 128 - copying 128 bytes
-  BNE LoadBackgroundLoop  ; Branch to LoadBackgroundLoop if compare was Not Equal to zero
-                        ; if compare was equal to 128, keep going down
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="nl">LoadBackground:</span>
+  <span class="k">LDA</span> <span class="mh">$2002</span>             <span class="c1">; read PPU status to reset the high/low latch</span>
+  <span class="k">LDA</span> <span class="p">#</span><span class="mh">$20</span>
+  <span class="k">STA</span> <span class="mh">$2006</span>             <span class="c1">; write the high byte of $2000 address</span>
+  <span class="k">LDA</span> <span class="p">#</span><span class="mh">$00</span>
+  <span class="k">STA</span> <span class="mh">$2006</span>             <span class="c1">; write the low byte of $2000 address</span>
+  <span class="k">LDX</span> <span class="p">#</span><span class="mh">$00</span>              <span class="c1">; start out at 0</span>
+<span class="nl">LoadBackgroundLoop:</span>
+  <span class="k">LDA</span> <span class="n">background</span><span class="p">,</span> <span class="n">x</span>     <span class="c1">; load data from address (background + the value in x)</span>
+  <span class="k">STA</span> <span class="mh">$2007</span>             <span class="c1">; write to PPU</span>
+  <span class="k">INX</span>                   <span class="c1">; X = X + 1</span>
+  <span class="k">CPX</span> <span class="p">#</span><span class="mh">$80</span>              <span class="c1">; Compare X to hex $80, decimal 128 - copying 128 bytes</span>
+  <span class="k">BNE</span> <span class="n">LoadBackgroundLoop</span>  <span class="c1">; Branch to LoadBackgroundLoop if compare was Not Equal to zero</span>
+                        <span class="c1">; if compare was equal to 128, keep going down</span>
 
-LoadAttribute:
-  LDA $2002             ; read PPU status to reset the high/low latch
-  LDA #$23
-  STA $2006             ; write the high byte of $23C0 address
-  LDA #$C0
-  STA $2006             ; write the low byte of $23C0 address
-  LDX #$00              ; start out at 0
-LoadAttributeLoop:
-  LDA attribute, x      ; load data from address (attribute + the value in x)
-  STA $2007             ; write to PPU
-  INX                   ; X = X + 1
-  CPX #$08              ; Compare X to hex $08, decimal 8 - copying 8 bytes
-  BNE LoadAttributeLoop
+<span class="nl">LoadAttribute:</span>
+  <span class="k">LDA</span> <span class="mh">$2002</span>             <span class="c1">; read PPU status to reset the high/low latch</span>
+  <span class="k">LDA</span> <span class="p">#</span><span class="mh">$23</span>
+  <span class="k">STA</span> <span class="mh">$2006</span>             <span class="c1">; write the high byte of $23C0 address</span>
+  <span class="k">LDA</span> <span class="p">#</span><span class="mh">$C0</span>
+  <span class="k">STA</span> <span class="mh">$2006</span>             <span class="c1">; write the low byte of $23C0 address</span>
+  <span class="k">LDX</span> <span class="p">#</span><span class="mh">$00</span>              <span class="c1">; start out at 0</span>
+<span class="nl">LoadAttributeLoop:</span>
+  <span class="k">LDA</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">x</span>      <span class="c1">; load data from address (attribute + the value in x)</span>
+  <span class="k">STA</span> <span class="mh">$2007</span>             <span class="c1">; write to PPU</span>
+  <span class="k">INX</span>                   <span class="c1">; X = X + 1</span>
+  <span class="k">CPX</span> <span class="p">#</span><span class="mh">$08</span>              <span class="c1">; Compare X to hex $08, decimal 8 - copying 8 bytes</span>
+  <span class="k">BNE</span> <span class="n">LoadAttributeLoop</span>
 </pre></div>
 </div>
 <p>The final changes are to tell the PPU to use the Pattern Table 0
@@ -200,7 +192,7 @@ graphics for sprites, and Pattern Table 1 for background:</p>
 </div>
 <div class="section" id="putting-it-all-together">
 <h2>6.5. Putting It All Together<a class="headerlink" href="#putting-it-all-together" title="Permalink to this headline">¶</a></h2>
-<p>Download and unzip the <a class="reference download internal" href="../_downloads/background2.zip"><tt class="xref download docutils literal"><span class="pre">background2.zip</span></tt></a>&nbsp;sample files.&nbsp; All the code above is in the
+<p>Download and unzip the <a class="reference download internal" href="../_downloads/background2.zip" download=""><code class="xref download docutils literal"><span class="pre">background2.zip</span></code></a>&nbsp;sample files.&nbsp; All the code above is in the
 background.asm file.&nbsp; Make sure that file, mario.chr, and background.bat is in
 the same folder as NESASM, then double click on background.bat.&nbsp; That will run
 NESASM and should produce background.nes.&nbsp; Run that NES file in FCEUXD SP to
@@ -219,7 +211,7 @@ further down.</p>
           </div>
         </div>
       </div>
-      <div class="sphinxsidebar">
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
   <h3><a href="../index.html">Table Of Contents</a></h3>
   <ul>
@@ -232,54 +224,52 @@ further down.</p>
 </ul>
 </li>
 </ul>
-
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="multiplesprites.html"
-                        title="previous chapter">5. multiple sprites, reading controllers, more instructions</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="subroutines.html"
-                        title="next chapter">7. subroutines, game layout, starting Pong</a></p>
-  <h3>This Page</h3>
-  <ul class="this-page-menu">
-    <li><a href="../_sources/nerdynights/backgrounds.txt"
-           rel="nofollow">Show Source</a></li>
-  </ul>
-<div id="searchbox" style="display: none">
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../nerdynights.html">Nerdy Nights</a><ul>
+      <li>Previous: <a href="multiplesprites.html" title="previous chapter">5. multiple sprites, reading controllers, more instructions</a></li>
+      <li>Next: <a href="subroutines.html" title="next chapter">7. subroutines, game layout, starting Pong</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/nerdynights/backgrounds.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
-      <input type="submit" value="Go" />
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
       <input type="hidden" name="check_keywords" value="yes" />
       <input type="hidden" name="area" value="default" />
     </form>
-    <p class="searchtip" style="font-size: 90%">
-    Enter search terms or a module, class or function name.
-    </p>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="subroutines.html" title="7. subroutines, game layout, starting Pong"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="multiplesprites.html" title="5. multiple sprites, reading controllers, more instructions"
-             >previous</a> |</li>
-        <li><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &raquo;</li>
-          <li><a href="../nerdynights.html" >Nerdy Nights</a> &raquo;</li> 
-      </ul>
-    </div>
     <div class="footer">
-        &copy; Copyright 2017, bunnyboy, MetalSlime, Taywee.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+      &copy;2017, bunnyboy, MetalSlime, Taywee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.1</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.9</a>
+      
+      |
+      <a href="../_sources/nerdynights/backgrounds.rst.txt"
+          rel="nofollow">Page source</a>
     </div>
+
+    
+
+    
   </body>
 </html>
