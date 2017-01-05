@@ -423,10 +423,9 @@ So if you want to enable the sprites, you set bit 3 to 1. For this program bits
 Putting It All Together
 -----------------------
 
-Download and unzip the `background.zip
-<http://www.nespowerpak.com/nesasm/background.zip>`__ sample files. All the
-code above is in the background.asm file. Make sure that file, mario.chr, and
-background.bat is in the same folder as `NESASM3
+Download and unzip the :download:`background.zip <files/background.zip>` sample
+files. All the code above is in the background.asm file. Make sure that file,
+mario.chr, and background.bat is in the same folder as `NESASM3
 <http://www.nespowerpak.com/nesasm/NESASM3.zip>`__, then double click on
 background.bat. That will run NESASM3 and should produce background.nes. Run
 that NES file in `FCEUXD SP

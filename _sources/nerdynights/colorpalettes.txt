@@ -17,7 +17,7 @@ palette corresponds to one of the 64 base colors the NES can display.
 $0D is a bad color and should not be used. These colors are not exact
 and will look different on emulators and TVs.
 
-|image0|
+|palette|
 
 The palettes start at PPU address $3F00 and $3F10. To set this address,
 PPU address port $2006 is used. This port must be written twice, once
@@ -173,15 +173,14 @@ And the new code to set up the sprite data::
 Putting It All Together
 -----------------------
 
-Download and unzip the
-`sprites.zip <http://www.nespowerpak.com/nesasm/sprites.zip>`__ sample
-files. All the code above is in the sprites.asm file. Make sure
-sprites.asm, mario.chr, and sprites.bat are all in the same folder as
-NESASM3, then double click sprites.bat. That will run NESASM3 and should
-produce the sprites.nes file. Run that NES file in FCEUXD SP to see your
-sprite! Tile number 0 is the back of Mario's head and hat, can you see
-it? Edit sprites.asm to change the sprite position (0 to 255), or to
-change the color palette for the sprite (0 to 3). You can choose the PPU
-viewer in FCEUXD SP to see both Pattern Tables, and both Palettes.
+Download and unzip the `sprites.zip <files/sprites.zip>` sample files. All the
+code above is in the sprites.asm file. Make sure sprites.asm, mario.chr, and
+sprites.bat are all in the same folder as NESASM3, then double click
+sprites.bat. That will run NESASM3 and should produce the sprites.nes file. Run
+that NES file in FCEUXD SP to see your sprite! Tile number 0 is the back of
+Mario's head and hat, can you see it? Edit sprites.asm to change the sprite
+position (0 to 255), or to change the color palette for the sprite (0 to 3).
+You can choose the PPU viewer in FCEUXD SP to see both Pattern Tables, and both
+Palettes.
 
-.. |image0| image:: http://www.NintendoAgeMedia.com/users/142/photobucket/4924FAF3-9FC9-CED2-8403873F9EA75342.png
+.. |palette| image:: images/4924FAF3-9FC9-CED2-8403873F9EA75342.png

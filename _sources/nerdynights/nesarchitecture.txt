@@ -52,9 +52,9 @@ instructions run on the CPU and sends out commands to the APU and PPU. The NOAC
 (NES On A Chip) clones like the Yobo and NEX put all of these parts onto one
 chip.
 
-|image0|
+|nesarchitecture|
 
-|image1|
+|nesboard|
 
 There is only 2KB of RAM connected to the CPU for storing variables, and 2KB of
 RAM connected to the PPU for holding two TV screens of background graphics.
@@ -113,7 +113,7 @@ like the MMC3 allowed up to 512KB of PRG, and 256KB of CHR. There is no limit
 to the memory size if you create a new mapper chip, but 128KB PRG and 64KB CHR
 was the most common size.
 
-|image2|
+|cpumemmap|
 
 PPU Overview
 ------------
@@ -142,7 +142,7 @@ for a border before drawing important information.
 NTSC runs at 60Hz and PAL runs at 50Hz. Running an NTSC game on a PAL system
 will be slower because of this timing difference. Sounds will also be slower.
 
-|image3|
+|ppumemmap|
 
 Graphics System Overview
 ========================
@@ -201,7 +201,7 @@ To display a tile on screen, the pixel color index is taken from the Pattern
 Table and the Attribute Table. That index is then looked up in the Palette to
 get the actual color.
 
-|image4|
+|pputile|
 
 To see all the graphics, download the `FCEUXD SP emulator
 <http://www.the-interweb.com/serendipity/exit.php?url_id=627&entry_id=90>`__.
@@ -212,8 +212,8 @@ show you the backgrounds as they will appear on screen. If you choose a game
 that scrolls like SMB you can see the off screen background sections being
 updated.
 
-.. |image0| image:: http://www.nesmuseum.com/images/nesarchitecture.png
-.. |image1| image:: http://www.nesmuseum.com/images/nesboard.png
-.. |image2| image:: http://www.nesmuseum.com/images/cpumemmap.png
-.. |image3| image:: http://www.nesmuseum.com/images/ppumemmap.png
-.. |image4| image:: http://www.nesmuseum.com/images/pputile.png
+.. |nesarchitecture| image:: images/nesarchitecture.png
+.. |nesboard| image:: images/nesboard.png
+.. |cpumemmap| image:: images/cpumemmap.png
+.. |ppumemmap| image:: images/ppumemmap.png
+.. |pputile| image:: images/pputile.png

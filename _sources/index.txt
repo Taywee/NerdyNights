@@ -3,8 +3,9 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
+#######################
 Welcome to Nerdy Nights
-=======================
+#######################
 
 This is a sphinx-translated version of the `Nerdy Nights`_ NES
 programming tutorial.
@@ -13,10 +14,10 @@ programming tutorial.
     This is a work in progress, and not the original work
 
     I am not any of the original writer of Nerdy Nights.  It is also not
-    finished.  Most of the base tutorial hasn't been properly formatted, and
-    the rest of the tutorials haven't even been imported.  As long as this
-    warning is here, you're probably better off checking out the original
-    `Nerdy Nights`_ instead.
+    finished.  Most of the base tutorial is done, but Advanced Nerdy Nights,
+    Hacking 1, and Sound all need to be converted and set up.  As long as this
+    warning is here, you might be better off checking out the original `Nerdy
+    Nights`_ instead.
 
 .. toctree::
    :maxdepth: 2
@@ -26,8 +27,9 @@ programming tutorial.
    hacking
    sound
 
+##################
 Indices and tables
-==================
+##################
 
 * :ref:`genindex`
 * :ref:`modindex`

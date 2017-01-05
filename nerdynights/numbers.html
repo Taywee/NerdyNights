@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>&lt;no title&gt; &mdash; Nerdy Nights 1.0.0 documentation</title>
+    <title>9. Numbers, Bin to Dec &mdash; Nerdy Nights 1.0.0 documentation</title>
     
     <link rel="stylesheet" href="../_static/default.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
@@ -25,8 +25,8 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="Nerdy Nights 1.0.0 documentation" href="../index.html" />
     <link rel="up" title="Nerdy Nights" href="../nerdynights.html" />
-    <link rel="next" title="&lt;no title&gt;" href="../advancednerdynights.html" />
-    <link rel="prev" title="&lt;no title&gt;" href="bitmath.html" /> 
+    <link rel="next" title="Advanced Nerdy Nights" href="../advancednerdynights.html" />
+    <link rel="prev" title="8. 16 bit math, pointers, nested loops" href="bitmath.html" /> 
   </head>
   <body>
     <div class="related">
@@ -36,10 +36,10 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="../advancednerdynights.html" title="&lt;no title&gt;"
+          <a href="../advancednerdynights.html" title="Advanced Nerdy Nights"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="bitmath.html" title="&lt;no title&gt;"
+          <a href="bitmath.html" title="8. 16 bit math, pointers, nested loops"
              accesskey="P">previous</a> |</li>
         <li><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &raquo;</li>
           <li><a href="../nerdynights.html" accesskey="U">Nerdy Nights</a> &raquo;</li> 
@@ -51,124 +51,119 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div><p><strong>This Week</strong>: NES uses binary and hex, but your gamers want to read in
-decimal? Here are two solutions for displaying scores and other numbers
-in a readable way.</p>
-<blockquote>
-<div><strong>BCD Mode</strong>
-The 6502 processor has a mode called BCD, or Binary Coded Decimal,</div></blockquote>
-<p>where the adc/sbc instructions properly handle decimal numbers instead
-of binary numbers. The NES is not a full 6502 processor and does not
-include this mode. Be careful when you are searching for code to not
-copy any that uses that mode, or you will get incorrect results. If the
-code is doing a SED instruction, it is enabling the decimal mode and you
-should not use it. Instead you get to do all the decimal handling
-yourself!
-** Storing Digits**</p>
-<blockquote>
-<div>The first method uses more code, but may be easier to understand. Say</div></blockquote>
-<p>your score is a 5 digit number. You will make 5 variables, one for each
-digit. Those variables will only count from 0 to 9 so you need to write
-code to handle addition and subtraction. Super Mario uses this method.
-It&#8217;s lowest digit is always 0, so that isn&#8217;t actually stored in a
-variable. Instead it is just a permanent part of the background.</p>
-<blockquote>
-<div>We will start with just incrementing a 3 digit number to see how its</div></blockquote>
-<p>done:</p>
-<div class="highlight-ca65"><div class="highlight"><pre><span></span>   <span class="nl">IncOnes:</span>
-     <span class="k">LDA</span> <span class="n">onesDigit</span>     <span class="c1">; load the lowest digit of the number</span>
-     <span class="k">CLC</span>
-     <span class="k">ADC</span> <span class="p">#</span><span class="mh">$01</span>          <span class="c1">; add one</span>
-     <span class="k">STA</span> <span class="n">onesDigit</span>
-     <span class="k">CMP</span> <span class="p">#</span><span class="mh">$0A</span>          <span class="c1">; check if it overflowed, now equals 10</span>
-     <span class="k">BNE</span> <span class="n">IncDone</span>       <span class="c1">; if there was no overflow, all done</span>
-   <span class="nl">IncTens:</span>
-     <span class="k">LDA</span> <span class="p">#</span><span class="mh">$00</span>
-     <span class="k">STA</span> <span class="n">onesDigit</span>     <span class="c1">; wrap digit to 0</span>
-     <span class="k">LDA</span> <span class="n">tensDigit</span>     <span class="c1">; load the next digit</span>
-     <span class="k">CLC</span>
-     <span class="k">ADC</span> <span class="p">#</span><span class="mh">$01</span>          <span class="c1">; add one, the carry from previous digit</span>
-     <span class="k">STA</span> <span class="n">tensDigit</span>
-     <span class="k">CMP</span> <span class="p">#</span><span class="mh">$0A</span>          <span class="c1">; check if it overflowed, now equals 10</span>
-     <span class="k">BNE</span> <span class="n">IncDone</span>       <span class="c1">; if there was no overflow, all done</span>
-   <span class="nl">IncHundreds:</span>
-     <span class="k">LDA</span> <span class="p">#</span><span class="mh">$00</span>
-     <span class="k">STA</span> <span class="n">tensDigit</span>     <span class="c1">; wrap digit to 0</span>
-     <span class="k">LDA</span> <span class="n">hundredsDigit</span> <span class="c1">; load the next digit</span>
-     <span class="k">CLC</span>
-     <span class="k">ADC</span> <span class="p">#</span><span class="mh">$01</span>          <span class="c1">; add one, the carry from previous digit</span>
-     <span class="k">STA</span> <span class="n">hundredsDigit</span>
-   <span class="nl">IncDone:</span>
-
-<span class="n">When</span> <span class="n">the</span> <span class="n">subroutine</span> <span class="n">starts</span><span class="p">,</span> <span class="n">the</span> <span class="n">ones</span> <span class="n">digit</span> <span class="n">is</span> <span class="n">incremented.</span> <span class="n">Then</span> <span class="n">it</span> <span class="n">is</span>
+  <div class="section" id="numbers-bin-to-dec">
+<h1>9. Numbers, Bin to Dec<a class="headerlink" href="#numbers-bin-to-dec" title="Permalink to this headline">¶</a></h1>
+<div class="admonition-this-week admonition">
+<p class="first admonition-title">This Week</p>
+<p class="last">NES uses binary and hex, but your gamers want to read in decimal? Here are two
+solutions for displaying scores and other numbers in a readable way.</p>
+</div>
+<div class="section" id="bcd-mode">
+<h2>9.1. BCD Mode<a class="headerlink" href="#bcd-mode" title="Permalink to this headline">¶</a></h2>
+<p>The 6502 processor has a mode called BCD, or Binary Coded Decimal, where the
+adc/sbc instructions properly handle decimal numbers instead of binary numbers.
+The NES is not a full 6502 processor and does not include this mode. Be careful
+when you are searching for code to not copy any that uses that mode, or you
+will get incorrect results. If the code is doing a SED instruction, it is
+enabling the decimal mode and you should not use it. Instead you get to do all
+the decimal handling yourself!</p>
+</div>
+<div class="section" id="storing-digits">
+<h2>9.2. Storing Digits<a class="headerlink" href="#storing-digits" title="Permalink to this headline">¶</a></h2>
+<p>The first method uses more code, but may be easier to understand. Say your
+score is a 5 digit number. You will make 5 variables, one for each digit. Those
+variables will only count from 0 to 9 so you need to write code to handle
+addition and subtraction. Super Mario uses this method.  It&#8217;s lowest digit is
+always 0, so that isn&#8217;t actually stored in a variable. Instead it is just a
+permanent part of the background.</p>
+<p>We will start with just incrementing a 3 digit number to see how its done:</p>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="nl">IncOnes:</span>
+  <span class="k">LDA</span> <span class="n">onesDigit</span>     <span class="c1">; load the lowest digit of the number</span>
+  <span class="k">CLC</span>
+  <span class="k">ADC</span> <span class="p">#</span><span class="mh">$01</span>          <span class="c1">; add one</span>
+  <span class="k">STA</span> <span class="n">onesDigit</span>
+  <span class="k">CMP</span> <span class="p">#</span><span class="mh">$0A</span>          <span class="c1">; check if it overflowed, now equals 10</span>
+  <span class="k">BNE</span> <span class="n">IncDone</span>       <span class="c1">; if there was no overflow, all done</span>
+<span class="nl">IncTens:</span>
+  <span class="k">LDA</span> <span class="p">#</span><span class="mh">$00</span>
+  <span class="k">STA</span> <span class="n">onesDigit</span>     <span class="c1">; wrap digit to 0</span>
+  <span class="k">LDA</span> <span class="n">tensDigit</span>     <span class="c1">; load the next digit</span>
+  <span class="k">CLC</span>
+  <span class="k">ADC</span> <span class="p">#</span><span class="mh">$01</span>          <span class="c1">; add one, the carry from previous digit</span>
+  <span class="k">STA</span> <span class="n">tensDigit</span>
+  <span class="k">CMP</span> <span class="p">#</span><span class="mh">$0A</span>          <span class="c1">; check if it overflowed, now equals 10</span>
+  <span class="k">BNE</span> <span class="n">IncDone</span>       <span class="c1">; if there was no overflow, all done</span>
+<span class="nl">IncHundreds:</span>
+  <span class="k">LDA</span> <span class="p">#</span><span class="mh">$00</span>
+  <span class="k">STA</span> <span class="n">tensDigit</span>     <span class="c1">; wrap digit to 0</span>
+  <span class="k">LDA</span> <span class="n">hundredsDigit</span> <span class="c1">; load the next digit</span>
+  <span class="k">CLC</span>
+  <span class="k">ADC</span> <span class="p">#</span><span class="mh">$01</span>          <span class="c1">; add one, the carry from previous digit</span>
+  <span class="k">STA</span> <span class="n">hundredsDigit</span>
+<span class="nl">IncDone:</span>
 </pre></div>
 </div>
-<p>checked if it equals $0A which is decimal 10. That number doesn&#8217;t fit in
-just one digit, so the ones digit is set to 0 and the tens digit is
-incremented. The tens digit is then checked in the same way, and the
-chain continues for as many digits as you want.</p>
-<blockquote>
-<div>The same process is used for decrementing, except you check for</div></blockquote>
-<dl class="docutils">
-<dt>underflow (digit=$FF) and wrap the digit to $09.</dt>
-<dd>Adding two numbers is the same idea, except other than checking if each</dd>
-</dl>
-<p>digit equals $0A you need to check if the digit is $0A or above. So
-instead of BEQ the opcode will be BCC.</p>
-<div class="highlight-ca65"><div class="highlight"><pre><span></span>   <span class="nl">AddOnes:</span>
-     <span class="k">LDA</span> <span class="n">onesDigit</span>      <span class="c1">; load the lowest digit of the number</span>
-     <span class="k">CLC</span>
-     <span class="k">ADC</span> <span class="n">onesAdd</span>        <span class="c1">; add new number, no carry</span>
-     <span class="k">STA</span> <span class="n">onesDigit</span>
-     <span class="k">CMP</span> <span class="p">#</span><span class="mh">$0A</span>           <span class="c1">; check if digit went above 9. If accumulator &gt;= $0A, carry is set</span>
-     <span class="k">BCC</span> <span class="n">AddTens</span>        <span class="c1">; if carry is clear, all done with ones digit</span>
-                        <span class="c1">; carry was set, so we need to handle wrapping</span>
-     <span class="k">LDA</span> <span class="n">onesDigit</span>
-     <span class="k">SEC</span>
-     <span class="k">SBC</span> <span class="p">#</span><span class="mh">$0A</span>           <span class="c1">; subtract off what doesnt fit in 1 digit</span>
-     <span class="k">STA</span> <span class="n">onesDigit</span>      <span class="c1">; then store the rest</span>
-     <span class="k">INC</span> <span class="n">tensDigit</span>      <span class="c1">; increment the tens digit</span>
-   <span class="nl">AddTens:</span>
-     <span class="k">LDA</span> <span class="n">tensDigit</span>      <span class="c1">; load the next digit</span>
-     <span class="k">CLC</span>
-     <span class="k">ADC</span> <span class="n">tensAdd</span>        <span class="c1">; add new number</span>
-     <span class="k">STA</span> <span class="n">tensDigit</span>
-     <span class="k">CMP</span> <span class="p">#</span><span class="mh">$0A</span>           <span class="c1">; check if digit went above 9</span>
-     <span class="k">BCC</span> <span class="n">AddHundreds</span>    <span class="c1">; no carry, digit done</span>
-     <span class="k">LDA</span> <span class="n">tensDigit</span>
-     <span class="k">SEC</span>
-     <span class="k">SBC</span> <span class="p">#</span><span class="mh">$0A</span>           <span class="c1">; subtract off what doesnt fit in 1 digit</span>
-     <span class="k">STA</span> <span class="n">tensDigit</span>      <span class="c1">; then store the rest</span>
-     <span class="k">INC</span> <span class="n">hundredsDigit</span>  <span class="c1">; increment the hundreds digit</span>
-   <span class="nl">AddHundreds:</span>
-     <span class="k">LDA</span> <span class="n">hundredsDigit</span>  <span class="c1">; load the next digit</span>
-     <span class="k">CLC</span>
-     <span class="k">ADC</span> <span class="n">hundredsAdd</span>    <span class="c1">; add new number</span>
-     <span class="k">STA</span> <span class="n">hundredsDigit</span>
-   <span class="nl">AddDone:</span>
-
-<span class="n">When</span> <span class="n">that</span> <span class="n">code</span> <span class="n">is</span> <span class="n">all</span> <span class="n">done</span><span class="p">,</span> <span class="n">the</span> <span class="n">ones</span><span class="o">/</span><span class="n">tens</span><span class="o">/</span><span class="n">hundreds</span> <span class="n">digits</span> <span class="n">will</span> <span class="n">hold</span> <span class="n">the</span>
+<p>When the subroutine starts, the ones digit is incremented. Then it is checked
+if it equals $0A which is decimal 10. That number doesn&#8217;t fit in just one
+digit, so the ones digit is set to 0 and the tens digit is incremented. The
+tens digit is then checked in the same way, and the chain continues for as many
+digits as you want.</p>
+<p>The same process is used for decrementing, except you check for underflow
+(digit=$FF) and wrap the digit to $09.</p>
+<p>Adding two numbers is the same idea, except other than checking if each digit
+equals $0A you need to check if the digit is $0A or above. So instead of BEQ
+the opcode will be BCC:</p>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="nl">AddOnes:</span>
+  <span class="k">LDA</span> <span class="n">onesDigit</span>      <span class="c1">; load the lowest digit of the number</span>
+  <span class="k">CLC</span>
+  <span class="k">ADC</span> <span class="n">onesAdd</span>        <span class="c1">; add new number, no carry</span>
+  <span class="k">STA</span> <span class="n">onesDigit</span>
+  <span class="k">CMP</span> <span class="p">#</span><span class="mh">$0A</span>           <span class="c1">; check if digit went above 9. If accumulator &gt;= $0A, carry is set</span>
+  <span class="k">BCC</span> <span class="n">AddTens</span>        <span class="c1">; if carry is clear, all done with ones digit</span>
+                     <span class="c1">; carry was set, so we need to handle wrapping</span>
+  <span class="k">LDA</span> <span class="n">onesDigit</span>
+  <span class="k">SEC</span>
+  <span class="k">SBC</span> <span class="p">#</span><span class="mh">$0A</span>           <span class="c1">; subtract off what doesnt fit in 1 digit</span>
+  <span class="k">STA</span> <span class="n">onesDigit</span>      <span class="c1">; then store the rest</span>
+  <span class="k">INC</span> <span class="n">tensDigit</span>      <span class="c1">; increment the tens digit</span>
+<span class="nl">AddTens:</span>
+  <span class="k">LDA</span> <span class="n">tensDigit</span>      <span class="c1">; load the next digit</span>
+  <span class="k">CLC</span>
+  <span class="k">ADC</span> <span class="n">tensAdd</span>        <span class="c1">; add new number</span>
+  <span class="k">STA</span> <span class="n">tensDigit</span>
+  <span class="k">CMP</span> <span class="p">#</span><span class="mh">$0A</span>           <span class="c1">; check if digit went above 9</span>
+  <span class="k">BCC</span> <span class="n">AddHundreds</span>    <span class="c1">; no carry, digit done</span>
+  <span class="k">LDA</span> <span class="n">tensDigit</span>
+  <span class="k">SEC</span>
+  <span class="k">SBC</span> <span class="p">#</span><span class="mh">$0A</span>           <span class="c1">; subtract off what doesnt fit in 1 digit</span>
+  <span class="k">STA</span> <span class="n">tensDigit</span>      <span class="c1">; then store the rest</span>
+  <span class="k">INC</span> <span class="n">hundredsDigit</span>  <span class="c1">; increment the hundreds digit</span>
+<span class="nl">AddHundreds:</span>
+  <span class="k">LDA</span> <span class="n">hundredsDigit</span>  <span class="c1">; load the next digit</span>
+  <span class="k">CLC</span>
+  <span class="k">ADC</span> <span class="n">hundredsAdd</span>    <span class="c1">; add new number</span>
+  <span class="k">STA</span> <span class="n">hundredsDigit</span>
+<span class="nl">AddDone:</span>
 </pre></div>
 </div>
-<p>new value. With both code samples there is no check at the end of the
-hundreds digit. That means when the full number is 999 and you add one
-more, the result will be wrong! In your code you can either wrap around
-all the digits to 0, or set all the digits to 999 again for a maximum
-value. Of course if your players are hitting the max they likely want
-more digits!</p>
-  <div>
-
-**Binary to Decimal Conversion**
-The second method of handling number displays uses less code, but could<p>use much more CPU time. The idea is to keep you numbers in plain binary
-form (8 or 16 bit variables) for the math, then convert them to decimal
-for displaying only. An 8 bit binary value will give you 3 decimal
-digits, and a 16 bit binary will give 5 decimal digits.</p>
-<blockquote>
-<div>This first example is coded to be understandable, not fast or small.</div></blockquote>
-<p>Each step compares the binary value to a significant decimal value (100
-and then 10). If the binary is larger, that value is subtracted from the
-binary and the final decimal digit is incremented. So for a text
-example:</p>
+<p>When that code is all done, the ones/tens/hundreds digits will hold the new
+value. With both code samples there is no check at the end of the hundreds
+digit. That means when the full number is 999 and you add one more, the result
+will be wrong! In your code you can either wrap around all the digits to 0, or
+set all the digits to 999 again for a maximum value. Of course if your players
+are hitting the max they likely want more digits!</p>
+</div>
+<div class="section" id="binary-to-decimal-conversion">
+<h2>9.3. Binary to Decimal Conversion<a class="headerlink" href="#binary-to-decimal-conversion" title="Permalink to this headline">¶</a></h2>
+<p>The second method of handling number displays uses less code, but could use
+much more CPU time. The idea is to keep you numbers in plain binary form (8 or
+16 bit variables) for the math, then convert them to decimal for displaying
+only. An 8 bit binary value will give you 3 decimal digits, and a 16 bit binary
+will give 5 decimal digits.  This first example is coded to be understandable,
+not fast or small.  Each step compares the binary value to a significant
+decimal value (100 and then 10). If the binary is larger, that value is
+subtracted from the binary and the final decimal digit is incremented. So for a
+text example:</p>
 <div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="n">initial</span> <span class="nl">binary:</span> <span class="mi">124</span>
 <span class="n">initial</span> <span class="nl">decimal:</span> <span class="mi">000</span>
 </pre></div>
@@ -208,13 +203,12 @@ example:</p>
 <span class="n">current</span> <span class="nl">decimal:</span> <span class="mi">120</span>
 </pre></div>
 </div>
-<div class="highlight-ca65"><div class="highlight"><pre><span></span>   <span class="n">etc</span> <span class="n">for</span> <span class="n">ones</span> <span class="n">digit</span>
-
-<span class="n">You</span> <span class="n">can</span> <span class="n">see</span> <span class="n">this</span> <span class="n">will</span> <span class="n">transfer</span> <span class="n">the</span> <span class="n">binary</span> <span class="n">to</span> <span class="n">decimal</span> <span class="n">one</span> <span class="n">digit</span> <span class="n">at</span> <span class="n">a</span>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="n">etc</span> <span class="n">for</span> <span class="n">ones</span> <span class="n">digit</span>
 </pre></div>
 </div>
-<p>time. For numbers with large digits (like 249) this will take longer
-than numbers with small digits (like 112). Here is the code:</p>
+<p>You can see this will transfer the binary to decimal one digit at a time. For
+numbers with large digits (like 249) this will take longer than numbers with
+small digits (like 112). Here is the code:</p>
 <div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="nl">HundredsLoop:</span>
   <span class="k">LDA</span> <span class="n">binary</span>
   <span class="k">CMP</span> <span class="p">#</span><span class="mi">100</span>             <span class="c1">; compare binary to 100</span>
@@ -239,28 +233,26 @@ than numbers with small digits (like 112). Here is the code:</p>
   <span class="k">JMP</span> <span class="n">TensLoop</span>         <span class="c1">; run the tens loop again</span>
 </pre></div>
 </div>
-<div class="highlight-ca65"><div class="highlight"><pre><span></span>   <span class="nl">OnesLoop:</span>
-     <span class="k">LDA</span> <span class="n">binary</span>
-     <span class="k">STA</span> <span class="n">onesDigit</span>        <span class="c1">; result is already under 10, can copy directly to result</span>
-
-<span class="n">This</span> <span class="n">code</span> <span class="n">can</span> <span class="n">be</span> <span class="n">expanded</span> <span class="n">to</span> <span class="mi">16</span> <span class="k">bit</span> <span class="n">numbers</span><span class="p">,</span> <span class="n">but</span> <span class="n">the</span> <span class="n">compares</span> <span class="n">become</span>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="nl">OnesLoop:</span>
+  <span class="k">LDA</span> <span class="n">binary</span>
+  <span class="k">STA</span> <span class="n">onesDigit</span>        <span class="c1">; result is already under 10, can copy directly to result</span>
 </pre></div>
 </div>
-<p>harder. Instead a more complex series of loops and shifts with a table
-is used. This code does shifting of the binary value into the carry bit
-to tell when to add numbers to the final decimal result. I did not write
-this code, it came from a post by Tokumaru at
-<a class="reference external" href="http://nesdev.parodius.com/bbs/viewtopic.php?p=10824&amp;sid=55359b42282d1e02b91bebcf1caf56ef#10824">http://nesdev.parodius.com/bbs/vi...</a>
-There are many more examples of different conversion styles at that
-forum thread.</p>
-<blockquote>
-<div>Notice there are no branches other than the loop running 16 times (one</div></blockquote>
-<p>for each binary input bit), so the conversion always takes the same
-number of cycles.</p>
-<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="n">tempBinary</span> <span class="o">-</span> <span class="mi">16</span> <span class="n">bits</span> <span class="n">input</span> <span class="n">binary</span> <span class="n">value</span>
-<span class="n">decimalResult</span> <span class="o">-</span> <span class="mi">5</span> <span class="n">bytes</span> <span class="n">for</span> <span class="n">the</span> <span class="n">decimal</span> <span class="n">result</span>
-</pre></div>
-</div>
+<p>This code can be expanded to 16 bit numbers, but the compares become harder.
+Instead a more complex series of loops and shifts with a table is used. This
+code does shifting of the binary value into the carry bit to tell when to add
+numbers to the final decimal result. I did not write this code, it came from a
+post by Tokumaru at <a class="reference external" href="http://nesdev.parodius.com/bbs/viewtopic.php?p=10824&amp;sid=55359b42282d1e02b91bebcf1caf56ef#10824">Parodius</a>.  There are many more examples of different
+conversion styles at that forum thread.</p>
+<p>Notice there are no branches other than the loop running 16 times (one
+for each binary input bit), so the conversion always takes the same
+number of cycles:</p>
+<dl class="docutils">
+<dt>tempBinary</dt>
+<dd>16 bits input binary value</dd>
+<dt>decimalResult</dt>
+<dd>5 bytes for the decimal result</dd>
+</dl>
 <div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="nl">BinaryToDecimal:</span>
    <span class="k">lda</span> <span class="p">#</span><span class="mh">$00</span>
    <span class="k">sta</span> <span class="n">decimalResult</span><span class="o">+</span><span class="mi">0</span>
@@ -296,50 +288,60 @@ number of cycles.</p>
    <span class="kp">.db</span> <span class="mh">$00</span><span class="p">,</span> <span class="mh">$01</span><span class="p">,</span> <span class="mh">$02</span><span class="p">,</span> <span class="mh">$03</span><span class="p">,</span> <span class="mh">$04</span><span class="p">,</span> <span class="mh">$80</span><span class="p">,</span> <span class="mh">$81</span><span class="p">,</span> <span class="mh">$82</span><span class="p">,</span> <span class="mh">$83</span><span class="p">,</span> <span class="mh">$84</span>
 </pre></div>
 </div>
-<dl class="docutils">
-<dt>** Displaying Numbers**</dt>
-<dd>Once you have your numbers in decimal format you need to display them</dd>
-</dl>
-<p>on the screen. With the code above all the results have 00000 = $00 $00
-$00 $00 $00. If your background tiles for digits start at tile 0 then
-that will work fine. However if you are using ASCII you will need to add
-an offset to each digit. The ASCII code for the digit 0 is $30, so you
-just add $30 to each digit before writing it to the background. If your
-code uses the first method of compare/wrapping digits, then you could
-compare to $3A and wrap to $30 to automatically handle this. You would
-just need to make sure you set each digit to $30 instead of $00 when
-clearing the number to 00000. You have control over where background
-tiles are located, so the offset for the digit tiles can be whatever you
-choose.
-** Putting It All Together**</p>
-<blockquote>
-<div>Download and unzip the</div></blockquote>
-<p><a class="reference external" href="http://www.nespowerpak.com/nesasm/pong2.zip">pong2.zip</a> sample
-files. The playing game state and ball movement code is in the pong2.asm
-file. Make sure that file, mario.chr, and pong2.bat is in the same
-folder as NESASM3, then double click on pong1.bat. That will run NESASM3
-and should produce pong2.nes. Run that NES file in FCEUXD SP to see the
-score! Right now the score just increments every time the ball bounces
-off a side wall.</p>
-<blockquote>
-<div>Try making two scoring variables and drawing them both. You can also</div></blockquote>
-<p>use the other binary to decimal converters to add more than 1 to the
-score each time. In the DrawScore you can also check the score digits
-and not draw any leading zeros. Instead replace them with spaces when
-you are drawing to the background.</p>
-</div></div>
+</div>
+<div class="section" id="displaying-numbers">
+<h2>9.4. Displaying Numbers<a class="headerlink" href="#displaying-numbers" title="Permalink to this headline">¶</a></h2>
+<p>Once you have your numbers in decimal format you need to display them on the
+screen. With the code above all the results have 00000 = $00 $00 $00 $00 $00.
+If your background tiles for digits start at tile 0 then that will work fine.
+However if you are using ASCII you will need to add an offset to each digit.
+The ASCII code for the digit 0 is $30, so you just add $30 to each digit before
+writing it to the background. If your code uses the first method of
+compare/wrapping digits, then you could compare to $3A and wrap to $30 to
+automatically handle this. You would just need to make sure you set each digit
+to $30 instead of $00 when clearing the number to 00000. You have control over
+where background tiles are located, so the offset for the digit tiles can be
+whatever you choose.</p>
+</div>
+<div class="section" id="putting-it-all-together">
+<h2>9.5. Putting It All Together<a class="headerlink" href="#putting-it-all-together" title="Permalink to this headline">¶</a></h2>
+<p>Download and unzip the <a class="reference download internal" href="../_downloads/pong2.zip"><tt class="xref download docutils literal"><span class="pre">pong2.zip</span></tt></a> sample files.
+The playing game state and ball movement code is in the pong2.asm file. Make
+sure that file, mario.chr, and pong2.bat is in the same folder as NESASM3, then
+double click on pong1.bat. That will run NESASM3 and should produce pong2.nes.
+Run that NES file in FCEUXD SP to see the score! Right now the score just
+increments every time the ball bounces off a side wall.</p>
+<p>Try making two scoring variables and drawing them both. You can also use the
+other binary to decimal converters to add more than 1 to the score each time.
+In the DrawScore you can also check the score digits and not draw any leading
+zeros. Instead replace them with spaces when you are drawing to the background.</p>
+</div>
+</div>
+
 
           </div>
         </div>
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">9. Numbers, Bin to Dec</a><ul>
+<li><a class="reference internal" href="#bcd-mode">9.1. BCD Mode</a></li>
+<li><a class="reference internal" href="#storing-digits">9.2. Storing Digits</a></li>
+<li><a class="reference internal" href="#binary-to-decimal-conversion">9.3. Binary to Decimal Conversion</a></li>
+<li><a class="reference internal" href="#displaying-numbers">9.4. Displaying Numbers</a></li>
+<li><a class="reference internal" href="#putting-it-all-together">9.5. Putting It All Together</a></li>
+</ul>
+</li>
+</ul>
+
   <h4>Previous topic</h4>
   <p class="topless"><a href="bitmath.html"
-                        title="previous chapter">&lt;no title&gt;</a></p>
+                        title="previous chapter">8. 16 bit math, pointers, nested loops</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="../advancednerdynights.html"
-                        title="next chapter">&lt;no title&gt;</a></p>
+                        title="next chapter">Advanced Nerdy Nights</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/nerdynights/numbers.txt"
@@ -369,10 +371,10 @@ you are drawing to the background.</p>
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="../advancednerdynights.html" title="&lt;no title&gt;"
+          <a href="../advancednerdynights.html" title="Advanced Nerdy Nights"
              >next</a> |</li>
         <li class="right" >
-          <a href="bitmath.html" title="&lt;no title&gt;"
+          <a href="bitmath.html" title="8. 16 bit math, pointers, nested loops"
              >previous</a> |</li>
         <li><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &raquo;</li>
           <li><a href="../nerdynights.html" >Nerdy Nights</a> &raquo;</li> 

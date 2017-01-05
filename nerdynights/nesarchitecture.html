@@ -94,8 +94,8 @@ inside one chip, and a PPU that displays graphics in another chip. Your code
 instructions run on the CPU and sends out commands to the APU and PPU. The NOAC
 (NES On A Chip) clones like the Yobo and NEX put all of these parts onto one
 chip.</p>
-<p><img alt="image0" src="http://www.nesmuseum.com/images/nesarchitecture.png" /></p>
-<p><img alt="image1" src="http://www.nesmuseum.com/images/nesboard.png" /></p>
+<p><img alt="nesarchitecture" src="../_images/nesarchitecture.png" /></p>
+<p><img alt="nesboard" src="../_images/nesboard.png" /></p>
 <p>There is only 2KB of RAM connected to the CPU for storing variables, and 2KB of
 RAM connected to the PPU for holding two TV screens of background graphics.
 Some carts add extra CPU RAM, called Work RAM or WRAM. If a cart needs to store
@@ -145,7 +145,7 @@ Those mappers can swap in different banks of PRG code or CHR graphics. Mappers
 like the MMC3 allowed up to 512KB of PRG, and 256KB of CHR. There is no limit
 to the memory size if you create a new mapper chip, but 128KB PRG and 64KB CHR
 was the most common size.</p>
-<p><img alt="image2" src="http://www.nesmuseum.com/images/cpumemmap.png" /></p>
+<p><img alt="cpumemmap" src="../_images/cpumemmap.png" /></p>
 </div>
 <div class="section" id="ppu-overview">
 <h3>2.1.3. PPU Overview<a class="headerlink" href="#ppu-overview" title="Permalink to this headline">¶</a></h3>
@@ -170,7 +170,7 @@ the top and bottom 8 rows are typically cut off by the NTSC TV resulting in
 for a border before drawing important information.</p>
 <p>NTSC runs at 60Hz and PAL runs at 50Hz. Running an NTSC game on a PAL system
 will be slower because of this timing difference. Sounds will also be slower.</p>
-<p><img alt="image3" src="http://www.nesmuseum.com/images/ppumemmap.png" /></p>
+<p><img alt="ppumemmap" src="../_images/ppumemmap.png" /></p>
 </div>
 </div>
 <div class="section" id="graphics-system-overview">
@@ -220,7 +220,7 @@ sprites. Each palette has 16 colors.</p>
 <p>To display a tile on screen, the pixel color index is taken from the Pattern
 Table and the Attribute Table. That index is then looked up in the Palette to
 get the actual color.</p>
-<p><img alt="image4" src="http://www.nesmuseum.com/images/pputile.png" /></p>
+<p><img alt="pputile" src="../_images/pputile.png" /></p>
 <p>To see all the graphics, download the <a class="reference external" href="http://www.the-interweb.com/serendipity/exit.php?url_id=627&amp;entry_id=90">FCEUXD SP emulator</a>.
 Open up your .NES game and choose PPU Viewer from the Tools menu. This will
 show you all the active background tiles, all the active sprite tiles, and the
