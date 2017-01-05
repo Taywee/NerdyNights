@@ -25,7 +25,7 @@
     <script type="text/javascript" src="../_static/doctools.js"></script>
     <link rel="top" title="Nerdy Nights 1.0.0 documentation" href="../index.html" />
     <link rel="up" title="Nerdy Nights" href="../nerdynights.html" />
-    <link rel="next" title="&lt;no title&gt;" href="colorpalettes.html" />
+    <link rel="next" title="Color Palettes, Sprites, second app" href="colorpalettes.html" />
     <link rel="prev" title="NES Architecture Overview" href="nesarchitecture.html" /> 
   </head>
   <body>
@@ -36,7 +36,7 @@
           <a href="../genindex.html" title="General Index"
              accesskey="I">index</a></li>
         <li class="right" >
-          <a href="colorpalettes.html" title="&lt;no title&gt;"
+          <a href="colorpalettes.html" title="Color Palettes, Sprites, second app"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="nesarchitecture.html" title="NES Architecture Overview"
@@ -81,7 +81,7 @@ horizontal position for the assembler to use them correctly.</p>
 code in memory. They start with a . and are indented. Some people use tabs, or
 4 spaces, and I use 2 spaces. This sample directive tells the assembler to put
 the code starting at memory location $8000, which is inside the game ROM area:</p>
-<div class="highlight-asm"><div class="highlight"><pre><span></span><span class="na">.org</span> <span class="no">$8000</span>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="kp">.org</span> <span class="mh">$8000</span>
 </pre></div>
 </div>
 </div>
@@ -90,17 +90,17 @@ the code starting at memory location $8000, which is inside the game ROM area:</
 <p>The label is aligned to the far left and has a : at the end. The label is just
 something you use to organize your code and make it easier to read. The
 assembler translates the label into an address. Sample label:</p>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>  <span class="na">.org</span> <span class="no">$8000</span>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span>  <span class="kp">.org</span> <span class="mh">$8000</span>
 <span class="nl">MyFunction:</span>
 </pre></div>
 </div>
 <p>When the assembler runs, it will do a find/replace to set MyFunction to
 $8000. The if you have any code that uses MyFunction like:</p>
-<div class="highlight-asm"><div class="highlight"><pre><span></span><span class="nf">STA</span> <span class="no">MyFunction</span>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="k">STA</span> <span class="n">MyFunction</span>
 </pre></div>
 </div>
 <p>It will find/replace to:</p>
-<div class="highlight-asm"><div class="highlight"><pre><span></span><span class="nf">STA</span> <span class="no">$8000</span>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="k">STA</span> <span class="mh">$8000</span>
 </pre></div>
 </div>
 </div>
@@ -109,9 +109,9 @@ $8000. The if you have any code that uses MyFunction like:</p>
 <p>The opcode is the instruction that the processor will run, and is indented like
 the directives. In this sample, JMP is the opcode that tells the processor to
 jump to the MyFunction label:</p>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>  <span class="na">.org</span> <span class="no">$8000</span>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span>  <span class="kp">.org</span> <span class="mh">$8000</span>
 <span class="nl">MyFunction:</span>
-  <span class="nf">JMP</span> <span class="no">MyFunction</span>
+  <span class="k">JMP</span> <span class="n">MyFunction</span>
 </pre></div>
 </div>
 </div>
@@ -119,10 +119,10 @@ jump to the MyFunction label:</p>
 <h3>Operands<a class="headerlink" href="#operands" title="Permalink to this headline">¶</a></h3>
 <p>The operands are additional information for the opcode. Opcodes have between
 one and three operands. In this example the #$FF is the operand:</p>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>  <span class="na">.org</span> <span class="no">$8000</span>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span>  <span class="kp">.org</span> <span class="mh">$8000</span>
 <span class="nl">MyFunction:</span>
-  <span class="nf">LDA</span> <span class="c">#$FF</span>
-  <span class="nf">JMP</span> <span class="no">MyFunction</span>
+  <span class="k">LDA</span> <span class="p">#</span><span class="mh">$FF</span>
+  <span class="k">JMP</span> <span class="n">MyFunction</span>
 </pre></div>
 </div>
 </div>
@@ -132,11 +132,11 @@ one and three operands. In this example the #$FF is the operand:</p>
 you write code and come back later, the comments will save you. You do not need
 a comment on every line, but should have enough to explain what is happening.
 Comments start with a ; and are completely ignored by the assembler. They can
-be put anywhere horizontally, but are usually spaced beyond the long lines.:</p>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>  .org $8000
-MyFunction:        ; loads FF into accumulator
-  LDA #$FF
-  JMP MyFunction
+be put anywhere horizontally, but are usually spaced beyond the long lines:</p>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span>  <span class="kp">.org</span> <span class="mh">$8000</span>
+<span class="nl">MyFunction:</span>        <span class="c1">; loads FF into accumulator</span>
+  <span class="k">LDA</span> <span class="p">#</span><span class="mh">$FF</span>
+  <span class="k">JMP</span> <span class="n">MyFunction</span>
 </pre></div>
 </div>
 <p>This code would just continually run the loop, loading the hex value $FF into
@@ -194,8 +194,8 @@ not covered in this tutorial.</p>
 <h3>Accumulator<a class="headerlink" href="#accumulator" title="Permalink to this headline">¶</a></h3>
 <p>The Accumulator (A) is the main 8 bit register for loading, storing, comparing,
 and doing math on data. Some of the most frequent operations are:</p>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>LDA #$FF  ;load the hex value $FF (decimal 256) into A
-STA $0000 ;store the accumulator into memory location $0000, internal RAM
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="k">LDA</span> <span class="p">#</span><span class="mh">$FF</span>  <span class="c1">;load the hex value $FF (decimal 256) into A</span>
+<span class="k">STA</span> <span class="mh">$0000</span> <span class="c1">;store the accumulator into memory location $0000, internal RAM</span>
 </pre></div>
 </div>
 </div>
@@ -205,8 +205,8 @@ STA $0000 ;store the accumulator into memory location $0000, internal RAM
 or memory access. In loops you will use this register to keep track of how many
 times the loop has gone, while using A to process data. Some frequent
 operations are:</p>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>LDX $0000 ;load the value at memory location $0000 into X
-INX       ;increment X   X = X + 1
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="k">LDX</span> <span class="mh">$0000</span> <span class="c1">;load the value at memory location $0000 into X</span>
+<span class="k">INX</span>       <span class="c1">;increment X   X = X + 1</span>
 </pre></div>
 </div>
 </div>
@@ -214,8 +214,8 @@ INX       ;increment X   X = X + 1
 <h3>Index Register Y<a class="headerlink" href="#index-register-y" title="Permalink to this headline">¶</a></h3>
 <p>The Index Register Y (Y) works almost the same as X. Some instructions (not
 covered here) only work with X and not Y. Some operations are:</p>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>STY $00BA ;store Y into memory location $00BA
-TYA       ;transfer Y into Accumulator
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="k">STY</span> <span class="mh">$00BA</span> <span class="c1">;store Y into memory location $00BA</span>
+<span class="k">TYA</span>       <span class="c1">;transfer Y into Accumulator</span>
 </pre></div>
 </div>
 </div>
@@ -233,109 +233,109 @@ different options which will be used later. There are also a few more
 complicated instructions to be covered later.</p>
 <div class="section" id="common-load-store-opcodes">
 <h3>Common Load/Store opcodes<a class="headerlink" href="#common-load-store-opcodes" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>LDA #$0A   ; LoaD the value 0A into the accumulator A
-           ; the number part of the opcode can be a value or an address
-           ; if the value is zero, the zero flag will be set.
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="k">LDA</span> <span class="p">#</span><span class="mh">$0A</span>   <span class="c1">; LoaD the value 0A into the accumulator A</span>
+           <span class="c1">; the number part of the opcode can be a value or an address</span>
+           <span class="c1">; if the value is zero, the zero flag will be set.</span>
 
-LDX $0000  ; LoaD the value at address $0000 into the index register X
-           ; if the value is zero, the zero flag will be set.
+<span class="k">LDX</span> <span class="mh">$0000</span>  <span class="c1">; LoaD the value at address $0000 into the index register X</span>
+           <span class="c1">; if the value is zero, the zero flag will be set.</span>
 
-LDY #$FF   ; LoaD the value $FF into the index register Y
-           ; if the value is zero, the zero flag will be set.
+<span class="k">LDY</span> <span class="p">#</span><span class="mh">$FF</span>   <span class="c1">; LoaD the value $FF into the index register Y</span>
+           <span class="c1">; if the value is zero, the zero flag will be set.</span>
 
-STA $2000  ; STore the value from accumulator A into the address $2000
-           ; the number part must be an address
+<span class="k">STA</span> <span class="mh">$2000</span>  <span class="c1">; STore the value from accumulator A into the address $2000</span>
+           <span class="c1">; the number part must be an address</span>
 
-STX $4016  ; STore value in X into $4016
-           ; the number part must be an address
+<span class="k">STX</span> <span class="mh">$4016</span>  <span class="c1">; STore value in X into $4016</span>
+           <span class="c1">; the number part must be an address</span>
 
-STY $0101  ; STore Y into $0101
-           ; the number part must be an address
+<span class="k">STY</span> <span class="mh">$0101</span>  <span class="c1">; STore Y into $0101</span>
+           <span class="c1">; the number part must be an address</span>
 
-TAX        ; Transfer the value from A into X
-           ; if the value is zero, the zero flag will be set
+<span class="k">TAX</span>        <span class="c1">; Transfer the value from A into X</span>
+           <span class="c1">; if the value is zero, the zero flag will be set</span>
 
-TAY        ; Transfer A into Y
-           ; if the value is zero, the zero flag will be set
+<span class="k">TAY</span>        <span class="c1">; Transfer A into Y</span>
+           <span class="c1">; if the value is zero, the zero flag will be set</span>
 
-TXA        ; Transfer X into A
-           ; if the value is zero, the zero flag will be set
+<span class="k">TXA</span>        <span class="c1">; Transfer X into A</span>
+           <span class="c1">; if the value is zero, the zero flag will be set</span>
 
-TYA        ; Transfer Y into A
-           ; if the value is zero, the zero flag will be set
+<span class="k">TYA</span>        <span class="c1">; Transfer Y into A</span>
+           <span class="c1">; if the value is zero, the zero flag will be set</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="common-math-opcodes">
 <h3>Common Math opcodes<a class="headerlink" href="#common-math-opcodes" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>ADC #$01   ; ADd with Carry
-           ; A = A + $01 + carry
-           ; if the result is zero, the zero flag will be set
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="k">ADC</span> <span class="p">#</span><span class="mh">$01</span>   <span class="c1">; ADd with Carry</span>
+           <span class="c1">; A = A + $01 + carry</span>
+           <span class="c1">; if the result is zero, the zero flag will be set</span>
 
-SBC #$80   ; SuBtract with Carry
-           ; A = A - $80 - (1 - carry)
-           ; if the result is zero, the zero flag will be set
+<span class="k">SBC</span> <span class="p">#</span><span class="mh">$80</span>   <span class="c1">; SuBtract with Carry</span>
+           <span class="c1">; A = A - $80 - (1 - carry)</span>
+           <span class="c1">; if the result is zero, the zero flag will be set</span>
 
-CLC        ; CLear Carry flag in status register
-           ; usually this should be done before ADC
+<span class="k">CLC</span>        <span class="c1">; CLear Carry flag in status register</span>
+           <span class="c1">; usually this should be done before ADC</span>
 
-SEC        ; SEt Carry flag in status register
-           ; usually this should be done before SBC
+<span class="k">SEC</span>        <span class="c1">; SEt Carry flag in status register</span>
+           <span class="c1">; usually this should be done before SBC</span>
 
-INC $0100  ; INCrement value at address $0100
-           ; if the result is zero, the zero flag will be set
+<span class="k">INC</span> <span class="mh">$0100</span>  <span class="c1">; INCrement value at address $0100</span>
+           <span class="c1">; if the result is zero, the zero flag will be set</span>
 
-DEC $0001  ; DECrement $0001
-           ; if the result is zero, the zero flag will be set
+<span class="k">DEC</span> <span class="mh">$0001</span>  <span class="c1">; DECrement $0001</span>
+           <span class="c1">; if the result is zero, the zero flag will be set</span>
 
-INY        ; INcrement Y register
-           ; if the result is zero, the zero flag will be set
+<span class="k">INY</span>        <span class="c1">; INcrement Y register</span>
+           <span class="c1">; if the result is zero, the zero flag will be set</span>
 
-INX        ; INcrement X register
-           ; if the result is zero, the zero flag will be set
+<span class="k">INX</span>        <span class="c1">; INcrement X register</span>
+           <span class="c1">; if the result is zero, the zero flag will be set</span>
 
-DEY        ; DEcrement Y
-           ; if the result is zero, the zero flag will be set
+<span class="k">DEY</span>        <span class="c1">; DEcrement Y</span>
+           <span class="c1">; if the result is zero, the zero flag will be set</span>
 
-DEX        ; DEcrement X
-           ; if the result is zero, the zero flag will be set
+<span class="k">DEX</span>        <span class="c1">; DEcrement X</span>
+           <span class="c1">; if the result is zero, the zero flag will be set</span>
 
-ASL A      ; Arithmetic Shift Left
-           ; shift all bits one position to the left
-           ; this is a multiply by 2
-           ; if the result is zero, the zero flag will be set
+<span class="k">ASL</span> <span class="n">A</span>      <span class="c1">; Arithmetic Shift Left</span>
+           <span class="c1">; shift all bits one position to the left</span>
+           <span class="c1">; this is a multiply by 2</span>
+           <span class="c1">; if the result is zero, the zero flag will be set</span>
 
-LSR $6000  ; Logical Shift Right
-           ; shift all bits one position to the right
-           ; this is a divide by 2
-           ; if the result is zero, the zero flag will be set
+<span class="k">LSR</span> <span class="mh">$6000</span>  <span class="c1">; Logical Shift Right</span>
+           <span class="c1">; shift all bits one position to the right</span>
+           <span class="c1">; this is a divide by 2</span>
+           <span class="c1">; if the result is zero, the zero flag will be set</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="common-comparison-opcodes">
 <h3>Common Comparison opcodes<a class="headerlink" href="#common-comparison-opcodes" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>CMP #$01   ; CoMPare A to the value $01
-           ; this actually does a subtract, but does not keep the result
-           ; instead you check the status register to check for equal,
-           ; less than, or greater than
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="k">CMP</span> <span class="p">#</span><span class="mh">$01</span>   <span class="c1">; CoMPare A to the value $01</span>
+           <span class="c1">; this actually does a subtract, but does not keep the result</span>
+           <span class="c1">; instead you check the status register to check for equal,</span>
+           <span class="c1">; less than, or greater than</span>
 
-CPX $0050  ; ComPare X to the value at address $0050
+<span class="k">CPX</span> <span class="mh">$0050</span>  <span class="c1">; ComPare X to the value at address $0050</span>
 
-CPY #$FF   ; ComPare Y to the value $FF
+<span class="k">CPY</span> <span class="p">#</span><span class="mh">$FF</span>   <span class="c1">; ComPare Y to the value $FF</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="common-control-flow-opcodes">
 <h3>Common Control Flow opcodes<a class="headerlink" href="#common-control-flow-opcodes" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>JMP $8000  ; JuMP to $8000, continue running code there
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="k">JMP</span> <span class="mh">$8000</span>  <span class="c1">; JuMP to $8000, continue running code there</span>
 
-BEQ $FF00  ; Branch if EQual, contnue running code there
-           ; first you would do a CMP, which clears or sets the zero flag
-           ; then the BEQ will check the zero flag
-           ; if zero is set (values were equal) the code jumps to $FF00 and runs there
-           ; if zero is clear (values not equal) there is no jump, runs next instruction
+<span class="k">BEQ</span> <span class="mh">$FF00</span>  <span class="c1">; Branch if EQual, contnue running code there</span>
+           <span class="c1">; first you would do a CMP, which clears or sets the zero flag</span>
+           <span class="c1">; then the BEQ will check the zero flag</span>
+           <span class="c1">; if zero is set (values were equal) the code jumps to $FF00 and runs there</span>
+           <span class="c1">; if zero is clear (values not equal) there is no jump, runs next instruction</span>
 
-BNE $FF00  ; Branch if Not Equal - opposite above, jump is made when zero flag is clear
+<span class="k">BNE</span> <span class="mh">$FF00</span>  <span class="c1">; Branch if Not Equal - opposite above, jump is made when zero flag is clear</span>
 </pre></div>
 </div>
 </div>
@@ -353,10 +353,10 @@ for now. The main goal is to just get NESASM to output something useful.</p>
 <p>The 16 byte iNES header gives the emulator all the information about the game
 including mapper, graphics mirroring, and PRG/CHR sizes. You can include all
 this inside your asm file at the very beginning.:</p>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>.inesprg 1   ; 1x 16KB bank of PRG code
-.ineschr 1   ; 1x 8KB bank of CHR data
-.inesmap 0   ; mapper 0 = NROM, no bank swapping
-.inesmir 1   ; background mirroring (ignore for now)
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="kp">.inesprg</span> <span class="mi">1</span>   <span class="c1">; 1x 16KB bank of PRG code</span>
+<span class="kp">.ineschr</span> <span class="mi">1</span>   <span class="c1">; 1x 8KB bank of CHR data</span>
+<span class="kp">.inesmap</span> <span class="mi">0</span>   <span class="c1">; mapper 0 = NROM, no bank swapping</span>
+<span class="kp">.inesmir</span> <span class="mi">1</span>   <span class="c1">; background mirroring (ignore for now)</span>
 </pre></div>
 </div>
 </div>
@@ -366,17 +366,17 @@ this inside your asm file at the very beginning.:</p>
 PRG space 2 banks are needed. Like most things in computing, the numbering
 starts at 0. For each bank you have to tell the assembler where in memory it
 will start.:</p>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>  .bank 0
-  .org $C000
-;some code here
+<div class="highlight-ca65"><div class="highlight"><pre><span></span>  <span class="kp">.bank</span> <span class="mi">0</span>
+  <span class="kp">.org</span> <span class="mh">$C000</span>
+<span class="c1">;some code here</span>
 
-  .bank 1
-  .org $E000
-; more code here
+  <span class="kp">.bank</span> <span class="mi">1</span>
+  <span class="kp">.org</span> <span class="mh">$E000</span>
+<span class="c1">; more code here</span>
 
-  .bank 2
-  .org $0000
-; graphics here
+  <span class="kp">.bank</span> <span class="mi">2</span>
+  <span class="kp">.org</span> <span class="mh">$0000</span>
+<span class="c1">; graphics here</span>
 </pre></div>
 </div>
 </div>
@@ -386,9 +386,9 @@ will start.:</p>
 incbin directive can be used to include that data in your .NES file. This data
 will not be used yet, but is needed to make the .NES file size match the iNES
 header.:</p>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>.bank 2
-.org $0000
-.incbin &quot;mario.chr&quot;   ;includes 8KB graphics file from SMB1
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="kp">.bank</span> <span class="mi">2</span>
+<span class="kp">.org</span> <span class="mh">$0000</span>
+<span class="kp">.incbin</span> <span class="s">&quot;mario.chr&quot;</span>   <span class="c1">;includes 8KB graphics file from SMB1</span>
 </pre></div>
 </div>
 </div>
@@ -410,13 +410,13 @@ be covered.</dd>
 </dl>
 <p>These three must always appear in your assembly file the right order.  The .dw
 directive is used to define a Data Word (1 word = 2 bytes):</p>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>.bank 1
-.org $FFFA     ;first of the three vectors starts here
-.dw NMI        ;when an NMI happens (once per frame if enabled) the
-                 ;processor will jump to the label NMI:
-.dw RESET      ;when the processor first turns on or is reset, it will jump
-                 ;to the label RESET:
-.dw 0          ;external interrupt IRQ is not used in this tutorial
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="kp">.bank</span> <span class="mi">1</span>
+<span class="kp">.org</span> <span class="mh">$FFFA</span>     <span class="c1">;first of the three vectors starts here</span>
+<span class="kp">.dw</span> <span class="n">NMI</span>        <span class="c1">;when an NMI happens (once per frame if enabled) the</span>
+                 <span class="c1">;processor will jump to the label NMI:</span>
+<span class="kp">.dw</span> <span class="n">RESET</span>      <span class="c1">;when the processor first turns on or is reset, it will jump</span>
+                 <span class="c1">;to the label RESET:</span>
+<span class="kp">.dw</span> <span class="mi">0</span>          <span class="c1">;external interrupt IRQ is not used in this tutorial</span>
 </pre></div>
 </div>
 </div>
@@ -429,11 +429,11 @@ so they are turned off. The NES 6502 processor does not have a decimal mode, so
 that is also turned off. This section does NOT include everything needed to run
 code on the real NES, but will work with the FCEUXD SP emulator. More reset
 code will be added later.:</p>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>  .bank 0
-  .org $C000
-RESET:
-  SEI        ; disable IRQs
-  CLD        ; disable decimal mode
+<div class="highlight-ca65"><div class="highlight"><pre><span></span>  <span class="kp">.bank</span> <span class="mi">0</span>
+  <span class="kp">.org</span> <span class="mh">$C000</span>
+<span class="nl">RESET:</span>
+  <span class="k">SEI</span>        <span class="c1">; disable IRQs</span>
+  <span class="k">CLD</span>        <span class="c1">; disable decimal mode</span>
 </pre></div>
 </div>
 </div>
@@ -443,28 +443,28 @@ RESET:
 color! To do this the first PPU settings need to be written. This is done to
 memory address $2001. The 76543210 is the bit number, from 7 to 0. Those 8 bits
 form the byte you will write to $2001.</p>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>PPUMASK ($2001)
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="n">PPUMASK</span> <span class="p">(</span><span class="mh">$2001</span><span class="p">)</span>
 
-76543210
-||||||||
-|||||||+- Grayscale (0: normal color; 1: AND all palette entries
-|||||||   with 0x30, effectively producing a monochrome display;
-|||||||   note that colour emphasis STILL works when this is on!)
-||||||+-- Disable background clipping in leftmost 8 pixels of screen
-|||||+--- Disable sprite clipping in leftmost 8 pixels of screen
-||||+---- Enable background rendering
-|||+----- Enable sprite rendering
-||+------ Intensify reds (and darken other colors)
-|+------- Intensify greens (and darken other colors)
-+-------- Intensify blues (and darken other colors)
+<span class="mi">76543210</span>
+<span class="o">||||||||</span>
+<span class="o">|||||||+-</span> <span class="n">Grayscale</span> <span class="p">(</span><span class="mi">0</span><span class="p">:</span> <span class="n">normal</span> <span class="n">color</span><span class="c1">; 1: AND all palette entries</span>
+<span class="o">|||||||</span>   <span class="n">with</span> <span class="mi">0</span><span class="n">x30</span><span class="p">,</span> <span class="n">effectively</span> <span class="n">producing</span> <span class="n">a</span> <span class="n">monochrome</span> <span class="n">display</span><span class="c1">;</span>
+<span class="o">|||||||</span>   <span class="n">note</span> <span class="n">that</span> <span class="n">colour</span> <span class="n">emphasis</span> <span class="n">STILL</span> <span class="n">works</span> <span class="n">when</span> <span class="n">this</span> <span class="n">is</span> <span class="n">on</span><span class="o">!</span><span class="p">)</span>
+<span class="o">||||||+--</span> <span class="n">Disable</span> <span class="n">background</span> <span class="n">clipping</span> <span class="n">in</span> <span class="n">leftmost</span> <span class="mi">8</span> <span class="n">pixels</span> <span class="n">of</span> <span class="n">screen</span>
+<span class="o">|||||+---</span> <span class="n">Disable</span> <span class="n">sprite</span> <span class="n">clipping</span> <span class="n">in</span> <span class="n">leftmost</span> <span class="mi">8</span> <span class="n">pixels</span> <span class="n">of</span> <span class="n">screen</span>
+<span class="o">||||+----</span> <span class="n">Enable</span> <span class="n">background</span> <span class="n">rendering</span>
+<span class="o">|||+-----</span> <span class="n">Enable</span> <span class="n">sprite</span> <span class="n">rendering</span>
+<span class="o">||+------</span> <span class="n">Intensify</span> <span class="n">reds</span> <span class="p">(</span><span class="k">and</span> <span class="n">darken</span> <span class="n">other</span> <span class="n">colors</span><span class="p">)</span>
+<span class="o">|+-------</span> <span class="n">Intensify</span> <span class="n">greens</span> <span class="p">(</span><span class="k">and</span> <span class="n">darken</span> <span class="n">other</span> <span class="n">colors</span><span class="p">)</span>
+<span class="o">+--------</span> <span class="n">Intensify</span> <span class="n">blues</span> <span class="p">(</span><span class="k">and</span> <span class="n">darken</span> <span class="n">other</span> <span class="n">colors</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>So if you want to enable the sprites, you set bit 3 to 1. For this program bits
 7, 6, 5 will be used to set the screen color:</p>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>  LDA %10000000   ;intensify blues
-  STA $2001
-Forever:
-  JMP Forever     ;infinite loop
+<div class="highlight-ca65"><div class="highlight"><pre><span></span>  <span class="k">LDA</span> <span class="mb">%10000000</span>   <span class="c1">;intensify blues</span>
+  <span class="k">STA</span> <span class="mh">$2001</span>
+<span class="nl">Forever:</span>
+  <span class="k">JMP</span> <span class="n">Forever</span>     <span class="c1">;infinite loop</span>
 </pre></div>
 </div>
 </div>
@@ -542,7 +542,7 @@ the debugger will be very helpful later.</p>
                         title="previous chapter">NES Architecture Overview</a></p>
   <h4>Next topic</h4>
   <p class="topless"><a href="colorpalettes.html"
-                        title="next chapter">&lt;no title&gt;</a></p>
+                        title="next chapter">Color Palettes, Sprites, second app</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
     <li><a href="../_sources/nerdynights/asmfirstapp.txt"
@@ -572,7 +572,7 @@ the debugger will be very helpful later.</p>
           <a href="../genindex.html" title="General Index"
              >index</a></li>
         <li class="right" >
-          <a href="colorpalettes.html" title="&lt;no title&gt;"
+          <a href="colorpalettes.html" title="Color Palettes, Sprites, second app"
              >next</a> |</li>
         <li class="right" >
           <a href="nesarchitecture.html" title="NES Architecture Overview"

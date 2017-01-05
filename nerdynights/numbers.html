@@ -75,32 +75,32 @@ variable. Instead it is just a permanent part of the background.</p>
 <blockquote>
 <div>We will start with just incrementing a 3 digit number to see how its</div></blockquote>
 <p>done:</p>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>   IncOnes:
-     LDA onesDigit     ; load the lowest digit of the number
-     CLC
-     ADC #$01          ; add one
-     STA onesDigit
-     CMP #$0A          ; check if it overflowed, now equals 10
-     BNE IncDone       ; if there was no overflow, all done
-   IncTens:
-     LDA #$00
-     STA onesDigit     ; wrap digit to 0
-     LDA tensDigit     ; load the next digit
-     CLC
-     ADC #$01          ; add one, the carry from previous digit
-     STA tensDigit
-     CMP #$0A          ; check if it overflowed, now equals 10
-     BNE IncDone       ; if there was no overflow, all done
-   IncHundreds:
-     LDA #$00
-     STA tensDigit     ; wrap digit to 0
-     LDA hundredsDigit ; load the next digit
-     CLC
-     ADC #$01          ; add one, the carry from previous digit
-     STA hundredsDigit
-   IncDone:
+<div class="highlight-ca65"><div class="highlight"><pre><span></span>   <span class="nl">IncOnes:</span>
+     <span class="k">LDA</span> <span class="n">onesDigit</span>     <span class="c1">; load the lowest digit of the number</span>
+     <span class="k">CLC</span>
+     <span class="k">ADC</span> <span class="p">#</span><span class="mh">$01</span>          <span class="c1">; add one</span>
+     <span class="k">STA</span> <span class="n">onesDigit</span>
+     <span class="k">CMP</span> <span class="p">#</span><span class="mh">$0A</span>          <span class="c1">; check if it overflowed, now equals 10</span>
+     <span class="k">BNE</span> <span class="n">IncDone</span>       <span class="c1">; if there was no overflow, all done</span>
+   <span class="nl">IncTens:</span>
+     <span class="k">LDA</span> <span class="p">#</span><span class="mh">$00</span>
+     <span class="k">STA</span> <span class="n">onesDigit</span>     <span class="c1">; wrap digit to 0</span>
+     <span class="k">LDA</span> <span class="n">tensDigit</span>     <span class="c1">; load the next digit</span>
+     <span class="k">CLC</span>
+     <span class="k">ADC</span> <span class="p">#</span><span class="mh">$01</span>          <span class="c1">; add one, the carry from previous digit</span>
+     <span class="k">STA</span> <span class="n">tensDigit</span>
+     <span class="k">CMP</span> <span class="p">#</span><span class="mh">$0A</span>          <span class="c1">; check if it overflowed, now equals 10</span>
+     <span class="k">BNE</span> <span class="n">IncDone</span>       <span class="c1">; if there was no overflow, all done</span>
+   <span class="nl">IncHundreds:</span>
+     <span class="k">LDA</span> <span class="p">#</span><span class="mh">$00</span>
+     <span class="k">STA</span> <span class="n">tensDigit</span>     <span class="c1">; wrap digit to 0</span>
+     <span class="k">LDA</span> <span class="n">hundredsDigit</span> <span class="c1">; load the next digit</span>
+     <span class="k">CLC</span>
+     <span class="k">ADC</span> <span class="p">#</span><span class="mh">$01</span>          <span class="c1">; add one, the carry from previous digit</span>
+     <span class="k">STA</span> <span class="n">hundredsDigit</span>
+   <span class="nl">IncDone:</span>
 
-When the subroutine starts, the ones digit is incremented. Then it is
+<span class="n">When</span> <span class="n">the</span> <span class="n">subroutine</span> <span class="n">starts</span><span class="p">,</span> <span class="n">the</span> <span class="n">ones</span> <span class="n">digit</span> <span class="n">is</span> <span class="n">incremented.</span> <span class="n">Then</span> <span class="n">it</span> <span class="n">is</span>
 </pre></div>
 </div>
 <p>checked if it equals $0A which is decimal 10. That number doesn&#8217;t fit in
@@ -115,39 +115,39 @@ chain continues for as many digits as you want.</p>
 </dl>
 <p>digit equals $0A you need to check if the digit is $0A or above. So
 instead of BEQ the opcode will be BCC.</p>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>   AddOnes:
-     LDA onesDigit      ; load the lowest digit of the number
-     CLC
-     ADC onesAdd        ; add new number, no carry
-     STA onesDigit
-     CMP #$0A           ; check if digit went above 9. If accumulator &gt;= $0A, carry is set
-     BCC AddTens        ; if carry is clear, all done with ones digit
-                        ; carry was set, so we need to handle wrapping
-     LDA onesDigit
-     SEC
-     SBC #$0A           ; subtract off what doesnt fit in 1 digit
-     STA onesDigit      ; then store the rest
-     INC tensDigit      ; increment the tens digit
-   AddTens:
-     LDA tensDigit      ; load the next digit
-     CLC
-     ADC tensAdd        ; add new number
-     STA tensDigit
-     CMP #$0A           ; check if digit went above 9
-     BCC AddHundreds    ; no carry, digit done
-     LDA tensDigit
-     SEC
-     SBC #$0A           ; subtract off what doesnt fit in 1 digit
-     STA tensDigit      ; then store the rest
-     INC hundredsDigit  ; increment the hundreds digit
-   AddHundreds:
-     LDA hundredsDigit  ; load the next digit
-     CLC
-     ADC hundredsAdd    ; add new number
-     STA hundredsDigit
-   AddDone:
+<div class="highlight-ca65"><div class="highlight"><pre><span></span>   <span class="nl">AddOnes:</span>
+     <span class="k">LDA</span> <span class="n">onesDigit</span>      <span class="c1">; load the lowest digit of the number</span>
+     <span class="k">CLC</span>
+     <span class="k">ADC</span> <span class="n">onesAdd</span>        <span class="c1">; add new number, no carry</span>
+     <span class="k">STA</span> <span class="n">onesDigit</span>
+     <span class="k">CMP</span> <span class="p">#</span><span class="mh">$0A</span>           <span class="c1">; check if digit went above 9. If accumulator &gt;= $0A, carry is set</span>
+     <span class="k">BCC</span> <span class="n">AddTens</span>        <span class="c1">; if carry is clear, all done with ones digit</span>
+                        <span class="c1">; carry was set, so we need to handle wrapping</span>
+     <span class="k">LDA</span> <span class="n">onesDigit</span>
+     <span class="k">SEC</span>
+     <span class="k">SBC</span> <span class="p">#</span><span class="mh">$0A</span>           <span class="c1">; subtract off what doesnt fit in 1 digit</span>
+     <span class="k">STA</span> <span class="n">onesDigit</span>      <span class="c1">; then store the rest</span>
+     <span class="k">INC</span> <span class="n">tensDigit</span>      <span class="c1">; increment the tens digit</span>
+   <span class="nl">AddTens:</span>
+     <span class="k">LDA</span> <span class="n">tensDigit</span>      <span class="c1">; load the next digit</span>
+     <span class="k">CLC</span>
+     <span class="k">ADC</span> <span class="n">tensAdd</span>        <span class="c1">; add new number</span>
+     <span class="k">STA</span> <span class="n">tensDigit</span>
+     <span class="k">CMP</span> <span class="p">#</span><span class="mh">$0A</span>           <span class="c1">; check if digit went above 9</span>
+     <span class="k">BCC</span> <span class="n">AddHundreds</span>    <span class="c1">; no carry, digit done</span>
+     <span class="k">LDA</span> <span class="n">tensDigit</span>
+     <span class="k">SEC</span>
+     <span class="k">SBC</span> <span class="p">#</span><span class="mh">$0A</span>           <span class="c1">; subtract off what doesnt fit in 1 digit</span>
+     <span class="k">STA</span> <span class="n">tensDigit</span>      <span class="c1">; then store the rest</span>
+     <span class="k">INC</span> <span class="n">hundredsDigit</span>  <span class="c1">; increment the hundreds digit</span>
+   <span class="nl">AddHundreds:</span>
+     <span class="k">LDA</span> <span class="n">hundredsDigit</span>  <span class="c1">; load the next digit</span>
+     <span class="k">CLC</span>
+     <span class="k">ADC</span> <span class="n">hundredsAdd</span>    <span class="c1">; add new number</span>
+     <span class="k">STA</span> <span class="n">hundredsDigit</span>
+   <span class="nl">AddDone:</span>
 
-When that code is all done, the ones/tens/hundreds digits will hold the
+<span class="n">When</span> <span class="n">that</span> <span class="n">code</span> <span class="n">is</span> <span class="n">all</span> <span class="n">done</span><span class="p">,</span> <span class="n">the</span> <span class="n">ones</span><span class="o">/</span><span class="n">tens</span><span class="o">/</span><span class="n">hundreds</span> <span class="n">digits</span> <span class="n">will</span> <span class="n">hold</span> <span class="n">the</span>
 </pre></div>
 </div>
 <p>new value. With both code samples there is no check at the end of the
@@ -169,81 +169,81 @@ digits, and a 16 bit binary will give 5 decimal digits.</p>
 and then 10). If the binary is larger, that value is subtracted from the
 binary and the final decimal digit is incremented. So for a text
 example:</p>
-<div class="highlight-asm"><div class="highlight"><pre><span></span><span class="nf">initial</span> <span class="no">binary</span><span class="p">:</span> <span class="mi">124</span>
-<span class="nf">initial</span> <span class="no">decimal</span><span class="p">:</span> <span class="mi">000</span>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="n">initial</span> <span class="nl">binary:</span> <span class="mi">124</span>
+<span class="n">initial</span> <span class="nl">decimal:</span> <span class="mi">000</span>
 </pre></div>
 </div>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>1: compare to 100
-2: 124 greater than 100, so subtract 100 and increment the decimal hundreds digit
-3: repeat hundreds again
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="mi">1</span><span class="p">:</span> <span class="n">compare</span> <span class="n">to</span> <span class="mi">100</span>
+<span class="mi">2</span><span class="p">:</span> <span class="mi">124</span> <span class="n">greater</span> <span class="n">than</span> <span class="mi">100</span><span class="p">,</span> <span class="n">so</span> <span class="n">subtract</span> <span class="mi">100</span> <span class="k">and</span> <span class="n">increment</span> <span class="n">the</span> <span class="n">decimal</span> <span class="n">hundreds</span> <span class="n">digit</span>
+<span class="mi">3</span><span class="p">:</span> <span class="n">repeat</span> <span class="n">hundreds</span> <span class="n">again</span>
 </pre></div>
 </div>
-<div class="highlight-asm"><div class="highlight"><pre><span></span><span class="nf">current</span> <span class="no">binary</span><span class="p">:</span> <span class="mi">024</span>
-<span class="nf">current</span> <span class="no">decimal</span><span class="p">:</span> <span class="mi">100</span>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="n">current</span> <span class="nl">binary:</span> <span class="mi">024</span>
+<span class="n">current</span> <span class="nl">decimal:</span> <span class="mi">100</span>
 </pre></div>
 </div>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>1: compare to 100
-2: 024 less than 100, so all done with hundreds digit
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="mi">1</span><span class="p">:</span> <span class="n">compare</span> <span class="n">to</span> <span class="mi">100</span>
+<span class="mi">2</span><span class="p">:</span> <span class="mi">024</span> <span class="n">less</span> <span class="n">than</span> <span class="mi">100</span><span class="p">,</span> <span class="n">so</span> <span class="n">all</span> <span class="n">done</span> <span class="n">with</span> <span class="n">hundreds</span> <span class="n">digit</span>
 </pre></div>
 </div>
-<div class="highlight-asm"><div class="highlight"><pre><span></span><span class="nf">current</span> <span class="no">binary</span><span class="p">:</span> <span class="mi">024</span>
-<span class="nf">current</span> <span class="no">decimal</span><span class="p">:</span> <span class="mi">100</span>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="n">current</span> <span class="nl">binary:</span> <span class="mi">024</span>
+<span class="n">current</span> <span class="nl">decimal:</span> <span class="mi">100</span>
 </pre></div>
 </div>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>1: compare to 10
-2: 024 greater than 10, so subtract 10 and increment the decimal tens digit
-3 repeat tens again
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="mi">1</span><span class="p">:</span> <span class="n">compare</span> <span class="n">to</span> <span class="mi">10</span>
+<span class="mi">2</span><span class="p">:</span> <span class="mi">024</span> <span class="n">greater</span> <span class="n">than</span> <span class="mi">10</span><span class="p">,</span> <span class="n">so</span> <span class="n">subtract</span> <span class="mi">10</span> <span class="k">and</span> <span class="n">increment</span> <span class="n">the</span> <span class="n">decimal</span> <span class="n">tens</span> <span class="n">digit</span>
+<span class="mi">3</span> <span class="n">repeat</span> <span class="n">tens</span> <span class="n">again</span>
 </pre></div>
 </div>
-<div class="highlight-asm"><div class="highlight"><pre><span></span><span class="nf">current</span> <span class="no">binary</span><span class="p">:</span> <span class="mi">014</span>
-<span class="nf">current</span> <span class="no">decimal</span><span class="p">:</span> <span class="mi">110</span>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="n">current</span> <span class="nl">binary:</span> <span class="mi">014</span>
+<span class="n">current</span> <span class="nl">decimal:</span> <span class="mi">110</span>
 </pre></div>
 </div>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>1: compare to 10
-2: 014 greater than 10, so subtract 10 and increment the decimal tens digit
-3 repeat tens again
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="mi">1</span><span class="p">:</span> <span class="n">compare</span> <span class="n">to</span> <span class="mi">10</span>
+<span class="mi">2</span><span class="p">:</span> <span class="mi">014</span> <span class="n">greater</span> <span class="n">than</span> <span class="mi">10</span><span class="p">,</span> <span class="n">so</span> <span class="n">subtract</span> <span class="mi">10</span> <span class="k">and</span> <span class="n">increment</span> <span class="n">the</span> <span class="n">decimal</span> <span class="n">tens</span> <span class="n">digit</span>
+<span class="mi">3</span> <span class="n">repeat</span> <span class="n">tens</span> <span class="n">again</span>
 </pre></div>
 </div>
-<div class="highlight-asm"><div class="highlight"><pre><span></span><span class="nf">current</span> <span class="no">binary</span><span class="p">:</span> <span class="mi">004</span>
-<span class="nf">current</span> <span class="no">decimal</span><span class="p">:</span> <span class="mi">120</span>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="n">current</span> <span class="nl">binary:</span> <span class="mi">004</span>
+<span class="n">current</span> <span class="nl">decimal:</span> <span class="mi">120</span>
 </pre></div>
 </div>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>   <span class="nf">etc</span> <span class="no">for</span> <span class="no">ones</span> <span class="no">digit</span>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span>   <span class="n">etc</span> <span class="n">for</span> <span class="n">ones</span> <span class="n">digit</span>
 
-<span class="nf">You</span> <span class="no">can</span> <span class="no">see</span> <span class="no">this</span> <span class="no">will</span> <span class="no">transfer</span> <span class="no">the</span> <span class="no">binary</span> <span class="no">to</span> <span class="no">decimal</span> <span class="no">one</span> <span class="no">digit</span> <span class="no">at</span> <span class="no">a</span>
+<span class="n">You</span> <span class="n">can</span> <span class="n">see</span> <span class="n">this</span> <span class="n">will</span> <span class="n">transfer</span> <span class="n">the</span> <span class="n">binary</span> <span class="n">to</span> <span class="n">decimal</span> <span class="n">one</span> <span class="n">digit</span> <span class="n">at</span> <span class="n">a</span>
 </pre></div>
 </div>
 <p>time. For numbers with large digits (like 249) this will take longer
 than numbers with small digits (like 112). Here is the code:</p>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>HundredsLoop:
-  LDA binary
-  CMP #100             ; compare binary to 100
-  BCC TensLoop         ; if binary &lt; 100, all done with hundreds digit
-  LDA binary
-  SEC
-  SBC #100
-  STA binary           ; subtract 100, store whats left
-  INC hundredsDigit    ; increment the digital result
-  JMP HundredsLoop     ; run the hundreds loop again
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="nl">HundredsLoop:</span>
+  <span class="k">LDA</span> <span class="n">binary</span>
+  <span class="k">CMP</span> <span class="p">#</span><span class="mi">100</span>             <span class="c1">; compare binary to 100</span>
+  <span class="k">BCC</span> <span class="n">TensLoop</span>         <span class="c1">; if binary &lt; 100, all done with hundreds digit</span>
+  <span class="k">LDA</span> <span class="n">binary</span>
+  <span class="k">SEC</span>
+  <span class="k">SBC</span> <span class="p">#</span><span class="mi">100</span>
+  <span class="k">STA</span> <span class="n">binary</span>           <span class="c1">; subtract 100, store whats left</span>
+  <span class="k">INC</span> <span class="n">hundredsDigit</span>    <span class="c1">; increment the digital result</span>
+  <span class="k">JMP</span> <span class="n">HundredsLoop</span>     <span class="c1">; run the hundreds loop again</span>
 </pre></div>
 </div>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>TensLoop:
-  LDA binary
-  CMP #10              ; compare binary to 10
-  BCC OnesLoop         ; if binary &lt; 10, all done with hundreds digit
-  LDA binary
-  SEC
-  SBC #10
-  STA binary           ; subtract 10, store whats left
-  INC tensDigit        ; increment the digital result
-  JMP TensLoop         ; run the tens loop again
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="nl">TensLoop:</span>
+  <span class="k">LDA</span> <span class="n">binary</span>
+  <span class="k">CMP</span> <span class="p">#</span><span class="mi">10</span>              <span class="c1">; compare binary to 10</span>
+  <span class="k">BCC</span> <span class="n">OnesLoop</span>         <span class="c1">; if binary &lt; 10, all done with hundreds digit</span>
+  <span class="k">LDA</span> <span class="n">binary</span>
+  <span class="k">SEC</span>
+  <span class="k">SBC</span> <span class="p">#</span><span class="mi">10</span>
+  <span class="k">STA</span> <span class="n">binary</span>           <span class="c1">; subtract 10, store whats left</span>
+  <span class="k">INC</span> <span class="n">tensDigit</span>        <span class="c1">; increment the digital result</span>
+  <span class="k">JMP</span> <span class="n">TensLoop</span>         <span class="c1">; run the tens loop again</span>
 </pre></div>
 </div>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>   OnesLoop:
-     LDA binary
-     STA onesDigit        ; result is already under 10, can copy directly to result
+<div class="highlight-ca65"><div class="highlight"><pre><span></span>   <span class="nl">OnesLoop:</span>
+     <span class="k">LDA</span> <span class="n">binary</span>
+     <span class="k">STA</span> <span class="n">onesDigit</span>        <span class="c1">; result is already under 10, can copy directly to result</span>
 
-This code can be expanded to 16 bit numbers, but the compares become
+<span class="n">This</span> <span class="n">code</span> <span class="n">can</span> <span class="n">be</span> <span class="n">expanded</span> <span class="n">to</span> <span class="mi">16</span> <span class="k">bit</span> <span class="n">numbers</span><span class="p">,</span> <span class="n">but</span> <span class="n">the</span> <span class="n">compares</span> <span class="n">become</span>
 </pre></div>
 </div>
 <p>harder. Instead a more complex series of loops and shifts with a table
@@ -257,43 +257,43 @@ forum thread.</p>
 <div>Notice there are no branches other than the loop running 16 times (one</div></blockquote>
 <p>for each binary input bit), so the conversion always takes the same
 number of cycles.</p>
-<div class="highlight-asm"><div class="highlight"><pre><span></span><span class="nf">tempBinary</span> <span class="p">-</span> <span class="mi">16</span> <span class="no">bits</span> <span class="no">input</span> <span class="no">binary</span> <span class="no">value</span>
-<span class="nf">decimalResult</span> <span class="p">-</span> <span class="mi">5</span> <span class="no">bytes</span> <span class="no">for</span> <span class="no">the</span> <span class="no">decimal</span> <span class="no">result</span>
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="n">tempBinary</span> <span class="o">-</span> <span class="mi">16</span> <span class="n">bits</span> <span class="n">input</span> <span class="n">binary</span> <span class="n">value</span>
+<span class="n">decimalResult</span> <span class="o">-</span> <span class="mi">5</span> <span class="n">bytes</span> <span class="n">for</span> <span class="n">the</span> <span class="n">decimal</span> <span class="n">result</span>
 </pre></div>
 </div>
-<div class="highlight-asm"><div class="highlight"><pre><span></span>BinaryToDecimal:
-   lda #$00
-   sta decimalResult+0
-   sta decimalResult+1
-   sta decimalResult+2
-   sta decimalResult+3
-   sta decimalResult+4
-   ldx #$10
-BitLoop:
-   asl tempBinary+0
-   rol tempBinary+1
-   ldy decimalResult+0
-   lda BinTable, y
-   rol a
-   sta decimalResult+0
-   ldy decimalResult+1
-   lda BinTable, y
-   rol a
-   sta decimalResult+1
-   ldy decimalResult+2
-   lda BinTable, y
-   rol a
-   sta decimalResult+2
-   ldy decimalResult+3
-   lda BinTable, y
-   rol a
-   sta decimalResult+3
-   rol decimalResult+4
-   dex
-   bne BitLoop
-   rts
-BinTable:
-   .db $00, $01, $02, $03, $04, $80, $81, $82, $83, $84
+<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="nl">BinaryToDecimal:</span>
+   <span class="k">lda</span> <span class="p">#</span><span class="mh">$00</span>
+   <span class="k">sta</span> <span class="n">decimalResult</span><span class="o">+</span><span class="mi">0</span>
+   <span class="k">sta</span> <span class="n">decimalResult</span><span class="o">+</span><span class="mi">1</span>
+   <span class="k">sta</span> <span class="n">decimalResult</span><span class="o">+</span><span class="mi">2</span>
+   <span class="k">sta</span> <span class="n">decimalResult</span><span class="o">+</span><span class="mi">3</span>
+   <span class="k">sta</span> <span class="n">decimalResult</span><span class="o">+</span><span class="mi">4</span>
+   <span class="k">ldx</span> <span class="p">#</span><span class="mh">$10</span>
+<span class="nl">BitLoop:</span>
+   <span class="k">asl</span> <span class="n">tempBinary</span><span class="o">+</span><span class="mi">0</span>
+   <span class="k">rol</span> <span class="n">tempBinary</span><span class="o">+</span><span class="mi">1</span>
+   <span class="k">ldy</span> <span class="n">decimalResult</span><span class="o">+</span><span class="mi">0</span>
+   <span class="k">lda</span> <span class="n">BinTable</span><span class="p">,</span> <span class="n">y</span>
+   <span class="k">rol</span> <span class="n">a</span>
+   <span class="k">sta</span> <span class="n">decimalResult</span><span class="o">+</span><span class="mi">0</span>
+   <span class="k">ldy</span> <span class="n">decimalResult</span><span class="o">+</span><span class="mi">1</span>
+   <span class="k">lda</span> <span class="n">BinTable</span><span class="p">,</span> <span class="n">y</span>
+   <span class="k">rol</span> <span class="n">a</span>
+   <span class="k">sta</span> <span class="n">decimalResult</span><span class="o">+</span><span class="mi">1</span>
+   <span class="k">ldy</span> <span class="n">decimalResult</span><span class="o">+</span><span class="mi">2</span>
+   <span class="k">lda</span> <span class="n">BinTable</span><span class="p">,</span> <span class="n">y</span>
+   <span class="k">rol</span> <span class="n">a</span>
+   <span class="k">sta</span> <span class="n">decimalResult</span><span class="o">+</span><span class="mi">2</span>
+   <span class="k">ldy</span> <span class="n">decimalResult</span><span class="o">+</span><span class="mi">3</span>
+   <span class="k">lda</span> <span class="n">BinTable</span><span class="p">,</span> <span class="n">y</span>
+   <span class="k">rol</span> <span class="n">a</span>
+   <span class="k">sta</span> <span class="n">decimalResult</span><span class="o">+</span><span class="mi">3</span>
+   <span class="k">rol</span> <span class="n">decimalResult</span><span class="o">+</span><span class="mi">4</span>
+   <span class="k">dex</span>
+   <span class="k">bne</span> <span class="n">BitLoop</span>
+   <span class="k">rts</span>
+<span class="nl">BinTable:</span>
+   <span class="kp">.db</span> <span class="mh">$00</span><span class="p">,</span> <span class="mh">$01</span><span class="p">,</span> <span class="mh">$02</span><span class="p">,</span> <span class="mh">$03</span><span class="p">,</span> <span class="mh">$04</span><span class="p">,</span> <span class="mh">$80</span><span class="p">,</span> <span class="mh">$81</span><span class="p">,</span> <span class="mh">$82</span><span class="p">,</span> <span class="mh">$83</span><span class="p">,</span> <span class="mh">$84</span>
 </pre></div>
 </div>
 <dl class="docutils">
