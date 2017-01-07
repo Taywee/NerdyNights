@@ -141,27 +141,28 @@ the PPU port $2000. The Pattern Table 0 is also selected to choose
 sprites from. Background will come from Pattern Table 1 when that is
 added later.
 
-.. index::
-    single: PPUCTRL
-    see: $2000; PPUCTRL
-
 .. _PPUCTRL:
 
-::
-
-      PPUCTRL ($2000)
-      76543210
-      | ||||||
-      | ||||++- Base nametable address
-      | ||||    (0 = $2000; 1 = $2400; 2 = $2800; 3 = $2C00)
-      | |||+--- VRAM address increment per CPU read/write of PPUDATA
-      | |||     (0: increment by 1, going across; 1: increment by 32, going down)
-      | ||+---- Sprite pattern table address for 8x8 sprites (0: $0000; 1: $1000)
-      | |+----- Background pattern table address (0: $0000; 1: $1000)
-      | +------ Sprite size (0: 8x8; 1: 8x16)
-      |
-      +-------- Generate an NMI at the start of the
-                vertical blanking interval vblank (0: off; 1: on)
++-----------------------------------------------------------------------------+
+| :index:`PPUCTRL` :index:`($2000) <see: $2000; PPUCTRL>`                     |
++=======+=====================================================================+
+| 7     | Generate an NMI at the start of the                                 |
+|       | vertical blanking interval vblank (0: off; 1: on)                   |
++-------+---------------------------------------------------------------------+
+| 6     | PPU master/slave select                                             |
++-------+---------------------------------------------------------------------+
+| 5     | Sprite size (0: 8x8; 1: 8x16)                                       |
++-------+---------------------------------------------------------------------+
+| 4     | Background pattern table address (0: $0000; 1: $1000)               |
++-------+---------------------------------------------------------------------+
+| 3     | Sprite pattern table address for 8x8 sprites (0: $0000; 1: $1000)   |
++-------+---------------------------------------------------------------------+
+| 2     | VRAM address increment per CPU read/write of PPUDATA                |
+|       | (0: increment by 1, going across; 1: increment by 32, going down)   |
++-------+---------------------------------------------------------------------+
+| 1 & 0 | Base nametable address                                              |
+|       | (0 = $2000; 1 = $2400; 2 = $2800; 3 = $2C00)                        |
++-------+---------------------------------------------------------------------+
 
 And the new code to set up the sprite data::
 

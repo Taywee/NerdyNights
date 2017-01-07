@@ -444,22 +444,44 @@ code will be added later.:</p>
 color! To do this the first PPU settings need to be written. This is done to
 memory address $2001. The 76543210 is the bit number, from 7 to 0. Those 8 bits
 form the byte you will write to $2001.</p>
-<div class="highlight-ca65" id="ppumask"><span id="index-0"></span><div class="highlight"><pre><span></span><span class="n">PPUMASK</span> <span class="p">(</span><span class="mh">$2001</span><span class="p">)</span>
-
-<span class="mi">76543210</span>
-<span class="o">||||||||</span>
-<span class="o">|||||||+-</span> <span class="n">Grayscale</span> <span class="p">(</span><span class="mi">0</span><span class="p">:</span> <span class="n">normal</span> <span class="n">color</span><span class="c1">; 1: AND all palette entries</span>
-<span class="o">|||||||</span>   <span class="n">with</span> <span class="mi">0</span><span class="n">x30</span><span class="p">,</span> <span class="n">effectively</span> <span class="n">producing</span> <span class="n">a</span> <span class="n">monochrome</span> <span class="n">display</span><span class="c1">;</span>
-<span class="o">|||||||</span>   <span class="n">note</span> <span class="n">that</span> <span class="n">colour</span> <span class="n">emphasis</span> <span class="n">STILL</span> <span class="n">works</span> <span class="n">when</span> <span class="n">this</span> <span class="n">is</span> <span class="n">on</span><span class="o">!</span><span class="p">)</span>
-<span class="o">||||||+--</span> <span class="n">Disable</span> <span class="n">background</span> <span class="n">clipping</span> <span class="n">in</span> <span class="n">leftmost</span> <span class="mi">8</span> <span class="n">pixels</span> <span class="n">of</span> <span class="n">screen</span>
-<span class="o">|||||+---</span> <span class="n">Disable</span> <span class="n">sprite</span> <span class="n">clipping</span> <span class="n">in</span> <span class="n">leftmost</span> <span class="mi">8</span> <span class="n">pixels</span> <span class="n">of</span> <span class="n">screen</span>
-<span class="o">||||+----</span> <span class="n">Enable</span> <span class="n">background</span> <span class="n">rendering</span>
-<span class="o">|||+-----</span> <span class="n">Enable</span> <span class="n">sprite</span> <span class="n">rendering</span>
-<span class="o">||+------</span> <span class="n">Intensify</span> <span class="n">reds</span> <span class="p">(</span><span class="k">and</span> <span class="n">darken</span> <span class="n">other</span> <span class="n">colors</span><span class="p">)</span>
-<span class="o">|+-------</span> <span class="n">Intensify</span> <span class="n">greens</span> <span class="p">(</span><span class="k">and</span> <span class="n">darken</span> <span class="n">other</span> <span class="n">colors</span><span class="p">)</span>
-<span class="o">+--------</span> <span class="n">Intensify</span> <span class="n">blues</span> <span class="p">(</span><span class="k">and</span> <span class="n">darken</span> <span class="n">other</span> <span class="n">colors</span><span class="p">)</span>
-</pre></div>
-</div>
+<table border="1" class="docutils" id="ppumask">
+<colgroup>
+<col width="5%" />
+<col width="95%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head" colspan="2"><span class="target" id="index-0"></span>PPUMASK <span class="target" id="index-1"></span>($2001)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>7</td>
+<td>Intensify blues (and darken other colors)</td>
+</tr>
+<tr class="row-odd"><td>6</td>
+<td>Intensify greens (and darken other colors)</td>
+</tr>
+<tr class="row-even"><td>5</td>
+<td>Intensify reds (and darken other colors)</td>
+</tr>
+<tr class="row-odd"><td>4</td>
+<td>Enable sprite rendering</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>Enable background rendering</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>Disable sprite clipping in leftmost 8 pixels of screen</td>
+</tr>
+<tr class="row-even"><td>1</td>
+<td>Disable background clipping in leftmost 8 pixels of screen</td>
+</tr>
+<tr class="row-odd"><td>0</td>
+<td>Grayscale (0: normal color; 1: AND all palette entries
+with 0x30, effectively producing a monochrome display;
+note that colour emphasis STILL works when this is on!)</td>
+</tr>
+</tbody>
+</table>
 <p>So if you want to enable the sprites, you set bit 3 to 1. For this program bits
 7, 6, 5 will be used to set the screen color:</p>
 <div class="highlight-ca65"><div class="highlight"><pre><span></span>  <span class="k">LDA</span> <span class="mb">%10000000</span>   <span class="c1">;intensify blues</span>

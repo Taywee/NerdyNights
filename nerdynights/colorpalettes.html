@@ -188,21 +188,42 @@ will run and the sprites will be copied every frame. This is done with
 the PPU port $2000. The Pattern Table 0 is also selected to choose
 sprites from. Background will come from Pattern Table 1 when that is
 added later.</p>
-<div class="highlight-ca65" id="ppuctrl"><span id="index-0"></span><div class="highlight"><pre><span></span><span class="n">PPUCTRL</span> <span class="p">(</span><span class="mh">$2000</span><span class="p">)</span>
-<span class="mi">76543210</span>
-<span class="o">|</span> <span class="o">||||||</span>
-<span class="o">|</span> <span class="o">||||++-</span> <span class="n">Base</span> <span class="n">nametable</span> <span class="n">address</span>
-<span class="o">|</span> <span class="o">||||</span>    <span class="p">(</span><span class="mi">0</span> <span class="o">=</span> <span class="mh">$2000</span><span class="c1">; 1 = $2400; 2 = $2800; 3 = $2C00)</span>
-<span class="o">|</span> <span class="o">|||+---</span> <span class="n">VRAM</span> <span class="n">address</span> <span class="n">increment</span> <span class="n">per</span> <span class="n">CPU</span> <span class="n">read</span><span class="o">/</span><span class="n">write</span> <span class="n">of</span> <span class="n">PPUDATA</span>
-<span class="o">|</span> <span class="o">|||</span>     <span class="p">(</span><span class="mi">0</span><span class="p">:</span> <span class="n">increment</span> <span class="n">by</span> <span class="mi">1</span><span class="p">,</span> <span class="n">going</span> <span class="n">across</span><span class="c1">; 1: increment by 32, going down)</span>
-<span class="o">|</span> <span class="o">||+----</span> <span class="n">Sprite</span> <span class="n">pattern</span> <span class="n">table</span> <span class="n">address</span> <span class="n">for</span> <span class="mi">8</span><span class="n">x8</span> <span class="n">sprites</span> <span class="p">(</span><span class="mi">0</span><span class="p">:</span> <span class="mh">$0000</span><span class="c1">; 1: $1000)</span>
-<span class="o">|</span> <span class="o">|+-----</span> <span class="n">Background</span> <span class="n">pattern</span> <span class="n">table</span> <span class="n">address</span> <span class="p">(</span><span class="mi">0</span><span class="p">:</span> <span class="mh">$0000</span><span class="c1">; 1: $1000)</span>
-<span class="o">|</span> <span class="o">+------</span> <span class="n">Sprite</span> <span class="n">size</span> <span class="p">(</span><span class="mi">0</span><span class="p">:</span> <span class="mi">8</span><span class="n">x8</span><span class="c1">; 1: 8x16)</span>
-<span class="o">|</span>
-<span class="o">+--------</span> <span class="n">Generate</span> <span class="n">an</span> <span class="n">NMI</span> <span class="n">at</span> <span class="n">the</span> <span class="n">start</span> <span class="n">of</span> <span class="n">the</span>
-          <span class="n">vertical</span> <span class="n">blanking</span> <span class="n">interval</span> <span class="n">vblank</span> <span class="p">(</span><span class="mi">0</span><span class="p">:</span> <span class="n">off</span><span class="c1">; 1: on)</span>
-</pre></div>
-</div>
+<table border="1" class="docutils" id="ppuctrl">
+<colgroup>
+<col width="9%" />
+<col width="91%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head" colspan="2"><span class="target" id="index-0"></span>PPUCTRL <span class="target" id="index-1"></span>($2000)</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>7</td>
+<td>Generate an NMI at the start of the
+vertical blanking interval vblank (0: off; 1: on)</td>
+</tr>
+<tr class="row-odd"><td>6</td>
+<td>PPU master/slave select</td>
+</tr>
+<tr class="row-even"><td>5</td>
+<td>Sprite size (0: 8x8; 1: 8x16)</td>
+</tr>
+<tr class="row-odd"><td>4</td>
+<td>Background pattern table address (0: $0000; 1: $1000)</td>
+</tr>
+<tr class="row-even"><td>3</td>
+<td>Sprite pattern table address for 8x8 sprites (0: $0000; 1: $1000)</td>
+</tr>
+<tr class="row-odd"><td>2</td>
+<td>VRAM address increment per CPU read/write of PPUDATA
+(0: increment by 1, going across; 1: increment by 32, going down)</td>
+</tr>
+<tr class="row-even"><td>1 &amp; 0</td>
+<td>Base nametable address
+(0 = $2000; 1 = $2400; 2 = $2800; 3 = $2C00)</td>
+</tr>
+</tbody>
+</table>
 <p>And the new code to set up the sprite data:</p>
 <div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="k">LDA</span> <span class="p">#</span><span class="mh">$80</span>
 <span class="k">STA</span> <span class="mh">$0200</span>        <span class="c1">;put sprite 0 in center ($80) of screen vertically</span>
