@@ -397,28 +397,29 @@ color! To do this the first PPU settings need to be written. This is done to
 memory address $2001. The 76543210 is the bit number, from 7 to 0. Those 8 bits
 form the byte you will write to $2001.
 
-.. index::
-    single: PPUMASK
-    see: $2001; PPUMASK
-
 .. _PPUMASK:
 
-::
-
-    PPUMASK ($2001)
-
-    76543210
-    ||||||||
-    |||||||+- Grayscale (0: normal color; 1: AND all palette entries
-    |||||||   with 0x30, effectively producing a monochrome display;
-    |||||||   note that colour emphasis STILL works when this is on!)
-    ||||||+-- Disable background clipping in leftmost 8 pixels of screen
-    |||||+--- Disable sprite clipping in leftmost 8 pixels of screen
-    ||||+---- Enable background rendering
-    |||+----- Enable sprite rendering
-    ||+------ Intensify reds (and darken other colors)
-    |+------- Intensify greens (and darken other colors)
-    +-------- Intensify blues (and darken other colors)
++----------------------------------------------------------------+
+| :index:`PPUMASK` :index:`($2001) <see: $2001; PPUMASK>`        |
++===+============================================================+
+| 7 | Intensify blues (and darken other colors)                  |
++---+------------------------------------------------------------+
+| 6 | Intensify greens (and darken other colors)                 |
++---+------------------------------------------------------------+
+| 5 | Intensify reds (and darken other colors)                   |
++---+------------------------------------------------------------+
+| 4 | Enable sprite rendering                                    |
++---+------------------------------------------------------------+
+| 3 | Enable background rendering                                |
++---+------------------------------------------------------------+
+| 2 | Disable sprite clipping in leftmost 8 pixels of screen     |
++---+------------------------------------------------------------+
+| 1 | Disable background clipping in leftmost 8 pixels of screen |
++---+------------------------------------------------------------+
+| 0 | Grayscale (0: normal color; 1: AND all palette entries     |
+|   | with 0x30, effectively producing a monochrome display;     |
+|   | note that colour emphasis STILL works when this is on!)    |
++---+------------------------------------------------------------+
 
 So if you want to enable the sprites, you set bit 3 to 1. For this program bits
 7, 6, 5 will be used to set the screen color::
