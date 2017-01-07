@@ -134,12 +134,20 @@ Sprite 1 is $0204-0207, sprite 2 is $0208-020B, etc
 Turning NMI/Sprites On
 ----------------------
 
-The PPU port $2001 is used again to enable sprites. Setting bit 4 to 1
+The :ref:`PPU port $2001<PPUMASK>` is used again to enable sprites. Setting bit 4 to 1
 will make them appear. NMI also needs to be turned on, so the Sprite DMA
 will run and the sprites will be copied every frame. This is done with
 the PPU port $2000. The Pattern Table 0 is also selected to choose
 sprites from. Background will come from Pattern Table 1 when that is
-added later::
+added later.
+
+.. index::
+    single: PPUCTRL
+    see: $2000; PPUCTRL
+
+.. _PPUCTRL:
+
+::
 
       PPUCTRL ($2000)
       76543210

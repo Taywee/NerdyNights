@@ -182,13 +182,13 @@ Sprite 1 is $0204-0207, sprite 2 is $0208-020B, etc</p>
 </div>
 <div class="section" id="turning-nmi-sprites-on">
 <h3>4.2.3. Turning NMI/Sprites On<a class="headerlink" href="#turning-nmi-sprites-on" title="Permalink to this headline">¶</a></h3>
-<p>The PPU port $2001 is used again to enable sprites. Setting bit 4 to 1
+<p>The <a class="reference internal" href="asmfirstapp.html#ppumask"><span class="std std-ref">PPU port $2001</span></a> is used again to enable sprites. Setting bit 4 to 1
 will make them appear. NMI also needs to be turned on, so the Sprite DMA
 will run and the sprites will be copied every frame. This is done with
 the PPU port $2000. The Pattern Table 0 is also selected to choose
 sprites from. Background will come from Pattern Table 1 when that is
-added later:</p>
-<div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="n">PPUCTRL</span> <span class="p">(</span><span class="mh">$2000</span><span class="p">)</span>
+added later.</p>
+<div class="highlight-ca65" id="ppuctrl"><span id="index-0"></span><div class="highlight"><pre><span></span><span class="n">PPUCTRL</span> <span class="p">(</span><span class="mh">$2000</span><span class="p">)</span>
 <span class="mi">76543210</span>
 <span class="o">|</span> <span class="o">||||||</span>
 <span class="o">|</span> <span class="o">||||++-</span> <span class="n">Base</span> <span class="n">nametable</span> <span class="n">address</span>

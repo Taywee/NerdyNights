@@ -395,7 +395,15 @@ Completing The Program
 Your first program will be very exciting, displaying an entire screen of one
 color! To do this the first PPU settings need to be written. This is done to
 memory address $2001. The 76543210 is the bit number, from 7 to 0. Those 8 bits
-form the byte you will write to $2001. ::
+form the byte you will write to $2001.
+
+.. index::
+    single: PPUMASK
+    see: $2001; PPUMASK
+
+.. _PPUMASK:
+
+::
 
     PPUMASK ($2001)
 
