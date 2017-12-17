@@ -33,10 +33,19 @@ Directives
 
 Directives are commands you send to the assembler to do things like locating
 code in memory. They start with a . and are indented. Some people use tabs, or
-4 spaces, and I use 2 spaces. This sample directive tells the assembler to put
-the code starting at memory location $8000, which is inside the game ROM area::
+4 spaces. This sample directive tells the assembler to put the code starting at
+memory location $8000, which is inside the game ROM area::
 
     .org $8000
+
+We don't use most of these.  For the most part, with cc65, you want to keep that
+kind of structure information out of your code.  Your code should describe how
+your code functions, and avoid how your code is physically structured as much as
+possible. We do that with ``.segment`` directives and a cfg file.  You'll see
+programs for older assemblers define all of the structure literally.
+
+For now, this config file is outside the scope of this tutorial.  Just use the
+packed ones and trust them, at least to start.
 
 Labels
 ------

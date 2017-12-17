@@ -89,3 +89,6 @@ ENV/
 .ropeproject
 _build
 *.sw?
+
+*.o
+*.nes
