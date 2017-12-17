@@ -1,20 +1,17 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>7. subroutines, game layout, starting Pong &#8212; Nerdy Nights 1.0.0 documentation</title>
-    
-    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <title>7. subroutines, game layout, starting Pong &#8212; Nerdy Nights 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.0.0',
+        VERSION:     '0.0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -27,25 +24,16 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="8. 16 bit math, pointers, nested loops" href="bitmath.html" />
-    <link rel="prev" title="6. Backgrounds" href="backgrounds.html" /> 
+    <link rel="prev" title="6. Backgrounds" href="backgrounds.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
   </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="bitmath.html" title="8. 16 bit math, pointers, nested loops"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="backgrounds.html" title="6. Backgrounds"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../nerdynights.html" accesskey="U">Nerdy Nights</a> &#187;</li> 
-      </ul>
-    </div>  
+  <body>
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -69,7 +57,7 @@ need to tell NESASM where in RAM to put the variable.&nbsp; This is done using t
 .rsset and .rs directives.&nbsp; First .rsset is used to set the starting address of
 the variable.&nbsp; Then .rs is used to reserve space.&nbsp; Usually just 1 byte is
 reserved, but you can have as much as you want.&nbsp; Each time you do a .rs the
-address gets incremented so you don&#8217;t need to do .rsset again:</p>
+address gets incremented so you don’t need to do .rsset again:</p>
 <div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="kp">.rsset</span> <span class="mh">$0000</span>    <span class="c1">;put variables starting at 0</span>
 <span class="n">score1</span>   <span class="kp">.rs</span> <span class="mi">1</span>  <span class="c1">;put score for player 1 at $0000</span>
 <span class="n">score2</span>   <span class="kp">.rs</span> <span class="mi">1</span>  <span class="c1">;put score for player 2 at $0001</span>
@@ -251,9 +239,9 @@ Accumulator and buttons data at each step of reading the controller:</p>
 <col width="8%" />
 </colgroup>
 <thead valign="bottom">
-<tr class="row-odd"><th class="head">&nbsp;</th>
+<tr class="row-odd"><th class="head">&#160;</th>
 <th class="head" colspan="9">Accumulator</th>
-<th class="head">&nbsp;</th>
+<th class="head">&#160;</th>
 <th class="head" colspan="9">buttons data</th>
 </tr>
 <tr class="row-even"><th class="head">bit:</th>
@@ -266,7 +254,7 @@ Accumulator and buttons data at each step of reading the controller:</p>
 <th class="head">1</th>
 <th class="head">0</th>
 <th class="head">Carry</th>
-<th class="head">&nbsp;</th>
+<th class="head">&#160;</th>
 <th class="head">7</th>
 <th class="head">6</th>
 <th class="head">5</th>
@@ -289,7 +277,7 @@ Accumulator and buttons data at each step of reading the controller:</p>
 <td>0</td>
 <td>A</td>
 <td>0</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
@@ -310,7 +298,7 @@ Accumulator and buttons data at each step of reading the controller:</p>
 <td>0</td>
 <td>0</td>
 <td>A</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
@@ -331,7 +319,7 @@ Accumulator and buttons data at each step of reading the controller:</p>
 <td>0</td>
 <td>0</td>
 <td>0</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
@@ -342,7 +330,7 @@ Accumulator and buttons data at each step of reading the controller:</p>
 <td>A</td>
 <td>0</td>
 </tr>
-<tr class="row-even"><td colspan="20">&nbsp;</td>
+<tr class="row-even"><td colspan="20">&#160;</td>
 </tr>
 <tr class="row-odd"><td>read button B</td>
 <td>0</td>
@@ -354,7 +342,7 @@ Accumulator and buttons data at each step of reading the controller:</p>
 <td>0</td>
 <td>B</td>
 <td>0</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
@@ -375,7 +363,7 @@ Accumulator and buttons data at each step of reading the controller:</p>
 <td>0</td>
 <td>0</td>
 <td>B</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
@@ -396,7 +384,7 @@ Accumulator and buttons data at each step of reading the controller:</p>
 <td>0</td>
 <td>0</td>
 <td>0</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
@@ -407,7 +395,7 @@ Accumulator and buttons data at each step of reading the controller:</p>
 <td>B</td>
 <td>0</td>
 </tr>
-<tr class="row-even"><td colspan="20">&nbsp;</td>
+<tr class="row-even"><td colspan="20">&#160;</td>
 </tr>
 <tr class="row-odd"><td>read button SEL</td>
 <td>0</td>
@@ -419,7 +407,7 @@ Accumulator and buttons data at each step of reading the controller:</p>
 <td>0</td>
 <td>SEL</td>
 <td>0</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
@@ -440,7 +428,7 @@ Accumulator and buttons data at each step of reading the controller:</p>
 <td>0</td>
 <td>0</td>
 <td>SEL</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
@@ -461,7 +449,7 @@ Accumulator and buttons data at each step of reading the controller:</p>
 <td>0</td>
 <td>0</td>
 <td>0</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
@@ -472,7 +460,7 @@ Accumulator and buttons data at each step of reading the controller:</p>
 <td>SEL</td>
 <td>0</td>
 </tr>
-<tr class="row-even"><td colspan="20">&nbsp;</td>
+<tr class="row-even"><td colspan="20">&#160;</td>
 </tr>
 <tr class="row-odd"><td>read button STA</td>
 <td>0</td>
@@ -484,7 +472,7 @@ Accumulator and buttons data at each step of reading the controller:</p>
 <td>0</td>
 <td>STA</td>
 <td>0</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
@@ -505,7 +493,7 @@ Accumulator and buttons data at each step of reading the controller:</p>
 <td>0</td>
 <td>0</td>
 <td>STA</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
@@ -526,7 +514,7 @@ Accumulator and buttons data at each step of reading the controller:</p>
 <td>0</td>
 <td>0</td>
 <td>0</td>
-<td>&nbsp;</td>
+<td>&#160;</td>
 <td>0</td>
 <td>0</td>
 <td>0</td>
@@ -599,7 +587,7 @@ the game engine has finished it goes back to the infinite loop:</p>
 </div>
 <div class="section" id="game-state">
 <h2>7.6. Game State<a class="headerlink" href="#game-state" title="Permalink to this headline">¶</a></h2>
-<p>The use of a &#8220;game state&#8221; variable is a common way to arrange code.&nbsp; The game
+<p>The use of a “game state” variable is a common way to arrange code.&nbsp; The game
 state just specifies what code should be run in the game engine each frame.&nbsp; If
 the game is in the title screen state, then none of the ball movement code
 needs to be run.&nbsp; A flow chart can be created that includes what each state
@@ -691,33 +679,45 @@ previous week.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">7. subroutines, game layout, starting Pong</a><ul>
-<li><a class="reference internal" href="#variables">7.1. Variables</a></li>
-<li><a class="reference internal" href="#constants">7.2. Constants</a></li>
-<li><a class="reference internal" href="#subroutines">7.3. Subroutines</a></li>
-<li><a class="reference internal" href="#better-controller-reading">7.4. Better Controller Reading</a></li>
-<li><a class="reference internal" href="#game-layout">7.5. Game Layout</a></li>
-<li><a class="reference internal" href="#game-state">7.6. Game State</a></li>
-<li><a class="reference internal" href="#putting-it-all-together">7.7. Putting It All Together</a></li>
+<h1 class="logo"><a href="../index.html">Nerdy Nights</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../nerdynights.html">Nerdy Nights</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="numbersystems.html">1. Number Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nesarchitecture.html">2. NES Architecture Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="asmfirstapp.html">3. 6502 ASM, first app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colorpalettes.html">4. Color Palettes, Sprites, second app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiplesprites.html">5. multiple sprites, reading controllers, more instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backgrounds.html">6. Backgrounds</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">7. subroutines, game layout, starting Pong</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bitmath.html">8. 16 bit math, pointers, nested loops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="numbers.html">9. Numbers, Bin to Dec</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../advancednerdynights.html">Advanced Nerdy Nights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hacking.html">Hacking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sound.html">Sound</a></li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="backgrounds.html"
-                        title="previous chapter">6. Backgrounds</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="bitmath.html"
-                        title="next chapter">8. 16 bit math, pointers, nested loops</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/nerdynights/subroutines.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../nerdynights.html">Nerdy Nights</a><ul>
+      <li>Previous: <a href="backgrounds.html" title="previous chapter">6. Backgrounds</a></li>
+      <li>Next: <a href="bitmath.html" title="next chapter">8. 16 bit math, pointers, nested loops</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
@@ -732,25 +732,20 @@ previous week.</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="bitmath.html" title="8. 16 bit math, pointers, nested loops"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="backgrounds.html" title="6. Backgrounds"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../nerdynights.html" >Nerdy Nights</a> &#187;</li> 
-      </ul>
+    <div class="footer">
+      &copy;2017, bunnyboy, MetalSlime, Taywee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/nerdynights/subroutines.rst.txt"
+          rel="nofollow">Page source</a>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2017, bunnyboy, MetalSlime, Taywee.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
-    </div>
+
+    
+
+    
   </body>
 </html>

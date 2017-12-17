@@ -1,20 +1,17 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>2. NES Architecture Overview &#8212; Nerdy Nights 1.0.0 documentation</title>
-    
-    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <title>2. NES Architecture Overview &#8212; Nerdy Nights 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.0.0',
+        VERSION:     '0.0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -27,25 +24,16 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="3. 6502 ASM, first app" href="asmfirstapp.html" />
-    <link rel="prev" title="1. Number Systems" href="numbersystems.html" /> 
+    <link rel="prev" title="1. Number Systems" href="numbersystems.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
   </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="asmfirstapp.html" title="3. 6502 ASM, first app"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="numbersystems.html" title="1. Number Systems"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../nerdynights.html" accesskey="U">Nerdy Nights</a> &#187;</li> 
-      </ul>
-    </div>  
+  <body>
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -100,7 +88,7 @@ chip.</p>
 <p>There is only 2KB of RAM connected to the CPU for storing variables, and 2KB of
 RAM connected to the PPU for holding two TV screens of background graphics.
 Some carts add extra CPU RAM, called Work RAM or WRAM. If a cart needs to store
-saved games, this WRAM will have a battery attached to make sure it isn&#8217;t
+saved games, this WRAM will have a battery attached to make sure it isn’t
 erased. A few carts add extra PPU RAM to hold four screens of background
 graphics at once. This is not common. The rest of this tutorial will not use
 WRAM or four screen RAM.</p>
@@ -181,9 +169,9 @@ will be slower because of this timing difference. Sounds will also be slower.</p
 <p>All graphics are made up of 8x8 pixel tiles. Large characters like Mario are
 made from multiple 8x8 tiles. All the backgrounds are also made from these
 tiles. The tile system means less memory is needed (was expensive at the time)
-but also means that things like bitmap pictures and 3d graphics aren&#8217;t really
+but also means that things like bitmap pictures and 3d graphics aren’t really
 possible. To see all the tiles in a game, download <a class="reference external" href="http://www.zophar.net/utilities/download/TileMolester_015a_bin.zip">Tile Molester</a> and
-open up your .NES file. Scroll down until you see graphics that don&#8217;t look like
+open up your .NES file. Scroll down until you see graphics that don’t look like
 static. You can see that small tiles are arranged by the game to make large
 images.</p>
 </div>
@@ -239,41 +227,45 @@ updated.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">2. NES Architecture Overview</a><ul>
-<li><a class="reference internal" href="#system-overview">2.1. System Overview</a><ul>
-<li><a class="reference internal" href="#lockout-chip">2.1.1. Lockout Chip</a></li>
-<li><a class="reference internal" href="#cpu-overview">2.1.2. CPU Overview</a></li>
-<li><a class="reference internal" href="#ppu-overview">2.1.3. PPU Overview</a></li>
+<h1 class="logo"><a href="../index.html">Nerdy Nights</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../nerdynights.html">Nerdy Nights</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="numbersystems.html">1. Number Systems</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">2. NES Architecture Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="asmfirstapp.html">3. 6502 ASM, first app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colorpalettes.html">4. Color Palettes, Sprites, second app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiplesprites.html">5. multiple sprites, reading controllers, more instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backgrounds.html">6. Backgrounds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="subroutines.html">7. subroutines, game layout, starting Pong</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bitmath.html">8. 16 bit math, pointers, nested loops</a></li>
+<li class="toctree-l2"><a class="reference internal" href="numbers.html">9. Numbers, Bin to Dec</a></li>
 </ul>
 </li>
-<li><a class="reference internal" href="#graphics-system-overview">2.2. Graphics System Overview</a><ul>
-<li><a class="reference internal" href="#tiles">2.2.1. Tiles</a></li>
-<li><a class="reference internal" href="#sprites">2.2.2. Sprites</a></li>
-<li><a class="reference internal" href="#background">2.2.3. Background</a></li>
-<li><a class="reference internal" href="#pattern-tables">2.2.4. Pattern Tables</a></li>
-<li><a class="reference internal" href="#attribute-tables">2.2.5. Attribute Tables</a></li>
-<li><a class="reference internal" href="#palettes">2.2.6. Palettes</a></li>
-</ul>
-</li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../advancednerdynights.html">Advanced Nerdy Nights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hacking.html">Hacking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sound.html">Sound</a></li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="numbersystems.html"
-                        title="previous chapter">1. Number Systems</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="asmfirstapp.html"
-                        title="next chapter">3. 6502 ASM, first app</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/nerdynights/nesarchitecture.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../nerdynights.html">Nerdy Nights</a><ul>
+      <li>Previous: <a href="numbersystems.html" title="previous chapter">1. Number Systems</a></li>
+      <li>Next: <a href="asmfirstapp.html" title="next chapter">3. 6502 ASM, first app</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
@@ -288,25 +280,20 @@ updated.</p>
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="asmfirstapp.html" title="3. 6502 ASM, first app"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="numbersystems.html" title="1. Number Systems"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../nerdynights.html" >Nerdy Nights</a> &#187;</li> 
-      </ul>
+    <div class="footer">
+      &copy;2017, bunnyboy, MetalSlime, Taywee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/nerdynights/nesarchitecture.rst.txt"
+          rel="nofollow">Page source</a>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2017, bunnyboy, MetalSlime, Taywee.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
-    </div>
+
+    
+
+    
   </body>
 </html>

@@ -1,20 +1,17 @@
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    
-    <title>9. Numbers, Bin to Dec &#8212; Nerdy Nights 1.0.0 documentation</title>
-    
-    <link rel="stylesheet" href="../_static/classic.css" type="text/css" />
+    <title>9. Numbers, Bin to Dec &#8212; Nerdy Nights 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    
     <script type="text/javascript">
       var DOCUMENTATION_OPTIONS = {
         URL_ROOT:    '../',
-        VERSION:     '1.0.0',
+        VERSION:     '0.0.1',
         COLLAPSE_INDEX: false,
         FILE_SUFFIX: '.html',
         HAS_SOURCE:  true,
@@ -27,25 +24,16 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Advanced Nerdy Nights" href="../advancednerdynights.html" />
-    <link rel="prev" title="8. 16 bit math, pointers, nested loops" href="bitmath.html" /> 
+    <link rel="prev" title="8. 16 bit math, pointers, nested loops" href="bitmath.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
   </head>
-  <body role="document">
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             accesskey="I">index</a></li>
-        <li class="right" >
-          <a href="../advancednerdynights.html" title="Advanced Nerdy Nights"
-             accesskey="N">next</a> |</li>
-        <li class="right" >
-          <a href="bitmath.html" title="8. 16 bit math, pointers, nested loops"
-             accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../nerdynights.html" accesskey="U">Nerdy Nights</a> &#187;</li> 
-      </ul>
-    </div>  
+  <body>
+  
 
     <div class="document">
       <div class="documentwrapper">
@@ -74,8 +62,8 @@ the decimal handling yourself!</p>
 <p>The first method uses more code, but may be easier to understand. Say your
 score is a 5 digit number. You will make 5 variables, one for each digit. Those
 variables will only count from 0 to 9 so you need to write code to handle
-addition and subtraction. Super Mario uses this method.  It&#8217;s lowest digit is
-always 0, so that isn&#8217;t actually stored in a variable. Instead it is just a
+addition and subtraction. Super Mario uses this method.  It’s lowest digit is
+always 0, so that isn’t actually stored in a variable. Instead it is just a
 permanent part of the background.</p>
 <p>We will start with just incrementing a 3 digit number to see how its done:</p>
 <div class="highlight-ca65"><div class="highlight"><pre><span></span><span class="nl">IncOnes:</span>
@@ -105,7 +93,7 @@ permanent part of the background.</p>
 </pre></div>
 </div>
 <p>When the subroutine starts, the ones digit is incremented. Then it is checked
-if it equals $0A which is decimal 10. That number doesn&#8217;t fit in just one
+if it equals $0A which is decimal 10. That number doesn’t fit in just one
 digit, so the ones digit is set to 0 and the tens digit is incremented. The
 tens digit is then checked in the same way, and the chain continues for as many
 digits as you want.</p>
@@ -325,31 +313,45 @@ zeros. Instead replace them with spaces when you are drawing to the background.<
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="../index.html">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">9. Numbers, Bin to Dec</a><ul>
-<li><a class="reference internal" href="#bcd-mode">9.1. BCD Mode</a></li>
-<li><a class="reference internal" href="#storing-digits">9.2. Storing Digits</a></li>
-<li><a class="reference internal" href="#binary-to-decimal-conversion">9.3. Binary to Decimal Conversion</a></li>
-<li><a class="reference internal" href="#displaying-numbers">9.4. Displaying Numbers</a></li>
-<li><a class="reference internal" href="#putting-it-all-together">9.5. Putting It All Together</a></li>
+<h1 class="logo"><a href="../index.html">Nerdy Nights</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../nerdynights.html">Nerdy Nights</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="numbersystems.html">1. Number Systems</a></li>
+<li class="toctree-l2"><a class="reference internal" href="nesarchitecture.html">2. NES Architecture Overview</a></li>
+<li class="toctree-l2"><a class="reference internal" href="asmfirstapp.html">3. 6502 ASM, first app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="colorpalettes.html">4. Color Palettes, Sprites, second app</a></li>
+<li class="toctree-l2"><a class="reference internal" href="multiplesprites.html">5. multiple sprites, reading controllers, more instructions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="backgrounds.html">6. Backgrounds</a></li>
+<li class="toctree-l2"><a class="reference internal" href="subroutines.html">7. subroutines, game layout, starting Pong</a></li>
+<li class="toctree-l2"><a class="reference internal" href="bitmath.html">8. 16 bit math, pointers, nested loops</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">9. Numbers, Bin to Dec</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../advancednerdynights.html">Advanced Nerdy Nights</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../hacking.html">Hacking</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../sound.html">Sound</a></li>
 </ul>
 
-  <h4>Previous topic</h4>
-  <p class="topless"><a href="bitmath.html"
-                        title="previous chapter">8. 16 bit math, pointers, nested loops</a></p>
-  <h4>Next topic</h4>
-  <p class="topless"><a href="../advancednerdynights.html"
-                        title="next chapter">Advanced Nerdy Nights</a></p>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="../_sources/nerdynights/numbers.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../nerdynights.html">Nerdy Nights</a><ul>
+      <li>Previous: <a href="bitmath.html" title="previous chapter">8. 16 bit math, pointers, nested loops</a></li>
+      <li>Next: <a href="../advancednerdynights.html" title="next chapter">Advanced Nerdy Nights</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <form class="search" action="../search.html" method="get">
@@ -364,25 +366,20 @@ zeros. Instead replace them with spaces when you are drawing to the background.<
       </div>
       <div class="clearer"></div>
     </div>
-    <div class="related" role="navigation" aria-label="related navigation">
-      <h3>Navigation</h3>
-      <ul>
-        <li class="right" style="margin-right: 10px">
-          <a href="../genindex.html" title="General Index"
-             >index</a></li>
-        <li class="right" >
-          <a href="../advancednerdynights.html" title="Advanced Nerdy Nights"
-             >next</a> |</li>
-        <li class="right" >
-          <a href="bitmath.html" title="8. 16 bit math, pointers, nested loops"
-             >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">Nerdy Nights 1.0.0 documentation</a> &#187;</li>
-          <li class="nav-item nav-item-1"><a href="../nerdynights.html" >Nerdy Nights</a> &#187;</li> 
-      </ul>
+    <div class="footer">
+      &copy;2017, bunnyboy, MetalSlime, Taywee.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.6.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/nerdynights/numbers.rst.txt"
+          rel="nofollow">Page source</a>
     </div>
-    <div class="footer" role="contentinfo">
-        &#169; Copyright 2017, bunnyboy, MetalSlime, Taywee.
-      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
-    </div>
+
+    
+
+    
   </body>
 </html>
