@@ -8,10 +8,10 @@ LD65 ?= ld65
 ASSEMBLE = $(AS65) $(ASFLAGS) $(FLAGS)
 LINK = $(LD65) $(LDFLAGS) $(FLAGS)
 
-SOURCES = week4.asm
+SOURCES = week6.asm
 OBJECTS =  $(SOURCES:.asm=.o)
 
-EXECUTABLE = week4.nes
+EXECUTABLE = week6.nes
 
 .PHONY: all clean
 
@@ -22,5 +22,5 @@ clean:
 $(EXECUTABLE): $(OBJECTS) ../nes.cfg
 	$(LINK) -o$@ $<
 
-week4.o : week4.asm
+week6.o: week6.asm
 	$(ASSEMBLE) -o$@ $<

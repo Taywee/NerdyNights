@@ -14,7 +14,7 @@ palette:
     ;.byte $0F,$1C,$15,$14,$0F,$02,$38,$3C,$0F,$1C,$15,$14,$0F,$02,$38,$3C
 .segment "ZEROPAGE"
 sprite:
-    .res 4 
+    .res $100
 .segment "CODE"
 
 
@@ -71,8 +71,9 @@ LoadPalettesLoop:
     lda #$80
     sta sprite        ; put sprite 0 in center ($80) of screen vert
     sta sprite + 3        ; put sprite 0 in center ($80) of screen horiz
-    lda #$00
+    lda #$01
     sta sprite + 1        ; tile number = 0
+    lda #$00
     sta sprite + 2        ; color = 0, no flipping
 
     lda #%10000000   ; enable NMI, sprites from Pattern Table 0
