@@ -19,17 +19,23 @@ rosprites:
 end_rosprites:
 s_rosprites = (end_rosprites - rosprites)
 background:
-    .byte $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24  ;;row 1
-    .byte $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24  ;;all sky
+sky = $24
+bricktop = $45
+brickbottom = $47
+qblock = $53
+    .res $20, sky  ;;row 1, all sky
+    .res $20, sky  ;;row 2, all sky
+
+    .byte sky,sky,sky,sky,bricktop,bricktop,sky,sky
+    .byte bricktop,bricktop,bricktop,bricktop,bricktop,bricktop,sky,sky  ;;row 3
+    .byte sky,sky,sky,sky,sky,sky,sky,sky
+    .byte sky,sky,sky,sky,qblock,qblock+1,sky,sky  ;;some brick tops
     
-    .byte $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24  ;;row 2
-    .byte $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24  ;;all sky
-    
-    .byte $24,$24,$24,$24,$45,$45,$24,$24,$45,$45,$45,$45,$45,$45,$24,$24  ;;row 3
-    .byte $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$53,$54,$24,$24  ;;some brick tops
-    
-    .byte $24,$24,$24,$24,$47,$47,$24,$24,$47,$47,$47,$47,$47,$47,$24,$24  ;;row 4
-    .byte $24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$24,$55,$56,$24,$24  ;;brick bottoms
+    .byte sky,sky,sky,sky,brickbottom,brickbottom,sky,sky
+    .byte brickbottom,brickbottom,brickbottom,brickbottom,brickbottom,brickbottom,sky,sky  ;;row 4
+    .byte sky,sky,sky,sky,sky,sky,sky,sky
+    .byte sky,sky,sky,sky,qblock+2,qblock+3,sky,sky  ;;brick bottoms
+
 end_background:
 s_background = (end_background - background)
 attribute:
