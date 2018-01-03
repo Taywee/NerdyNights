@@ -1,3 +1,5 @@
+; vim: ft=asm_ca65
+
 .segment "CHARS"
     .incbin "mario.chr" ; if you have one
 .segment "HEADER"

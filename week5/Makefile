@@ -1,17 +1,19 @@
 FLAGS +=
-ASFLAGS +=
 LDFLAGS += -C../nes.cfg
 
 AS65 ?= ca65
 LD65 ?= ld65
 
-ASSEMBLE = $(AS65) $(ASFLAGS) $(FLAGS)
+ASSEMBLE = $(AS65) $(FLAGS)
 LINK = $(LD65) $(LDFLAGS) $(FLAGS)
 
-SOURCES = week5.asm
+mkfile_path := $(abspath $(lastword $(MAKEFILE_LIST)))
+dirname := $(basename $(notdir $(patsubst %/,%,$(dir $(mkfile_path)))))
+
+SOURCES = $(wildcard *.asm)
 OBJECTS =  $(SOURCES:.asm=.o)
 
-EXECUTABLE = week5.nes
+EXECUTABLE = $(dirname).nes
 
 .PHONY: all clean
 
@@ -22,5 +24,5 @@ clean:
 $(EXECUTABLE): $(OBJECTS) ../nes.cfg
 	$(LINK) -o$@ $<
 
-week5.o : week5.asm
+%.o : %.asm
 	$(ASSEMBLE) -o$@ $<
