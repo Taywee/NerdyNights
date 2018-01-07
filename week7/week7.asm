@@ -1,30 +1,58 @@
-  .inesprg 1   ; 1x 16KB PRG code
-  .ineschr 1   ; 1x  8KB CHR data
-  .inesmap 0   ; mapper 0 = NROM, no bank swapping
-  .inesmir 1   ; background mirroring
-  
+; vim: ft=asm_ca65
 
-;;;;;;;;;;;;;;;
+.segment "CHARS"
+    .incbin "mario.chr" ; if you have one
+.segment "HEADER"
+    .byte "NES",26,2,1 ; 32K PRG, 8K CHR
+.segment "VECTORS"
+    .word nmi, reset, 0
+.segment "RODATA"
+palette:
+    .byte $22,$29,$1A,$0F,  $22,$36,$17,$0F,  $22,$30,$21,$0F,  $22,$27,$17,$0F   ;;background palette
+    .byte $22,$1C,$15,$14,  $22,$02,$38,$3C,  $22,$1C,$15,$14,  $22,$02,$38,$3C   ;;sprite palette
+end_palette:
+s_palette = (end_palette - palette)
 
-;; DECLARE SOME VARIABLES HERE
-  .rsset $0000  ;;start variables at ram location 0
-  
-gamestate  .rs 1  ; .rs 1 means reserve one byte of space
-ballx      .rs 1  ; ball horizontal position
-bally      .rs 1  ; ball vertical position
-ballup     .rs 1  ; 1 = ball moving up
-balldown   .rs 1  ; 1 = ball moving down
-ballleft   .rs 1  ; 1 = ball moving left
-ballright  .rs 1  ; 1 = ball moving right
-ballspeedx .rs 1  ; ball horizontal speed per frame
-ballspeedy .rs 1  ; ball vertical speed per frame
-paddle1ytop   .rs 1  ; player 1 paddle top vertical position
-paddle2ybot   .rs 1  ; player 2 paddle bottom vertical position
-buttons1   .rs 1  ; player 1 gamepad buttons, one bit per button
-buttons2   .rs 1  ; player 2 gamepad buttons, one bit per button
-score1     .rs 1  ; player 1 score, 0-15
-score2     .rs 1  ; player 2 score, 0-15
+rosprites:
+    ;vert tile attr horiz
+    .byte $80, $32, $00, $80   ;sprite 0
+end_rosprites:
+s_rosprites = (end_rosprites - rosprites)
+.segment "OAM"
+sprites:
+    .res $04, $00
 
+.segment "BSS"
+gamestate:
+    .res 1  ; .rs 1 means reserve one byte of space
+ballx:
+    .res 1  ; ball horizontal position
+bally:
+    .res 1  ; ball vertical position
+ballup:
+    .res 1  ; 1 = ball moving up
+balldown:
+    .res 1  ; 1 = ball moving down
+ballleft:
+    .res 1  ; 1 = ball moving left
+ballright:
+    .res 1  ; 1 = ball moving right
+ballspeedx:
+    .res 1  ; ball horizontal speed per frame
+ballspeedy:
+    .res 1  ; ball vertical speed per frame
+paddle1ytop:
+    .res 1  ; player 1 paddle top vertical position
+paddle2ybot:
+    .res 1  ; player 2 paddle bottom vertical position
+buttons1:
+    .res 1  ; player 1 gamepad buttons, one bit per button
+buttons2:
+    .res 1  ; player 2 gamepad buttons, one bit per button
+score1:
+    .res 1  ; player 1 score, 0-15
+score2:
+    .res 1  ; player 2 score, 0-15
 
 ;; DECLARE SOME CONSTANTS HERE
 STATETITLE     = $00  ; displaying title screen
@@ -39,142 +67,147 @@ LEFTWALL       = $04
 PADDLE1X       = $08  ; horizontal position for paddles, doesnt move
 PADDLE2X       = $F0
 
-;;;;;;;;;;;;;;;;;;
+.segment "CODE"
 
+vblankwait:
+    bit $2002
+    bpl vblankwait
+    rts
 
+reset:
+    sei          ; disable IRQs
+    cld          ; disable decimal mode
+    ldx #$40
+    stx $4017    ; disable APU frame IRQ
+    ldx #$FF
+    txs          ; Set up stack
+    inx          ; now X = 0
+    stx $2000    ; disable NMI
+    stx $2001    ; disable rendering
+    stx $4010    ; disable DMC IRQs
 
-
-  .bank 0
-  .org $C000 
-RESET:
-  SEI          ; disable IRQs
-  CLD          ; disable decimal mode
-  LDX #$40
-  STX $4017    ; disable APU frame IRQ
-  LDX #$FF
-  TXS          ; Set up stack
-  INX          ; now X = 0
-  STX $2000    ; disable NMI
-  STX $2001    ; disable rendering
-  STX $4010    ; disable DMC IRQs
-
-vblankwait1:       ; First wait for vblank to make sure PPU is ready
-  BIT $2002
-  BPL vblankwait1
+    jsr vblankwait
 
 clrmem:
-  LDA #$00
-  STA $0000, x
-  STA $0100, x
-  STA $0300, x
-  STA $0400, x
-  STA $0500, x
-  STA $0600, x
-  STA $0700, x
-  LDA #$FE
-  STA $0200, x
-  INX
-  BNE clrmem
+    lda #$00
+    sta $0000, x
+    sta $0100, x
+    sta $0200, x
+    sta $0300, x
+    sta $0400, x
+    sta $0500, x
+    sta $0600, x
+    sta $0700, x
+    inx
+    bne clrmem
    
-vblankwait2:      ; Second wait for vblank, PPU is ready after this
-  BIT $2002
-  BPL vblankwait2
+    jsr vblankwait
 
-
-LoadPalettes:
-  LDA $2002             ; read PPU status to reset the high/low latch
-  LDA #$3F
-  STA $2006             ; write the high byte of $3F00 address
-  LDA #$00
-  STA $2006             ; write the low byte of $3F00 address
-  LDX #$00              ; start out at 0
-LoadPalettesLoop:
-  LDA palette, x        ; load data from address (palette + the value in x)
-                          ; 1st time through loop it will load palette+0
-                          ; 2nd time through loop it will load palette+1
-                          ; 3rd time through loop it will load palette+2
-                          ; etc
-  STA $2007             ; write to PPU
-  INX                   ; X = X + 1
-  CPX #$20              ; Compare X to hex $10, decimal 16 - copying 16 bytes = 4 sprites
-  BNE LoadPalettesLoop  ; Branch to LoadPalettesLoop if compare was Not Equal to zero
-                        ; if compare was equal to 32, keep going down
+loadpalettes:
+    lda $2002             ; read PPU status to reset the high/low latch
+    lda #$3f
+    sta $2006             ; write the high byte of $3F00 address
+    lda #$00
+    sta $2006             ; write the low byte of $3F00 address
+    ldx #$00              ; start out at 0
+loadpalettesloop:
+    lda palette, x        ; load data from address (palette + the value in x)
+                            ; 1st time through loop it will load palette+0
+                            ; 2nd time through loop it will load palette+1
+                            ; 3rd time through loop it will load palette+2
+                            ; etc
+    sta $2007             ; write to PPU
+    inx                   ; X = X + 1
+    cpx #s_palette              ; compare x to hex $10, decimal 16 - copying 16 bytes = 4 sprites
+    bne loadpalettesloop  ; Branch to LoadPalettesLoop if compare was Not Equal to zero
+                          ; if compare was equal to 32, keep going down
+                          
+loadsprites:
+    ldx #$00              ; start at 0
+loadspritesloop:
+    lda rosprites, x        ; load data from address (rosprites +  x)
+    sta sprites, x          ; store into ram address (sprites + x)
+    inx                   ; x = x + 1
+    cpx #s_rosprites              ; compare x to hex $10, decimal 16
+    bne loadspritesloop   ; branch to loadspritesloop if compare was not equal to zero
+                        ; if compare was equal to 16, keep going down
 
 
   
 
 
 ;;;Set some initial ball stats
-  LDA #$01
-  STA balldown
-  STA ballright
-  LDA #$00
-  STA ballup
-  STA ballleft
-  
-  LDA #$50
-  STA bally
-  
-  LDA #$80
-  STA ballx
-  
-  LDA #$02
-  STA ballspeedx
-  STA ballspeedy
+; TODO: switch this to a ROM->RAM push instead of defining in-code
+    lda #$01
+    sta balldown
+    sta ballright
+    lda #$00
+    sta ballup
+    sta ballleft
+    
+    lda #$50
+    sta bally
+    
+    lda #$80
+    sta ballx
+    
+    lda #$02
+    sta ballspeedx
+    sta ballspeedy
 
 
 ;;:Set starting game state
-  LDA #STATEPLAYING
-  STA gamestate
+    lda #STATEPLAYING
+    sta gamestate
 
 
-              
-  LDA #%10010000   ; enable NMI, sprites from Pattern Table 0, background from Pattern Table 1
-  STA $2000
+                
+    lda #%10010000   ; enable NMI, sprites from Pattern Table 0, background from Pattern Table 1
+    sta $2000
 
-  LDA #%00011110   ; enable sprites, enable background, no clipping on left side
-  STA $2001
+    lda #%00011110   ; enable sprites, enable background, no clipping on left side
+    sta $2001
 
-Forever:
-  JMP Forever     ;jump back to Forever, infinite loop, waiting for NMI
+forever:
+    jmp forever     ;jump back to Forever, infinite loop, waiting for NMI
   
  
 
-NMI:
-  LDA #$00
-  STA $2003       ; set the low byte (00) of the RAM address
-  LDA #$02
-  STA $4014       ; set the high byte (02) of the RAM address, start the transfer
-
-  JSR DrawScore
-
-  ;;This is the PPU clean up section, so rendering the next frame starts properly.
-  LDA #%10010000   ; enable NMI, sprites from Pattern Table 0, background from Pattern Table 1
-  STA $2000
-  LDA #%00011110   ; enable sprites, enable background, no clipping on left side
-  STA $2001
-  LDA #$00        ;;tell the ppu there is no background scrolling
-  STA $2005
-  STA $2005
+nmi:
+    lda #$00
+    sta $2003       ; set the low byte (00) of the RAM address
+    lda #>sprites
+    sta $4014       ; set the high byte (02) of the RAM address, start the transfer
     
-  ;;;all graphics updates done by here, run game engine
-
-
-  JSR ReadController1  ;;get the current button data for player 1
-  JSR ReadController2  ;;get the current button data for player 2
+    jsr DrawScore
+    
+    ;;this is the PPU clean up section, so rendering the next frame starts properly.
+    lda #%10010000   ; enable NMI, sprites from Pattern Table 0, background from Pattern Table 1
+    sta $2000
+    lda #%00011110   ; enable sprites, enable background, no clipping on left side
+    sta $2001
+    lda #$00        ;;tell the ppu there is no background scrolling
+    sta $2005
+    sta $2005
+      
+    ;;;all graphics updates done by here, run game engine
+    
+    
+    jsr ReadController1  ;;get the current button data for player 1
+    jsr ReadController2  ;;get the current button data for player 2
   
 GameEngine:  
-  LDA gamestate
-  CMP #STATETITLE
-  BEQ EngineTitle    ;;game is displaying title screen
+    LDA gamestate
+    CMP #STATETITLE
+    BEQ EngineTitle    ;;game is displaying title screen
+      
+    LDA gamestate
+    CMP #STATEGAMEOVER
+    BEQ EngineGameOver  ;;game is displaying ending screen
     
-  LDA gamestate
-  CMP #STATEGAMEOVER
-  BEQ EngineGameOver  ;;game is displaying ending screen
-  
-  LDA gamestate
-  CMP #STATEPLAYING
-  BEQ EnginePlaying   ;;game is playing
+    LDA gamestate
+    CMP #STATEPLAYING
+    BEQ EnginePlaying   ;;game is playing
 GameEngineDone:  
   
   JSR UpdateSprites  ;;set ball/paddle sprites from positions
@@ -311,90 +344,51 @@ CheckPaddleCollisionDone:
  
  
 UpdateSprites:
-  LDA bally  ;;update all ball sprite info
-  STA $0200
-  
-  LDA #$30
-  STA $0201
-  
-  LDA #$00
-  STA $0202
-  
-  LDA ballx
-  STA $0203
-  
-  ;;update paddle sprites
-  RTS
+    lda bally  ;;update all ball sprite info
+    sta sprites
+    
+    lda #$30
+    sta sprites + 1
+    
+    lda #$00
+    sta sprites + 2
+    
+    lda ballx
+    sta sprites + 3
+    
+    ;;update paddle sprites
+    rts
  
  
 DrawScore:
-  ;;draw score on screen using background tiles
-  ;;or using many sprites
-  RTS
- 
- 
+    ;;draw score on screen using background tiles
+    ;;or using many sprites
+    rts
  
 ReadController1:
-  LDA #$01
-  STA $4016
-  LDA #$00
-  STA $4016
-  LDX #$08
-ReadController1Loop:
-  LDA $4016
-  LSR A            ; bit0 -> Carry
-  ROL buttons1     ; bit0 <- Carry
-  DEX
-  BNE ReadController1Loop
-  RTS
-  
+    lda #$01
+    sta $4016
+    lda #$00
+    sta $4016
+    ldx #$08
+@loop:
+    lda $4016
+    lsr A            ; bit0 -> Carry
+    rol buttons1     ; bit0 <- Carry
+    dex
+    bne @loop
+    rts
+
 ReadController2:
-  LDA #$01
-  STA $4016
-  LDA #$00
-  STA $4016
-  LDX #$08
-ReadController2Loop:
-  LDA $4017
-  LSR A            ; bit0 -> Carry
-  ROL buttons2     ; bit0 <- Carry
-  DEX
-  BNE ReadController2Loop
-  RTS  
-  
-  
-    
-        
-;;;;;;;;;;;;;;  
-  
-  
-  
-  .bank 1
-  .org $E000
-palette:
-  .db $22,$29,$1A,$0F,  $22,$36,$17,$0F,  $22,$30,$21,$0F,  $22,$27,$17,$0F   ;;background palette
-  .db $22,$1C,$15,$14,  $22,$02,$38,$3C,  $22,$1C,$15,$14,  $22,$02,$38,$3C   ;;sprite palette
-
-sprites:
-     ;vert tile attr horiz
-  .db $80, $32, $00, $80   ;sprite 0
-  .db $80, $33, $00, $88   ;sprite 1
-  .db $88, $34, $00, $80   ;sprite 2
-  .db $88, $35, $00, $88   ;sprite 3
-
-
-
-  .org $FFFA     ;first of the three vectors starts here
-  .dw NMI        ;when an NMI happens (once per frame if enabled) the 
-                   ;processor will jump to the label NMI:
-  .dw RESET      ;when the processor first turns on or is reset, it will jump
-                   ;to the label RESET:
-  .dw 0          ;external interrupt IRQ is not used in this tutorial
-  
-  
-;;;;;;;;;;;;;;  
-  
-  
-  .bank 2
-  .org $0000
-  .incbin "mario.chr"   ;includes 8KB graphics file from SMB1
+    lda #$01
+    sta $4016
+    lda #$00
+    sta $4016
+    ldx #$08
+@loop:
+    lda $4017
+    lsr A            ; bit0 -> Carry
+    rol buttons2     ; bit0 <- Carry
+    dex
+    bne @loop
+    rts
