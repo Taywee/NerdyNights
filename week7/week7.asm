@@ -3,7 +3,17 @@
 .segment "CHARS"
     .incbin "mario.chr" ; if you have one
 .segment "HEADER"
-    .byte "NES",26,2,1 ; 32K PRG, 8K CHR
+    .byte "NES",$1A
+    ; PRG ROM, 32KB
+    .byte 2
+    ; CHR ROM, 8 KB
+    .byte 1
+    ; Flags 6
+    .byte %00000000
+    ; Flags 7
+    .byte %00000000
+    ; PRG RAM
+    .byte $01
 .segment "VECTORS"
     .word nmi, reset, 0
 .segment "RODATA"
