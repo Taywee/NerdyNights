@@ -92,3 +92,4 @@ _build
 
 *.o
 *.nes
+*.fns
